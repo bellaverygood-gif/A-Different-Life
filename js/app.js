@@ -32,6 +32,18 @@
     }[ch]));
   }
 
+  function icon(name, size = 18) {
+    const paths = {
+      spark: '<path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2L12 2z"/>',
+      dice: '<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1.2"/><circle cx="15" cy="9" r="1.2"/><circle cx="9" cy="15" r="1.2"/><circle cx="15" cy="15" r="1.2"/><circle cx="12" cy="12" r="1.2"/>',
+      book: '<path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H20v18H7.5A2.5 2.5 0 0 1 5 17.5v-13z"/><path d="M5 17.5A2.5 2.5 0 0 1 7.5 15H20"/>',
+      shield: '<path d="M12 3l7 3v5c0 4.5-3 7.8-7 10-4-2.2-7-5.5-7-10V6l7-3z"/>',
+      history: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/>',
+      arrow: '<path d="M5 12h14"/><path d="M14 6l6 6-6 6"/>'
+    };
+    return `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.spark}</svg>`;
+  }
+
   function loadJSON(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -87,73 +99,80 @@
   }
 
   function header(active) {
+    const topLabel = active === "blind" ? "盲盒人生" : active === "script" ? "剧本人生" : "平行人生";
     return `<header class="site-header shell-wide">
       <a class="brand" href="#/home">
         <span class="brand-mark">✦</span>
-        <span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span>
+        <span class="brand-text"><strong>${topLabel}</strong><small>旁观者视角</small></span>
       </a>
       <nav class="header-links" aria-label="主导航">
         <a href="#/blind" class="${active === "blind" ? "gold" : ""}">盲盒</a>
         <a href="#/script" class="${active === "script" ? "gold" : ""}">剧本</a>
         <a href="#/privacy">隐私</a>
       </nav>
-      <a class="header-icon" href="#/privacy" aria-label="隐私说明">◇</a>
+      <div class="top-actions">
+        <span class="top-chip"><span class="dot"></span>${LIVES.length} 段人生</span>
+        <a class="header-icon" href="#/privacy" aria-label="隐私说明">${icon("shield", 16)}</a>
+      </div>
     </header>`;
-  }
-
-  function footer() {
+  }  function footer() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
-    const tabs = [["home", "首页"], ["blind", "盲盒"], ["script", "剧本"], ["privacy", "说明"]];
+    const tabs = [["home", "首页", "spark"], ["blind", "盲盒", "dice"], ["script", "剧本", "book"], ["privacy", "我的", "shield"]];
     return `<nav class="bottom-nav" aria-label="底部导航">
-      ${tabs.map(([key, label]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}"><span>${key === "home" ? "✦" : key === "blind" ? "◉" : key === "script" ? "▤" : "◇"}</span>${label}</a>`).join("")}
+      ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 19)}<span>${label}</span></a>`).join("")}
     </nav>
     <footer class="home-footer shell-wide">
       <span>平行人生 · 虚构人物故事</span>
       <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
     </footer>`;
-  }
-
-  function homePage() {
+  }  function homePage() {
     document.title = "平行人生 · 旁观一段人生";
     const store = blindStore();
     const last = LIVES.find((item) => item.id === store.lastId);
+    const hour = new Date().getHours();
+    const greet = hour < 6 ? "夜深了" : hour < 12 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
     return `${header("home")}
-      <div class="shell-wide app-home">
-        <section class="home-main-card">
-          <div class="home-main-art"><img src="assets/hero-portal-clean.jpg" alt=""></div>
-          <div class="home-main-shade"></div>
-          <div class="home-main-copy">
-            <span class="section-kicker">盲盒人生</span>
-            <h1>抽一个人生</h1>
-            <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
-            <div class="home-main-actions">
-              <a class="btn btn-primary" href="#/blind">打开盲盒 <span>✦</span></a>
-              <a class="text-link" href="#/script">看自己的剧本 <span>→</span></a>
-            </div>
+      <div class="shell-wide app-home v3-home">
+        <section class="v3-greeting">
+          <div>
+            <span class="section-kicker">${greet}，旁观者</span>
+            <h1>今晚，读谁的一生？</h1>
+            <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
           </div>
-          <div class="home-orbit"><strong>${String(LIVES.length).padStart(2, "0")}</strong><span>段虚构人生</span></div>
+          <div class="v3-date"><strong>${String(new Date().getDate()).padStart(2, "0")}</strong><span>${new Date().getMonth() + 1}月 · ${new Date().getFullYear()}</span></div>
         </section>
 
-        <div class="home-cards">
-          <a class="home-script-card" href="#/script">
-            <span class="card-icon">▤</span>
-            <span class="section-kicker">剧本人生</span>
-            <h2>看自己的剧本</h2>
-            <p>输入出生信息，读一份文化叙事剧本。不是预测。</p>
-            <span class="text-link">进入剧本 <span>→</span></span>
-          </a>
-          <div class="home-stat-card">
-            <span class="section-kicker">本机记录</span>
-            <div class="mini-stats">
-              <div><strong>${store.history.length}</strong><span>读过</span></div>
-              <div><strong>06</strong><span>省份</span></div>
-              <div><strong>L0—L1</strong><span>分级</span></div>
-            </div>
-            <a class="text-link" href="${last ? "#/blind" : "#/blind"}">${last ? `上次读到 ${esc(last.name)} →` : "还没有读过一段人生 →"}</a>
+        <section class="v3-hero-card">
+          <div class="v3-hero-glow"></div>
+          <div class="v3-hero-content">
+            <span class="v3-chip">盲盒人生</span>
+            <h2>抽一个人生</h2>
+            <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
+            <a class="btn btn-primary" href="#/blind">打开盲盒 ${icon("arrow", 16)}</a>
           </div>
+          <div class="v3-orb"><span>${String(LIVES.length).padStart(2, "0")}</span><small>段虚构人生</small></div>
+        </section>
+
+        <div class="v3-action-grid">
+          <a class="v3-action-card v3-purple" href="#/script">
+            <span class="v3-icon-tile">${icon("book", 22)}</span>
+            <div><span class="v3-card-label">剧本人生</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。</p></div>
+            <span class="v3-arrow">${icon("arrow", 16)}</span>
+          </a>
+          <a class="v3-action-card v3-gold" href="#/blind">
+            <span class="v3-icon-tile">${icon("history", 22)}</span>
+            <div><span class="v3-card-label">最近读过</span><h3>${last ? esc(last.name) : "还没有开始"}</h3><p>${last ? `${esc(last.province)} · ${esc(last.years)}` : "从一个盲盒开始，读完一段完整人生。"}</p></div>
+            <span class="v3-arrow">${icon("arrow", 16)}</span>
+          </a>
         </div>
 
-        <div class="home-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
+        <div class="v3-stat-grid">
+          <div class="v3-stat"><span>已读</span><strong>${store.history.length}</strong><small>段人生</small></div>
+          <div class="v3-stat"><span>人物卡</span><strong>${LIVES.length}</strong><small>张</small></div>
+          <div class="v3-stat"><span>内容分级</span><strong>L0—L1</strong><small>日常叙事</small></div>
+        </div>
+
+        <div class="v3-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
       </div>
       ${footer()}`;
   }
