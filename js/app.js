@@ -88,17 +88,26 @@
 
   function header(active) {
     return `<header class="site-header shell-wide">
-      <a class="brand" href="#/home"><span class="brand-mark">◉</span>平行人生</a>
+      <a class="brand" href="#/home">
+        <span class="brand-mark">✦</span>
+        <span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span>
+      </a>
       <nav class="header-links" aria-label="主导航">
         <a href="#/blind" class="${active === "blind" ? "gold" : ""}">盲盒</a>
         <a href="#/script" class="${active === "script" ? "gold" : ""}">剧本</a>
         <a href="#/privacy">隐私</a>
       </nav>
+      <a class="header-icon" href="#/privacy" aria-label="隐私说明">◇</a>
     </header>`;
   }
 
   function footer() {
-    return `<footer class="home-footer shell-wide">
+    const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
+    const tabs = [["home", "首页"], ["blind", "盲盒"], ["script", "剧本"], ["privacy", "说明"]];
+    return `<nav class="bottom-nav" aria-label="底部导航">
+      ${tabs.map(([key, label]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}"><span>${key === "home" ? "✦" : key === "blind" ? "◉" : key === "script" ? "▤" : "◇"}</span>${label}</a>`).join("")}
+    </nav>
+    <footer class="home-footer shell-wide">
       <span>平行人生 · 虚构人物故事</span>
       <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
     </footer>`;
@@ -106,53 +115,45 @@
 
   function homePage() {
     document.title = "平行人生 · 旁观一段人生";
+    const store = blindStore();
+    const last = LIVES.find((item) => item.id === store.lastId);
     return `${header("home")}
-      <div class="landing">
-        <section class="landing-hero">
-          <div class="landing-art"><img src="assets/hero-portal-clean.jpg" alt=""></div>
-          <div class="landing-shade"></div>
-          <div class="shell-wide landing-inner">
-            <div class="landing-copy">
-              <span class="hero-kicker">平行人生 · 虚构人物故事</span>
-              <h1 class="landing-title">从出生，<br><span>读到后来。</span></h1>
-              <p class="landing-lede">抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
-              <div class="landing-cta">
-                <a class="btn btn-primary" href="#/blind">抽一个人生 <span>✦</span></a>
-                <a class="btn btn-ghost" href="#/script">看自己的剧本</a>
-              </div>
+      <div class="shell-wide app-home">
+        <section class="home-main-card">
+          <div class="home-main-art"><img src="assets/hero-portal-clean.jpg" alt=""></div>
+          <div class="home-main-shade"></div>
+          <div class="home-main-copy">
+            <span class="section-kicker">盲盒人生</span>
+            <h1>抽一个人生</h1>
+            <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
+            <div class="home-main-actions">
+              <a class="btn btn-primary" href="#/blind">打开盲盒 <span>✦</span></a>
+              <a class="text-link" href="#/script">看自己的剧本 <span>→</span></a>
             </div>
-            <aside class="landing-meta">
-              <div><strong>${String(LIVES.length).padStart(2, "0")}</strong><span>段虚构人生</span></div>
-              <div><strong>06</strong><span>个省份/区域</span></div>
-              <div><strong>L0—L1</strong><span>内容分级</span></div>
-            </aside>
           </div>
+          <div class="home-orbit"><strong>${String(LIVES.length).padStart(2, "0")}</strong><span>段虚构人生</span></div>
         </section>
 
-        <section class="shell-wide home-entry-grid">
-          <a class="entry-card entry-blind" href="#/blind">
-            <img src="assets/mode-blind.jpg" alt="">
-            <div class="entry-shade"></div>
-            <div class="entry-copy">
-              <span class="entry-kicker">01 / 盲盒人生</span>
-              <h2>抽一个人生</h2>
-              <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
-              <span class="entry-link">打开盲盒 <span>→</span></span>
-            </div>
+        <div class="home-cards">
+          <a class="home-script-card" href="#/script">
+            <span class="card-icon">▤</span>
+            <span class="section-kicker">剧本人生</span>
+            <h2>看自己的剧本</h2>
+            <p>输入出生信息，读一份文化叙事剧本。不是预测。</p>
+            <span class="text-link">进入剧本 <span>→</span></span>
           </a>
-          <a class="entry-card entry-script" href="#/script">
-            <img src="assets/mode-script.jpg" alt="">
-            <div class="entry-shade"></div>
-            <div class="entry-copy">
-              <span class="entry-kicker">02 / 剧本人生</span>
-              <h2>看自己的剧本</h2>
-              <p>输入出生信息，读一份文化叙事剧本。不是预测。</p>
-              <span class="entry-link">进入剧本 <span>→</span></span>
+          <div class="home-stat-card">
+            <span class="section-kicker">本机记录</span>
+            <div class="mini-stats">
+              <div><strong>${store.history.length}</strong><span>读过</span></div>
+              <div><strong>06</strong><span>省份</span></div>
+              <div><strong>L0—L1</strong><span>分级</span></div>
             </div>
-          </a>
-        </section>
+            <a class="text-link" href="${last ? "#/blind" : "#/blind"}">${last ? `上次读到 ${esc(last.name)} →` : "还没有读过一段人生 →"}</a>
+          </div>
+        </div>
 
-        <div class="home-note shell-wide">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
+        <div class="home-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
       </div>
       ${footer()}`;
   }
