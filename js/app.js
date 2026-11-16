@@ -99,23 +99,37 @@
   }
 
   function header(active) {
-    const topLabel = active === "blind" ? "盲盒人生" : active === "script" ? "剧本人生" : "平行人生";
-    return `<header class="site-header shell-wide">
-      <a class="brand" href="#/home">
+    const items = [
+      ["home", "首页", "spark"],
+      ["blind", "盲盒人生", "dice"],
+      ["script", "剧本人生", "book"],
+      ["privacy", "隐私说明", "shield"]
+    ];
+    const rail = `<aside class="side-rail">
+      <a class="rail-brand" href="#/home">
         <span class="brand-mark">✦</span>
-        <span class="brand-text"><strong>${topLabel}</strong><small>旁观者视角</small></span>
+        <span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span>
       </a>
-      <nav class="header-links" aria-label="主导航">
-        <a href="#/blind" class="${active === "blind" ? "gold" : ""}">盲盒</a>
-        <a href="#/script" class="${active === "script" ? "gold" : ""}">剧本</a>
-        <a href="#/privacy">隐私</a>
+      <nav class="rail-nav" aria-label="主导航">
+        ${items.map(([key, label, ico]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
       </nav>
+      <div class="rail-foot">
+        <span class="rail-label">内容库</span>
+        <strong>${LIVES.length} 段人生</strong>
+        <span>虚构人物故事</span>
+      </div>
+    </aside>`;
+    const mobile = `<header class="mobile-bar">
+      <a class="brand" href="#/home"><span class="brand-mark">✦</span><span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span></a>
       <div class="top-actions">
-        <span class="top-chip"><span class="dot"></span>${LIVES.length} 段人生</span>
+        <span class="top-chip"><span class="dot"></span>${LIVES.length} 段</span>
         <a class="header-icon" href="#/privacy" aria-label="隐私说明">${icon("shield", 16)}</a>
       </div>
     </header>`;
-  }  function footer() {
+    return rail + mobile;
+  }
+
+  function footer() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
     const tabs = [["home", "首页", "spark"], ["blind", "盲盒", "dice"], ["script", "剧本", "book"], ["privacy", "我的", "shield"]];
     return `<nav class="bottom-nav" aria-label="底部导航">
@@ -128,51 +142,57 @@
   }  function homePage() {
     document.title = "平行人生 · 旁观一段人生";
     const store = blindStore();
-    const last = LIVES.find((item) => item.id === store.lastId);
+    const recent = store.history.slice(0, 3).map((item) => {
+      const life = LIVES.find((entry) => entry.id === item.id);
+      return life ? Object.assign({}, life, { emotion: item.emotion }) : null;
+    }).filter(Boolean);
     const hour = new Date().getHours();
     const greet = hour < 6 ? "夜深了" : hour < 12 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
     return `${header("home")}
-      <div class="shell-wide app-home v3-home">
-        <section class="v3-greeting">
-          <div>
-            <span class="section-kicker">${greet}，旁观者</span>
-            <h1>今晚，读谁的一生？</h1>
-            <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+      <div class="shell-wide p-home">
+        <section class="p-hero">
+          <div class="p-hero-copy">
+            <span class="p-kicker">${greet}，旁观者</span>
+            <h1>从出生，<br>读到后来。</h1>
+            <p class="p-lede">抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+            <div class="p-actions">
+              <a class="btn btn-primary" href="#/blind">抽一个人生</a>
+              <a class="btn btn-ghost" href="#/script">看自己的剧本</a>
+            </div>
+            <div class="p-meta"><span>18 段虚构人生</span><span>06 个省份/区域</span><span>本地记录</span></div>
           </div>
-          <div class="v3-date"><strong>${String(new Date().getDate()).padStart(2, "0")}</strong><span>${new Date().getMonth() + 1}月 · ${new Date().getFullYear()}</span></div>
+          <div class="p-terminal" aria-label="内容库概览">
+            <div class="p-term-top"><span class="p-dots"><i></i><i></i><i></i></span><span>parallel-life / index</span></div>
+            <div class="p-term-body">
+              <p><span class="p-prompt">$</span> open --blind</p>
+              <p class="p-term-muted">18 lives loaded · 06 regions</p>
+              ${LIVES.slice(0, 3).map((life, index) => `<p class="p-term-row"><span>0${index + 1}</span>${esc(life.name)}<em>${esc(life.province)} / ${esc(life.years)}</em></p>`).join("")}
+              <p class="p-term-row p-term-more"><span>…</span>15 more lives</p>
+              <p><span class="p-prompt">›</span> 读完一个人的一生<span class="p-cursor"></span></p>
+            </div>
+          </div>
         </section>
 
-        <section class="v3-hero-card">
-          <div class="v3-hero-glow"></div>
-          <div class="v3-hero-content">
-            <span class="v3-chip">盲盒人生</span>
-            <h2>抽一个人生</h2>
-            <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
-            <a class="btn btn-primary" href="#/blind">打开盲盒 ${icon("arrow", 16)}</a>
-          </div>
-          <div class="v3-orb"><span>${String(LIVES.length).padStart(2, "0")}</span><small>段虚构人生</small></div>
+        <section class="p-index">
+          <div class="p-section-head"><span class="p-label">入口 / 两条路径</span><span class="p-section-note">choose a way in</span></div>
+          <a class="p-entry" href="#/blind">
+            <span class="p-entry-num">01</span>
+            <div class="p-entry-main"><h2>盲盒人生</h2><p>从出生读到后来。没有分支，也不需要你选择结局。</p></div>
+            <span class="p-entry-arrow">↗</span>
+          </a>
+          <a class="p-entry" href="#/script">
+            <span class="p-entry-num">02</span>
+            <div class="p-entry-main"><h2>剧本人生</h2><p>输入出生信息，读一份文化叙事剧本。不是预测。</p></div>
+            <span class="p-entry-arrow">↗</span>
+          </a>
         </section>
 
-        <div class="v3-action-grid">
-          <a class="v3-action-card v3-purple" href="#/script">
-            <span class="v3-icon-tile">${icon("book", 22)}</span>
-            <div><span class="v3-card-label">剧本人生</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。</p></div>
-            <span class="v3-arrow">${icon("arrow", 16)}</span>
-          </a>
-          <a class="v3-action-card v3-gold" href="#/blind">
-            <span class="v3-icon-tile">${icon("history", 22)}</span>
-            <div><span class="v3-card-label">最近读过</span><h3>${last ? esc(last.name) : "还没有开始"}</h3><p>${last ? `${esc(last.province)} · ${esc(last.years)}` : "从一个盲盒开始，读完一段完整人生。"}</p></div>
-            <span class="v3-arrow">${icon("arrow", 16)}</span>
-          </a>
-        </div>
+        <section class="p-recent">
+          <div class="p-section-head"><h2>最近读过</h2><a href="#/blind">全部记录 →</a></div>
+          ${recent.length ? recent.map((life) => `<a class="p-recent-row" href="#/blind" data-side-life="${esc(life.id)}"><span class="p-recent-name">${esc(life.name)}</span><span class="p-recent-meta">${esc(life.province)} · ${esc(life.years)}</span><span class="p-recent-emotion">${esc(historyEmotion(life.emotion))}</span></a>`).join("") : `<div class="p-empty">还没有读过一段人生。<a href="#/blind">从第一个盲盒开始 →</a></div>`}
+        </section>
 
-        <div class="v3-stat-grid">
-          <div class="v3-stat"><span>已读</span><strong>${store.history.length}</strong><small>段人生</small></div>
-          <div class="v3-stat"><span>人物卡</span><strong>${LIVES.length}</strong><small>张</small></div>
-          <div class="v3-stat"><span>内容分级</span><strong>L0—L1</strong><small>日常叙事</small></div>
-        </div>
-
-        <div class="v3-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
+        <div class="p-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
       </div>
       ${footer()}`;
   }
