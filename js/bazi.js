@@ -152,7 +152,83 @@
     return { gan: GAN[value % 10], zhi: ZHI[value % 12], ganIndex: value % 10, zhiIndex: value % 12, index: value };
   }
 
-  function computeBazi(dateValue, timeValue) {
+  function shiftClock(year, month, day, hour, minute, offsetMinutes) {
+    var date = new Date(Date.UTC(year, month - 1, day, hour, minute));
+    date.setUTCMinutes(date.getUTCMinutes() + offsetMinutes);
+    return {
+      year: date.getUTCFullYear(),
+      month: date.getUTCMonth() + 1,
+      day: date.getUTCDate(),
+      hour: date.getUTCHours(),
+      minute: date.getUTCMinutes()
+    };
+  }
+
+  function pad2(value) {
+    return String(value).padStart(2, "0");
+  }
+
+  function equationOfTimeMinutes(year, month, day) {
+    var start = Date.UTC(year, 0, 1);
+    var date = Date.UTC(year, month - 1, day);
+    var dayOfYear = Math.floor((date - start) / 86400000) + 1;
+    var b = (2 * Math.PI * (dayOfYear - 81)) / 364;
+    return Number((9.87 * Math.sin(2 * b) - 7.53 * Math.cos(b) - 1.5 * Math.sin(b)).toFixed(1));
+  }
+
+  function dayunFor(birthMs, yearGanIndex, monthGanIndex, monthZhiIndex, gender) {
+    if (gender !== "male" && gender !== "female") return null;
+    var forward = (yearGanIndex % 2 === 0 && gender === "male") || (yearGanIndex % 2 === 1 && gender === "female");
+    var events = jieEvents(new Date(birthMs).getUTCFullYear());
+    var target = null;
+    for (var i = 0; i < events.length; i += 1) {
+      if (forward && events[i].ms > birthMs) {
+        target = events[i];
+        break;
+      }
+      if (!forward && events[i].ms <= birthMs) {
+        target = events[i];
+      }
+    }
+    if (!target) return null;
+    var days = Math.abs(target.ms - birthMs) / 86400000;
+    var rawAge = days / 3;
+    var startYear = Math.floor(rawAge);
+    var startMonth = Math.round((rawAge - startYear) * 12);
+    if (startMonth >= 12) {
+      startYear += 1;
+      startMonth = 0;
+    }
+    var startAge = Number((startYear + startMonth / 12).toFixed(2));
+    var direction = forward ? 1 : -1;
+    var cycles = [];
+    for (var step = 1; step <= 8; step += 1) {
+      var ganIndex = mod(monthGanIndex + direction * step, 10);
+      var zhiIndex = mod(monthZhiIndex + direction * step, 12);
+      var cycleStart = Number((startAge + (step - 1) * 10).toFixed(1));
+      var cycleEnd = Number((startAge + step * 10).toFixed(1));
+      cycles.push({
+        index: step,
+        ganZhi: GAN[ganIndex] + ZHI[zhiIndex],
+        startAge: cycleStart,
+        endAge: cycleEnd,
+        label: cycleStart + "—" + cycleEnd + "岁"
+      });
+    }
+    return {
+      direction: forward ? "顺行" : "逆行",
+      startAge: startAge,
+      startYear: startYear,
+      startMonth: startMonth,
+      startText: "约" + startYear + "岁" + (startMonth ? startMonth + "个月" : "") + "起运",
+      targetJie: target.name,
+      daysToJie: Number(days.toFixed(2)),
+      cycles: cycles
+    };
+  }
+
+  function computeBazi(dateValue, timeValue, options) {
+    var opts = options || {};
     var parts = String(dateValue || "").split("-").map(Number);
     var year = parts[0];
     var month = parts[1];
@@ -161,6 +237,19 @@
     var hour = Number.isFinite(timeParts[0]) ? timeParts[0] : 12;
     var minute = Number.isFinite(timeParts[1]) ? timeParts[1] : 0;
     if (!year || !month || !day || hour < 0 || hour > 23) return null;
+
+    var rawLongitude = opts.longitude;
+    var hasLongitude = rawLongitude !== null && rawLongitude !== undefined && rawLongitude !== "" && Number.isFinite(Number(rawLongitude));
+    var longitude = hasLongitude ? Number(rawLongitude) : null;
+    var longitudeMinutes = hasLongitude ? Number(((longitude - 120) * 4).toFixed(1)) : 0;
+    var eotMinutes = hasLongitude ? equationOfTimeMinutes(year, month, day) : 0;
+    var correction = hasLongitude ? Number((longitudeMinutes + eotMinutes).toFixed(1)) : 0;
+    var adjusted = correction ? shiftClock(year, month, day, hour, minute, correction) : { year: year, month: month, day: day, hour: hour, minute: minute };
+    year = adjusted.year;
+    month = adjusted.month;
+    day = adjusted.day;
+    hour = adjusted.hour;
+    minute = adjusted.minute;
 
     var birthMs = beijingToUtcMs(year, month, day, hour, minute);
     var lichunMs = solarTermMs(year, 315);
@@ -213,6 +302,7 @@
       if (counts[element] < counts[weakest]) weakest = element;
     });
     var dayMaster = GAN_ELEMENTS[dayGanIndex];
+    var dayun = dayunFor(birthMs, yearGanIndex, monthGanIndex, monthZhiIndex, opts.gender);
 
     return {
       pillars: pillars.map(function (pillar) { return { label: pillar.label, value: pillar.value }; }),
@@ -224,8 +314,13 @@
       hourBranchLabel: ZHI[hourZhiIndex] + "时",
       monthJie: currentJie.name,
       monthJieYear: currentJie.year,
-      calculation: "beijing-solar-term",
-      methodLabel: "北京时间 · 节气排盘"
+      calculation: correction ? "beijing-solar-term-true-solar" : "beijing-solar-term",
+      methodLabel: correction ? "北京时间 · 节气排盘 · 真太阳时" : "北京时间 · 节气排盘",
+      solarCorrection: correction
+        ? { longitude: longitude, longitudeMinutes: longitudeMinutes, eotMinutes: eotMinutes, minutes: correction }
+        : null,
+      trueSolarTime: pad2(hour) + ":" + pad2(minute),
+      dayun: dayun
     };
   }
 
