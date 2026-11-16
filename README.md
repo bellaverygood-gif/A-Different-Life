@@ -11,6 +11,8 @@
 
 ## Web 版
 
+线上地址：[https://parallel-life-c25.pages.dev/](https://parallel-life-c25.pages.dev/)
+
 ```bash
 cd /Users/bellahuang/Desktop/deepseek
 python3 -m http.server 4174
