@@ -87,7 +87,7 @@
   }
 
   function header(active) {
-    return `<header class="site-header shell">
+    return `<header class="site-header shell-wide">
       <a class="brand" href="#/home"><span class="brand-mark">◉</span>平行人生</a>
       <nav class="header-links" aria-label="主导航">
         <a href="#/blind" class="${active === "blind" ? "gold" : ""}">盲盒</a>
@@ -98,7 +98,7 @@
   }
 
   function footer() {
-    return `<footer class="home-footer shell">
+    return `<footer class="home-footer shell-wide">
       <span>平行人生 · 虚构人物故事</span>
       <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
     </footer>`;
@@ -107,29 +107,52 @@
   function homePage() {
     document.title = "平行人生 · 旁观一段人生";
     return `${header("home")}
-      <div class="shell">
-        <section class="hero">
-          <img class="hero-img" src="assets/hero-portal-clean.jpg" alt="">
-          <div class="hero-shade"></div>
-          <div class="hero-copy">
-            <span class="hero-kicker">平行人生 · 虚构人物故事</span>
-            <h1 class="hero-title">从出生，读到后来。</h1>
-            <span class="hero-caption">抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</span>
+      <div class="landing">
+        <section class="landing-hero">
+          <div class="landing-art"><img src="assets/hero-portal-clean.jpg" alt=""></div>
+          <div class="landing-shade"></div>
+          <div class="shell-wide landing-inner">
+            <div class="landing-copy">
+              <span class="hero-kicker">平行人生 · 虚构人物故事</span>
+              <h1 class="landing-title">从出生，<br><span>读到后来。</span></h1>
+              <p class="landing-lede">抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+              <div class="landing-cta">
+                <a class="btn btn-primary" href="#/blind">抽一个人生 <span>✦</span></a>
+                <a class="btn btn-ghost" href="#/script">看自己的剧本</a>
+              </div>
+            </div>
+            <aside class="landing-meta">
+              <div><strong>${String(LIVES.length).padStart(2, "0")}</strong><span>段虚构人生</span></div>
+              <div><strong>06</strong><span>个省份/区域</span></div>
+              <div><strong>L0—L1</strong><span>内容分级</span></div>
+            </aside>
           </div>
         </section>
-        <div class="home-body">
-          <a class="primary-card" href="#/blind">
-            <div class="card-top"><span class="card-kicker">盲盒人生</span><span class="card-count">${LIVES.length} 段人生</span></div>
-            <span class="primary-title">抽一个人生</span>
-            <span class="primary-copy">从出生读到后来。没有分支，也不需要你选择结局。</span>
-            <div class="card-cta"><span>打开盲盒</span><span>→</span></div>
+
+        <section class="shell-wide home-entry-grid">
+          <a class="entry-card entry-blind" href="#/blind">
+            <img src="assets/mode-blind.jpg" alt="">
+            <div class="entry-shade"></div>
+            <div class="entry-copy">
+              <span class="entry-kicker">01 / 盲盒人生</span>
+              <h2>抽一个人生</h2>
+              <p>从出生读到后来。没有分支，也不需要你选择结局。</p>
+              <span class="entry-link">打开盲盒 <span>→</span></span>
+            </div>
           </a>
-          <a class="script-card" href="#/script">
-            <div><span class="card-kicker">剧本人生</span><span class="script-title">看自己的剧本</span><span class="script-copy">输入出生信息，读一份文化叙事剧本。不是预测。</span></div>
-            <span class="card-arrow">→</span>
+          <a class="entry-card entry-script" href="#/script">
+            <img src="assets/mode-script.jpg" alt="">
+            <div class="entry-shade"></div>
+            <div class="entry-copy">
+              <span class="entry-kicker">02 / 剧本人生</span>
+              <h2>看自己的剧本</h2>
+              <p>输入出生信息，读一份文化叙事剧本。不是预测。</p>
+              <span class="entry-link">进入剧本 <span>→</span></span>
+            </div>
           </a>
-          <div class="home-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
-        </div>
+        </section>
+
+        <div class="home-note shell-wide">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
       </div>
       ${footer()}`;
   }
@@ -156,7 +179,7 @@
     const store = blindStore();
     const last = LIVES.find((item) => item.id === store.lastId);
     return `${header("blind")}
-      <div class="shell">
+      <div class="shell-wide">
         <section class="blind-setup">
           <div class="blind-mark">◉</div>
           <span class="eyebrow">盲盒人生 · 18 段虚构人生 · L0—L1</span>
@@ -187,8 +210,9 @@
     document.title = `${life.name}的一生 · 平行人生`;
     const paragraphs = String(life.narrative || "").split(/\n\s*\n/).filter(Boolean);
     app.innerHTML = `${header("blind")}
-      <article class="shell">
+      <article class="shell-wide">
         <header class="life-hero">
+          <div class="life-hero-art" aria-hidden="true"><img src="assets/mode-blind.jpg" alt=""></div>
           <span class="eyebrow">盲盒人生 · 已拆封</span>
           <div class="life-meta"><span>${esc(life.province)}</span><span>${esc(life.years)}</span><span>${esc(life.gender)}</span></div>
           <h1 class="life-name">${esc(life.name)}</h1>
@@ -370,7 +394,7 @@
     const canLeap = leapMonth === Number(form.lunarMonth);
     const history = scriptHistory();
     return `${header("script")}
-      <div class="shell">
+      <div class="shell-wide">
         <section class="page-head">
           <div><span class="eyebrow">剧本人生 · 文化叙事</span><h1>看一份自己的剧本</h1><p class="page-lede">输入出生信息，读一份文化叙事剧本。不是命理判断，也不是对未来的预测。</p></div>
           <a class="back-link" href="#/home">回到首页 →</a>
@@ -513,7 +537,7 @@
   function scriptResultView(item) {
     const { chart, script, choicePreview } = item;
     return `${header("script")}
-      <div class="shell">
+      <div class="shell-wide">
         <div class="page-head"><div><span class="eyebrow">你的剧本 · 文化叙事</span><h1 class="script-headline">${esc(script.title)}</h1><p class="script-prologue">${esc(script.prologue)}</p><span class="script-chart-line">${esc(script.chartLine)}</span></div><button class="back-link" data-edit-script>重新输入 →</button></div>
         <div class="section">
           <span class="eyebrow">命盘摘要</span><h2 class="section-title">四柱与五行</h2>

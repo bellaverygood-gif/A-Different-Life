@@ -5,3 +5,5 @@ node_modules/
 preview/
 dist/
 parallel-life-web.zip
+
+.wrangler/
