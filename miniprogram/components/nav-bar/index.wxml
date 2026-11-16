@@ -1,0 +1,14 @@
+<view class="nav" style="padding-top: {{statusBarHeight}}px;">
+  <view class="nav-inner">
+    <view class="nav-left">
+      <view wx:if="{{back}}" class="nav-back" bindtap="goBack" hover-class="tap-dim">‹</view>
+      <view class="nav-brand" bindtap="goHome" hover-class="tap-dim">
+        <view class="brand-mark">✦</view>
+        <view class="brand-copy">
+          <text class="brand-cn">平行人生</text>
+        </view>
+      </view>
+    </view>
+    <text wx:if="{{title}}" class="nav-page">{{title}}</text>
+  </view>
+</view>

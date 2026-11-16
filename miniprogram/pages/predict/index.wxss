@@ -1,0 +1,960 @@
+.predict-page {
+  padding-bottom: calc(52rpx + env(safe-area-inset-bottom));
+}
+
+.predict-hero {
+  position: relative;
+  min-height: 650rpx;
+  overflow: hidden;
+}
+
+.predict-hero-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.48;
+}
+
+.predict-hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 17, 0.96), rgba(5, 8, 17, 0.38) 72%, rgba(5, 8, 17, 0.22)),
+    linear-gradient(180deg, rgba(5, 8, 17, 0.08), rgba(5, 8, 17, 0.4) 60%, #050811 100%);
+}
+
+.predict-hero-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding-top: 46rpx;
+  padding-bottom: 58rpx;
+}
+
+.predict-hero-title {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  color: #f0e8db;
+  font-size: 52rpx;
+  line-height: 1.35;
+  letter-spacing: -1rpx;
+}
+
+.predict-hero-title .gold {
+  color: #dfc38e;
+}
+
+.predict-hero-lede {
+  display: block;
+  max-width: 600rpx;
+  margin-top: 22rpx;
+  color: #a4a4a1;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 24rpx;
+  line-height: 1.9;
+}
+
+.pillar-preview {
+  display: flex;
+  gap: 10rpx;
+  margin-top: 24rpx;
+}
+
+.pillar-preview-item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 86rpx;
+  border: 1rpx solid rgba(157, 185, 236, 0.18);
+  border-radius: 10rpx;
+  background: rgba(63, 91, 142, 0.08);
+}
+
+.pillar-preview-label {
+  color: #71839f;
+  font-size: 14rpx;
+}
+
+.pillar-preview-value {
+  margin-top: 5rpx;
+  color: #c7d4e9;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 34rpx;
+}
+
+.setup-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9rpx;
+  margin-top: 20rpx;
+}
+
+.setup-tags text {
+  padding: 6rpx 11rpx;
+  border: 1rpx solid rgba(211, 200, 180, 0.16);
+  border-radius: 999rpx;
+  color: #a59b8b;
+  font-size: 16rpx;
+}
+
+.form-shell {
+  position: relative;
+  z-index: 4;
+  margin-top: -22rpx;
+}
+
+.form-card {
+  padding: 32rpx 28rpx 30rpx;
+  border: 1rpx solid rgba(204, 210, 221, 0.14);
+  border-radius: 28rpx;
+  background:
+    radial-gradient(circle at 92% 3%, rgba(86, 107, 151, 0.1), transparent 40%),
+    linear-gradient(155deg, rgba(15, 21, 34, 0.93), rgba(7, 11, 20, 0.97));
+}
+
+.form-title {
+  display: block;
+  margin-top: 12rpx;
+  color: #e6ddcf;
+  font-size: 40rpx;
+  line-height: 1.42;
+}
+
+.form-lede {
+  display: block;
+  margin-top: 14rpx;
+  color: #999e9f;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 23rpx;
+  line-height: 1.8;
+}
+
+.form-subhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14rpx;
+  margin-top: 30rpx;
+  padding-bottom: 11rpx;
+  border-bottom: 1rpx solid rgba(195, 202, 219, 0.09);
+}
+
+.form-subhead text:first-child {
+  color: #bdb5a8;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 25rpx;
+}
+
+.form-subhead text:last-child {
+  color: #646d7b;
+  font-size: 16rpx;
+}
+
+.placeholder {
+  color: #5c6574;
+}
+
+.required,
+.optional {
+  margin-left: 7rpx;
+  color: #6a7280;
+  font-size: 17rpx;
+}
+
+.required {
+  color: #9a7956;
+}
+
+.gender-row {
+  display: flex;
+  gap: 7rpx;
+}
+
+.gender-pill {
+  flex: 1;
+  min-height: 66rpx;
+  padding: 0 8rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.14);
+  border-radius: 12rpx;
+  background: rgba(255, 255, 255, 0.018);
+  color: #9099a6;
+  font-size: 18rpx;
+  line-height: 66rpx;
+  text-align: center;
+}
+
+.gender-pill.is-active {
+  border-color: rgba(217, 186, 132, 0.5);
+  background: rgba(217, 186, 132, 0.08);
+  color: #e0caa4;
+}
+
+.generate-row {
+  margin-top: 32rpx;
+}
+
+.generate-btn {
+  width: 100%;
+}
+
+.generate-note {
+  display: block;
+  margin-top: 13rpx;
+  color: #626b79;
+  font-size: 17rpx;
+  text-align: center;
+}
+
+/* Report */
+
+.report-hero {
+  position: relative;
+  min-height: 650rpx;
+  overflow: hidden;
+}
+
+.report-hero-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+}
+
+.report-hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 8, 17, 0.98), rgba(5, 8, 17, 0.7) 62%, rgba(5, 8, 17, 0.26)),
+    linear-gradient(180deg, transparent, #050811 97%);
+}
+
+.report-hero-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding-top: 55rpx;
+  padding-bottom: 35rpx;
+}
+
+.report-title {
+  display: block;
+  margin-top: 17rpx;
+  color: #f0e8da;
+  font-size: 66rpx;
+  line-height: 1.22;
+  letter-spacing: -2rpx;
+}
+
+.birth-line {
+  display: block;
+  margin-top: 13rpx;
+  color: #a19c90;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 20rpx;
+  line-height: 1.7;
+}
+
+.pillar-row {
+  display: flex;
+  gap: 8rpx;
+  margin-top: 18rpx;
+}
+
+.pillar-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 103rpx;
+  border: 1rpx solid rgba(157, 185, 236, 0.17);
+  border-radius: 12rpx;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(92, 128, 188, 0.11), transparent 55%),
+    rgba(8, 13, 24, 0.55);
+}
+
+.pillar-label {
+  color: #6e809a;
+  font-size: 14rpx;
+  letter-spacing: 1rpx;
+}
+
+.pillar-value {
+  margin-top: 8rpx;
+  color: #d5dfef;
+  font-size: 32rpx;
+  letter-spacing: 3rpx;
+}
+
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 15rpx;
+  color: #777f8c;
+  font-size: 17rpx;
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11rpx;
+  margin-top: 22rpx;
+}
+
+.report-content {
+  position: relative;
+  z-index: 2;
+  margin-top: -16rpx;
+}
+
+.bazi-card {
+  padding: 27rpx 24rpx;
+  border: 1rpx solid rgba(157, 185, 236, 0.17);
+  border-radius: 22rpx;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(84, 122, 183, 0.13), transparent 44%),
+    linear-gradient(145deg, rgba(15, 23, 39, 0.85), rgba(8, 12, 22, 0.86));
+}
+
+.bazi-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15rpx;
+}
+
+.bazi-card-title {
+  display: block;
+  margin-top: 9rpx;
+  color: #e1d8ca;
+  font-size: 39rpx;
+  line-height: 1.35;
+}
+
+.element-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5rpx;
+  max-width: 300rpx;
+}
+
+.element-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 5rpx;
+  padding: 5rpx 8rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.12);
+  border-radius: 999rpx;
+  color: #6e7889;
+  font-size: 14rpx;
+}
+
+.element-chip text:last-child {
+  color: #8f9eb4;
+  font-family: Georgia, serif;
+  font-size: 17rpx;
+}
+
+.element-chip.is-dominant {
+  border-color: rgba(217, 186, 132, 0.36);
+  color: #b8a88b;
+}
+
+.element-chip.is-weak {
+  border-color: rgba(157, 185, 236, 0.18);
+  color: #7b8da6;
+}
+
+.bazi-summary {
+  display: block;
+  margin-top: 20rpx;
+  color: #c3c0b8;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 25rpx;
+  line-height: 1.95;
+}
+
+.bazi-gender-note {
+  display: block;
+  margin-top: 11rpx;
+  color: #78859a;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 19rpx;
+  line-height: 1.8;
+}
+
+.bazi-daymaster {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 11rpx;
+  margin-top: 19rpx;
+  padding-top: 14rpx;
+  border-top: 1rpx solid rgba(195, 202, 219, 0.09);
+}
+
+.bazi-daymaster-label {
+  color: #6c7485;
+  font-size: 16rpx;
+}
+
+.bazi-daymaster-value {
+  color: #d7c4a6;
+  font-size: 31rpx;
+}
+
+.bazi-daymaster-meta {
+  color: #6b7384;
+  font-size: 16rpx;
+}
+
+.five-section {
+  margin-top: 44rpx;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 15rpx;
+}
+
+.section-heading.no-border {
+  display: block;
+}
+
+.section-title {
+  display: block;
+  margin-top: 8rpx;
+  color: #e0d7c8;
+  font-size: 40rpx;
+  line-height: 1.35;
+}
+
+.section-side-note {
+  display: block;
+  margin-top: 8rpx;
+  color: #7f8794;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 19rpx;
+  line-height: 1.7;
+}
+
+.five-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9rpx;
+  margin-top: 20rpx;
+}
+
+.five-card {
+  display: flex;
+  gap: 15rpx;
+  padding: 20rpx 19rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 18rpx;
+  background:
+    radial-gradient(circle at 97% 4%, rgba(103, 138, 183, 0.07), transparent 48%),
+    rgba(9, 14, 25, 0.5);
+}
+
+.five-mark {
+  flex: 0 0 46rpx;
+  color: rgba(217, 186, 132, 0.78);
+  font-size: 39rpx;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.five-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.five-label {
+  display: block;
+  color: #798395;
+  font-size: 15rpx;
+  letter-spacing: 1rpx;
+}
+
+.five-text {
+  display: block;
+  margin-top: 7rpx;
+  color: #a9afb9;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 22rpx;
+  line-height: 1.9;
+}
+
+.question-check {
+  margin-top: 34rpx;
+  padding: 24rpx 20rpx;
+  border: 1rpx solid rgba(157, 185, 236, 0.2);
+  border-radius: 22rpx;
+  background:
+    radial-gradient(circle at 94% 3%, rgba(91, 126, 184, 0.13), transparent 40%),
+    linear-gradient(150deg, rgba(14, 21, 36, 0.82), rgba(8, 12, 21, 0.88));
+}
+
+.check-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15rpx;
+}
+
+.check-chip {
+  flex: 0 0 auto;
+  padding: 6rpx 9rpx;
+  border: 1rpx solid rgba(198, 205, 223, 0.15);
+  border-radius: 5rpx;
+  color: #737d8d;
+  font-size: 14rpx;
+}
+
+.check-question {
+  margin-top: 20rpx;
+  padding-left: 16rpx;
+  border-left: 1rpx solid rgba(217, 186, 132, 0.48);
+  color: #d5cec1;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 29rpx;
+  line-height: 1.7;
+}
+
+.check-panel {
+  margin-top: 14rpx;
+  padding: 17rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 15rpx;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.check-panel.is-script {
+  background:
+    linear-gradient(145deg, rgba(217, 186, 132, 0.055), transparent 55%),
+    rgba(255, 255, 255, 0.018);
+}
+
+.check-panel-label {
+  display: block;
+  color: #7c8798;
+  font-size: 15rpx;
+  letter-spacing: 1rpx;
+}
+
+.check-panel-text {
+  display: block;
+  margin-top: 10rpx;
+  color: #aeb2b9;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 22rpx;
+  line-height: 1.9;
+}
+
+.check-panel-reframe {
+  display: block;
+  margin-top: 13rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid rgba(195, 202, 219, 0.09);
+  color: #c9b99f;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 22rpx;
+  line-height: 1.9;
+}
+
+.check-facts {
+  margin-top: 15rpx;
+}
+
+.check-facts-label {
+  display: block;
+  margin-bottom: 8rpx;
+  color: #6c7686;
+  font-size: 14rpx;
+}
+
+.check-note {
+  display: block;
+  margin-top: 16rpx;
+  color: #697383;
+  font-size: 17rpx;
+  line-height: 1.7;
+}
+
+.predict-invite {
+  margin-top: 31rpx;
+  padding: 27rpx 23rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.3);
+  border-radius: 22rpx;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(217, 186, 132, 0.15), transparent 42%),
+    linear-gradient(150deg, rgba(28, 25, 22, 0.8), rgba(9, 12, 20, 0.9));
+}
+
+.invite-title {
+  display: block;
+  margin-top: 12rpx;
+  color: #e4d8c5;
+  font-size: 38rpx;
+  line-height: 1.45;
+}
+
+.invite-copy {
+  display: block;
+  margin-top: 11rpx;
+  color: #a39d94;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 23rpx;
+  line-height: 1.85;
+}
+
+.invite-btn {
+  margin-top: 20rpx;
+}
+
+.invite-note {
+  display: block;
+  margin-top: 11rpx;
+  color: #6d7380;
+  font-size: 16rpx;
+}
+
+.change-banner {
+  display: flex;
+  gap: 13rpx;
+  margin-top: 27rpx;
+  padding: 17rpx 18rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.2);
+  border-radius: 16rpx;
+  background: rgba(217, 186, 132, 0.045);
+}
+
+.change-mark {
+  color: #bca374;
+  font-size: 26rpx;
+}
+
+.change-title {
+  display: block;
+  color: #d7c7ae;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 24rpx;
+}
+
+.change-copy {
+  display: block;
+  margin-top: 5rpx;
+  color: #858b97;
+  font-size: 19rpx;
+  line-height: 1.7;
+}
+
+.node-card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15rpx;
+  margin-top: 29rpx;
+  padding: 21rpx 20rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.22);
+  border-radius: 20rpx;
+  background: rgba(217, 186, 132, 0.035);
+}
+
+.node-title {
+  display: block;
+  margin-top: 8rpx;
+  color: #ded4c4;
+  font-size: 30rpx;
+}
+
+.node-value {
+  display: block;
+  margin-top: 9rpx;
+  color: #ddc9a8;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 28rpx;
+  line-height: 1.65;
+}
+
+.node-meta {
+  display: block;
+  margin-top: 7rpx;
+  color: #737b89;
+  font-size: 17rpx;
+}
+
+.compare-section {
+  margin-top: 36rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid rgba(195, 202, 219, 0.1);
+}
+
+.compare-title {
+  display: block;
+  margin-top: 9rpx;
+  color: #e0d7c8;
+  font-size: 42rpx;
+  line-height: 1.38;
+}
+
+.compare-lede {
+  display: block;
+  margin-top: 8rpx;
+  color: #7f8794;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 20rpx;
+  line-height: 1.7;
+}
+
+.compare-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-top: 20rpx;
+}
+
+.compare-side {
+  padding: 20rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.compare-side.is-change {
+  border-color: rgba(217, 186, 132, 0.19);
+  background: rgba(217, 186, 132, 0.035);
+}
+
+.compare-side-label {
+  display: block;
+  color: #786e5e;
+  font-size: 16rpx;
+  letter-spacing: 1rpx;
+}
+
+.compare-side-title {
+  display: block;
+  margin-top: 8rpx;
+  color: #d4c9b8;
+  font-size: 28rpx;
+  line-height: 1.4;
+}
+
+.compare-side-text {
+  display: block;
+  margin-top: 9rpx;
+  color: #9399a1;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 21rpx;
+  line-height: 1.85;
+}
+
+.phase-list {
+  margin-top: 17rpx;
+}
+
+.phase-row {
+  padding: 17rpx 0;
+  border-bottom: 1rpx solid rgba(195, 202, 219, 0.08);
+}
+
+.phase-label {
+  display: block;
+  margin-bottom: 9rpx;
+  color: #857862;
+  font-size: 17rpx;
+}
+
+.phase-cell {
+  display: flex;
+  gap: 8rpx;
+  color: #8e96a2;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 20rpx;
+  line-height: 1.8;
+}
+
+.phase-cell + .phase-cell {
+  margin-top: 8rpx;
+}
+
+.phase-cell.is-change {
+  color: #b9ad9a;
+}
+
+.phase-tag {
+  flex: 0 0 auto;
+  color: #98825f;
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+}
+
+.shift-section {
+  margin-top: 38rpx;
+}
+
+.shift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9rpx;
+  margin-top: 17rpx;
+}
+
+.shift-card {
+  padding: 18rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.1);
+  border-radius: 17rpx;
+  background: rgba(8, 12, 21, 0.5);
+}
+
+.shift-head {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  color: #75634c;
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+}
+
+.shift-name {
+  color: #cec3b2;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 24rpx;
+}
+
+.shift-pair {
+  margin-top: 10rpx;
+}
+
+.shift-cell {
+  display: flex;
+  gap: 8rpx;
+  color: #8d95a1;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 20rpx;
+  line-height: 1.8;
+}
+
+.shift-cell + .shift-cell {
+  margin-top: 7rpx;
+}
+
+.shift-cell.is-change {
+  color: #b5a995;
+}
+
+.shift-tag {
+  color: #98825f;
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+}
+
+.odds-section {
+  margin-top: 39rpx;
+}
+
+.odds-column {
+  padding: 20rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.1);
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.odds-column.is-cost {
+  margin-top: 10rpx;
+}
+
+.odds-title {
+  display: block;
+  margin-top: 8rpx;
+  color: #d4c9b8;
+  font-size: 28rpx;
+}
+
+.odds-item {
+  display: flex;
+  gap: 10rpx;
+  margin-top: 13rpx;
+  color: #8e96a2;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 21rpx;
+  line-height: 1.8;
+}
+
+.odds-item text:first-child {
+  color: #8d744f;
+  font-family: Georgia, serif;
+  font-size: 16rpx;
+}
+
+.insight-card {
+  margin-top: 36rpx;
+  padding: 26rpx 22rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.2);
+  border-radius: 20rpx;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(217, 186, 132, 0.1), transparent 45%),
+    rgba(18, 18, 21, 0.64);
+}
+
+.insight-mark {
+  display: block;
+  color: #cdb382;
+  font-size: 25rpx;
+}
+
+.insight-title {
+  display: block;
+  margin-top: 9rpx;
+  color: #ded4c4;
+  font-size: 29rpx;
+  line-height: 1.5;
+}
+
+.insight-copy {
+  display: block;
+  margin-top: 10rpx;
+  color: #b2aea4;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 23rpx;
+  line-height: 1.9;
+}
+
+.report-end-actions {
+  display: flex;
+  gap: 11rpx;
+  margin-top: 30rpx;
+}
+
+.report-end-actions .btn {
+  flex: 1;
+}
+
+.quiet-link {
+  margin-top: 24rpx;
+  color: #6c7380;
+  font-size: 19rpx;
+  text-align: center;
+}
+
+.report-disclaimer {
+  display: block;
+  margin-top: 24rpx;
+  color: #5f6776;
+  font-size: 16rpx;
+  line-height: 1.7;
+}

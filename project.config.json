@@ -1,0 +1,35 @@
+{
+  "description": "平行人生 · 微信小程序版",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.6.3",
+  "appid": "wxb3f0ab648912633a",
+  "projectname": "parallel-life-miniprogram",
+  "miniprogramRoot": "miniprogram/",
+  "condition": {},
+  "cloudfunctionRoot": "cloudfunctions/"
+}

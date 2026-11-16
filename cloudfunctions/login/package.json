@@ -1,0 +1,9 @@
+{
+  "name": "parallel-life-login",
+  "version": "1.0.0",
+  "description": "Return the WeChat openid for the current mini program visitor.",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

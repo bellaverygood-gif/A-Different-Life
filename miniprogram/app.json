@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/life/index",
+    "pages/script/index",
+    "pages/privacy/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#050811",
+    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#050811"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "cloud": true
+}

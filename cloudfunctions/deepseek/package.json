@@ -1,0 +1,9 @@
+{
+  "name": "parallel-life-deepseek",
+  "version": "1.0.0",
+  "description": "One-shot DeepSeek script generation for the mini program.",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

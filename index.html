@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#040711">
+  <meta name="description" content="如果人生可以 DIY，你想过怎么样的一生？平行人生是一款以完整人生故事与路径推演为核心的探索型产品。">
+  <title>平行人生 · 如果人生可以 DIY</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/hero-portal.jpg?v=6" as="image">
+  <link rel="stylesheet" href="css/style.css?v=48">
+</head>
+<body>
+  <div class="cosmos" aria-hidden="true">
+    <div class="cosmos-glow glow-one"></div>
+    <div class="cosmos-glow glow-two"></div>
+    <div class="star-layer stars-near"></div>
+    <div class="star-layer stars-mid"></div>
+    <div class="star-layer stars-far"></div>
+  </div>
+
+  <div id="app"></div>
+  <noscript><div style="position:relative;z-index:2;padding:24px;color:#f3efe5;font-family:sans-serif;text-align:center">请启用 JavaScript，以进入平行人生。</div></noscript>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-scrim" data-close></div>
+    <div class="modal-panel" id="modalPanel" role="dialog" aria-modal="true">
+      <button class="modal-close" type="button" data-close aria-label="关闭">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="loader" id="loader" aria-hidden="true" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/data.js?v=48"></script>
+  <script src="js/bazi.js?v=48"></script>
+  <script src="js/app.js?v=48"></script>
+</body>
+</html>

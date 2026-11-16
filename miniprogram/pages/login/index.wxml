@@ -1,0 +1,38 @@
+<view class="page login-page">
+  <image class="login-bg" src="/assets/hero-portal.jpg" mode="aspectFill" />
+  <view class="login-veil"></view>
+  <view class="login-glow"></view>
+
+  <view class="login-inner" style="padding-top: {{statusBarHeight}}px;">
+    <view class="login-brand">
+      <view class="login-mark">✦</view>
+      <view class="login-brand-copy">
+        <text class="login-brand-cn serif">平行人生</text>
+      </view>
+    </view>
+
+    <view class="login-main">
+      <text class="eyebrow">微信登录</text>
+      <view class="login-title serif">
+        <text>先确认是你，</text>
+        <text>再去看另一个你。</text>
+      </view>
+      <text class="login-lede">在无数条没有走过的路里，借一段人生，去看看另一个自己。</text>
+
+    </view>
+
+    <view class="login-bottom">
+      <button
+        class="login-button"
+        bindtap="login"
+        loading="{{loading}}"
+        disabled="{{loading}}"
+      >微信登录</button>
+      <text class="login-hint">登录后进入首页 · 读一段人生</text>
+      <view class="login-foot">
+        <text class="login-compliance">全部人生均为虚构故事，仅供娱乐参考。</text>
+        <text class="login-privacy" bindtap="openPrivacy">隐私说明</text>
+      </view>
+    </view>
+  </view>
+</view>

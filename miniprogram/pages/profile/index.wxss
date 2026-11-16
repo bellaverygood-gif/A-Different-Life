@@ -1,0 +1,362 @@
+.profile-page {
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.profile-head {
+  padding-top: 34rpx;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.big-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 110rpx;
+  height: 110rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.28);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, rgba(226, 196, 143, 0.22), rgba(29, 31, 39, 0.65));
+  color: #e1c99f;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 46rpx;
+}
+
+.profile-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.profile-name {
+  margin-top: 10rpx;
+  overflow: hidden;
+  color: #eee5d7;
+  font-size: 40rpx;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-sub {
+  margin-top: 8rpx;
+  color: #727a88;
+  font-size: 19rpx;
+}
+
+.profile-stats {
+  display: flex;
+  margin-top: 34rpx;
+  padding: 22rpx 0;
+  border-top: 1rpx solid rgba(195, 202, 219, 0.1);
+  border-bottom: 1rpx solid rgba(195, 202, 219, 0.1);
+}
+
+.stat-cell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1rpx solid rgba(195, 202, 219, 0.08);
+}
+
+.stat-cell:last-child {
+  border-right: 0;
+}
+
+.stat-value {
+  color: #d9c5a2;
+  font-family: Georgia, serif;
+  font-size: 35rpx;
+  line-height: 1.1;
+}
+
+.stat-label {
+  margin-top: 8rpx;
+  color: #737b88;
+  font-size: 17rpx;
+}
+
+.profile-section {
+  margin-top: 48rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.section-title {
+  display: block;
+  margin-top: 9rpx;
+  color: #ded4c4;
+  font-size: 36rpx;
+  line-height: 1.35;
+}
+
+.edit-link,
+.section-count {
+  color: #9d8c72;
+  font-size: 20rpx;
+}
+
+.name-editor {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.12);
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.name-editor .btn {
+  margin-top: 16rpx;
+}
+
+.coordinates-card {
+  margin-top: 18rpx;
+  padding: 10rpx 22rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 20rpx;
+  background: rgba(10, 15, 25, 0.58);
+}
+
+.coordinate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 62rpx;
+  border-bottom: 1rpx solid rgba(195, 202, 219, 0.07);
+  color: #b3ada1;
+  font-size: 22rpx;
+}
+
+.coordinate-row:last-child {
+  border-bottom: 0;
+}
+
+.coordinate-row text:first-child {
+  color: #707988;
+}
+
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.saved-card {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  padding: 20rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 22rpx;
+  background: linear-gradient(140deg, rgba(17, 23, 36, 0.8), rgba(8, 12, 21, 0.86));
+}
+
+.saved-card-hover {
+  opacity: 0.8;
+}
+
+.saved-kind {
+  flex: 0 0 auto;
+  padding: 7rpx 10rpx;
+  border: 1rpx solid rgba(217, 186, 132, 0.2);
+  border-radius: 5rpx;
+  color: #9d865f;
+  font-size: 16rpx;
+}
+
+.saved-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.saved-title {
+  overflow: hidden;
+  color: #cec3b2;
+  font-size: 25rpx;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved-subtitle {
+  margin-top: 5rpx;
+  overflow: hidden;
+  color: #7b8391;
+  font-size: 18rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.saved-date {
+  margin-top: 6rpx;
+  color: #5f6877;
+  font-size: 16rpx;
+}
+
+.saved-arrow {
+  color: #8d7b61;
+  font-size: 24rpx;
+}
+
+.profile-foot {
+  margin-top: 58rpx;
+  color: #5f6775;
+  font-size: 16rpx;
+  text-align: center;
+}
+
+.privacy-section {
+  margin-top: 48rpx;
+}
+
+.privacy-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 9rpx;
+}
+
+.privacy-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18rpx;
+  padding: 20rpx;
+  border: 1rpx solid rgba(195, 202, 219, 0.11);
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.privacy-action.is-danger {
+  border-color: rgba(183, 123, 110, 0.2);
+  background: rgba(183, 123, 110, 0.035);
+}
+
+.privacy-action-title {
+  display: block;
+  color: #c9c0b2;
+  font-family: "Songti SC", Georgia, serif;
+  font-size: 24rpx;
+}
+
+.privacy-action.is-danger .privacy-action-title {
+  color: #c7a29b;
+}
+
+.privacy-action-copy {
+  display: block;
+  margin-top: 5rpx;
+  color: #707987;
+  font-size: 18rpx;
+  line-height: 1.6;
+}
+
+.privacy-action-arrow {
+  color: #8d7b61;
+  font-size: 24rpx;
+}
+
+.privacy-action.is-danger .privacy-action-arrow {
+  color: #a77b72;
+}
+
+.privacy-note {
+  display: block;
+  margin-top: 12rpx;
+  color: #5f6876;
+  font-size: 16rpx;
+  line-height: 1.7;
+}
+
+.wechat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28rpx;
+  padding: 26rpx 24rpx;
+  border: 1rpx solid rgba(126, 157, 139, 0.22);
+  border-radius: 20rpx;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(106, 155, 123, 0.1), transparent 36%),
+    rgba(255, 255, 255, 0.018);
+}
+
+.wechat-card.is-connected {
+  border-color: rgba(116, 166, 132, 0.3);
+  background:
+    radial-gradient(circle at 92% 0%, rgba(106, 155, 123, 0.13), transparent 38%),
+    rgba(106, 155, 123, 0.025);
+}
+
+.wechat-card-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.wechat-status {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  color: #75877c;
+  font-size: 15rpx;
+  letter-spacing: 0.08em;
+}
+
+.wechat-dot {
+  width: 9rpx;
+  height: 9rpx;
+  border-radius: 50%;
+  background: #638f73;
+  box-shadow: 0 0 10rpx rgba(99, 143, 115, 0.55);
+}
+
+.wechat-title {
+  display: block;
+  margin-top: 10rpx;
+  color: #d7d0c3;
+  font-size: 30rpx;
+  line-height: 1.4;
+}
+
+.wechat-copy {
+  display: block;
+  max-width: 460rpx;
+  margin-top: 8rpx;
+  color: #7f878d;
+  font-size: 20rpx;
+  line-height: 1.7;
+}
+
+.wechat-id {
+  display: block;
+  margin-top: 8rpx;
+  color: #617366;
+  font-family: Menlo, monospace;
+  font-size: 17rpx;
+  letter-spacing: 0.04em;
+}
+
+.wechat-login-button {
+  flex: 0 0 auto;
+  min-width: 150rpx;
+}
+
+.wechat-logout {
+  flex: 0 0 auto;
+  padding: 12rpx 4rpx;
+  color: #9b7e77;
+  font-size: 20rpx;
+  text-decoration: underline;
+  text-underline-offset: 5rpx;
+}

@@ -1,0 +1,9 @@
+<view wx:if="{{show}}" class="loading-mask" catchtouchmove="noop">
+  <view class="loading-orb">
+    <view class="orb-ring ring-one"></view>
+    <view class="orb-ring ring-two"></view>
+    <view class="orb-core">?</view>
+  </view>
+  <text class="loading-title">{{text}}</text>
+  <text class="loading-sub">{{sub}}</text>
+</view>

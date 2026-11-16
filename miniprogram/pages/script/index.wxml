@@ -1,0 +1,263 @@
+<view class="page script-page">
+  <nav-bar title="剧本人生" />
+
+  <block wx:if="{{view === 'setup'}}">
+    <view class="script-setup">
+      <text class="eyebrow">剧本人生 · 文化叙事</text>
+      <view class="script-title serif">
+        <text>看一份自己的剧本，</text>
+        <text class="gold">不是看结局。</text>
+      </view>
+      <text class="script-lede">出生信息只用来排盘。它不会告诉你未来，只会把一些文化符号翻译成一段可以读的故事。</text>
+
+      <view class="script-form">
+        <view class="script-field">
+          <view class="script-label-row">
+            <text class="script-label">出生日期</text>
+            <view class="script-calendar">
+              <view class="script-calendar-item {{calendar === 'solar' ? 'is-active' : ''}}" data-calendar="solar" bindtap="onCalendarChange">公历</view>
+              <view class="script-calendar-item {{calendar === 'lunar' ? 'is-active' : ''}}" data-calendar="lunar" bindtap="onCalendarChange">农历</view>
+            </view>
+          </view>
+
+          <picker wx:if="{{calendar === 'solar'}}" mode="date" value="{{birthDate}}" start="1940-01-01" end="{{today}}" bindchange="onDateChange">
+            <view class="script-picker">{{birthDate}}</view>
+          </picker>
+
+          <block wx:else>
+            <view class="script-lunar-row">
+              <picker mode="selector" range="{{lunarYears}}" value="{{lunarYearIndex}}" bindchange="onLunarYearChange">
+                <view class="script-picker">{{lunarYears[lunarYearIndex]}} 年</view>
+              </picker>
+              <picker mode="selector" range="{{lunarMonths}}" value="{{lunarMonthIndex}}" bindchange="onLunarMonthChange">
+                <view class="script-picker">{{lunarMonths[lunarMonthIndex]}}</view>
+              </picker>
+              <picker mode="selector" range="{{lunarDays}}" value="{{lunarDayIndex}}" bindchange="onLunarDayChange">
+                <view class="script-picker">{{lunarDays[lunarDayIndex]}}</view>
+              </picker>
+            </view>
+            <view wx:if="{{canLeap}}" class="script-leap-row">
+              <text>闰 {{lunarMonths[lunarMonthIndex]}}</text>
+              <switch checked="{{lunarLeap}}" color="#cdb488" bindchange="onLunarLeapChange" />
+            </view>
+          </block>
+        </view>
+
+        <view class="script-field">
+          <view class="script-label-row">
+            <text class="script-label">出生时间</text>
+            <view class="script-toggle {{timeUnknown ? 'is-on' : ''}}" bindtap="toggleTimeUnknown">
+              <view class="script-toggle-dot"></view>
+              <text>{{timeUnknown ? '已选' : '不清楚'}}</text>
+            </view>
+          </view>
+          <picker wx:if="{{!timeUnknown}}" mode="time" value="{{birthTime}}" bindchange="onTimeChange">
+            <view class="script-picker">{{birthTime}}</view>
+          </picker>
+          <view wx:else class="script-picker is-muted">按三柱处理，不显示时柱</view>
+        </view>
+
+        <view class="script-field">
+          <text class="script-label">出生地 <text class="script-optional">选填</text></text>
+          <input class="script-input" value="{{birthPlace}}" placeholder="例如：湖南益阳" placeholder-class="script-placeholder" bindinput="onPlaceInput" />
+        </view>
+
+        <view class="script-field">
+          <text class="script-label">性别 <text class="script-optional">选填</text></text>
+          <view class="script-gender">
+            <view class="script-gender-item {{gender === 'female' ? 'is-active' : ''}}" data-gender="female" bindtap="onGenderTap">女</view>
+            <view class="script-gender-item {{gender === 'male' ? 'is-active' : ''}}" data-gender="male" bindtap="onGenderTap">男</view>
+            <view class="script-gender-item {{gender === 'none' ? 'is-active' : ''}}" data-gender="none" bindtap="onGenderTap">不填</view>
+          </view>
+        </view>
+
+        <view class="script-choice-box">
+          <view class="script-choice-head">
+            <view>
+              <text class="script-label">你有一个后悔的选择吗？ <text class="script-optional">选填</text></text>
+              <text class="script-choice-sub">不填也能生成完整免费剧本。</text>
+            </view>
+            <view class="script-toggle {{hasChoice ? 'is-on' : ''}}" bindtap="toggleChoice">
+              <view class="script-toggle-dot"></view>
+              <text>{{hasChoice ? '填写' : '不填'}}</text>
+            </view>
+          </view>
+          <block wx:if="{{hasChoice}}">
+            <view class="script-choice-row">
+              <picker mode="selector" range="{{choiceThemes}}" value="{{choiceThemeIndex}}" bindchange="onChoiceThemeChange">
+                <view class="script-picker">{{choiceThemes[choiceThemeIndex]}}</view>
+              </picker>
+              <picker mode="selector" range="{{choiceStages}}" value="{{choiceStageIndex}}" bindchange="onChoiceStageChange">
+                <view class="script-picker">{{choiceStages[choiceStageIndex]}}</view>
+              </picker>
+            </view>
+            <textarea class="script-choice-input" value="{{choiceText}}" maxlength="80" placeholder="当时你选了什么？一句话" placeholder-class="script-placeholder" bindinput="onChoiceTextInput" />
+            <textarea class="script-choice-input" value="{{choiceGivenUp}}" maxlength="80" placeholder="你放弃了什么？可不填" placeholder-class="script-placeholder" bindinput="onChoiceGivenUpInput" />
+            <text class="script-choice-note">原句只保存在本机。AI 只收到主题和阶段，不收到你写的原句。</text>
+          </block>
+        </view>
+
+        <text wx:if="{{error}}" class="script-error">{{error}}</text>
+
+        <view class="btn btn-primary script-submit" bindtap="generate">生成我的剧本 <text>✦</text></view>
+
+        <text class="script-note">支持公历 / 农历、闰月；按出生地城市经度 + 均时差做真太阳时校正；未做流年。出生信息只保存在本机。</text>
+      </view>
+
+      <view wx:if="{{history.length}}" class="script-history">
+        <text class="eyebrow">最近生成</text>
+        <view
+          wx:for="{{history}}"
+          wx:key="id"
+          class="script-history-row"
+          data-id="{{item.id}}"
+          bindtap="openHistory"
+        >
+          <view class="script-history-main">
+            <text class="script-history-title">{{item.title}}</text>
+            <text class="script-history-meta">{{item.meta}} · {{item.dateLabel}}</text>
+          </view>
+          <text class="script-history-arrow">→</text>
+        </view>
+      </view>
+
+      <text class="script-disclaimer">文化叙事视角，不是预测，不构成医疗、投资、婚恋或职业建议。</text>
+    </view>
+  </block>
+
+  <block wx:if="{{view === 'result' && chart && script}}">
+    <view class="script-result-hero">
+      <text class="eyebrow">你的剧本 · 文化叙事</text>
+      <text class="script-result-title serif">{{script.title}}</text>
+      <text class="script-result-prologue">{{script.prologue}}</text>
+      <text class="script-chart-line">{{script.chartLine}}</text>
+    </view>
+
+    <view class="script-body shell">
+      <view class="script-section">
+        <text class="eyebrow">命盘摘要</text>
+        <text class="script-section-title serif">四柱与五行</text>
+        <view class="script-pillars {{chart.timeUnknown ? 'is-three' : ''}}">
+          <view wx:for="{{chart.pillars}}" wx:key="label" class="script-pillar">
+            <text class="script-pillar-label">{{item.label}}</text>
+            <text class="script-pillar-value serif">{{item.value}}</text>
+          </view>
+        </view>
+        <text wx:if="{{chart.timeUnknown}}" class="script-small-note">出生时间不清楚，只显示三柱。</text>
+        <view class="script-elements">
+          <view wx:for="{{chart.counts}}" wx:key="key" class="script-element">
+            <text>{{item.label}}</text>
+            <text class="script-element-value">{{item.value}}</text>
+          </view>
+        </view>
+        <text wx:if="{{chart.calendarNote}}" class="script-chart-note">{{chart.calendarNote}}</text>
+        <text class="script-chart-note">{{chart.methodLabel}} · {{chart.monthJie}} · {{chart.dayMasterStem}}日主</text>
+        <text class="script-chart-note">真太阳时：{{chart.trueSolarTime}}。{{chart.solarCorrection ? '已按经度 + 均时差校正 ' + chart.solarCorrection.minutes + ' 分钟' : '未识别出生地城市，按北京时间'}}</text>
+      </view>
+
+      <view wx:if="{{chart.dayun}}" class="script-section">
+        <text class="eyebrow">大运 · 简化</text>
+        <text class="script-section-title serif">{{chart.dayun.direction}} · {{chart.dayun.startText}}</text>
+        <view class="script-dayun">
+          <view wx:for="{{chart.dayun.cycles}}" wx:key="ganZhi" class="script-dayun-item">
+            <text class="script-dayun-age">{{item.label}}</text>
+            <text class="script-dayun-gz serif">{{item.ganZhi}}</text>
+          </view>
+        </view>
+        <text class="script-small-note">按三天折一年估算起运，未做流年；只作文化叙事。</text>
+      </view>
+
+      <view class="script-section">
+        <text class="eyebrow">剧本</text>
+        <view wx:for="{{script.acts}}" wx:key="label" class="script-act">
+          <text class="script-act-label">{{item.label}}</text>
+          <text class="script-act-text">{{item.text}}</text>
+        </view>
+        <view class="script-choice">
+          <text class="script-act-label">不由星辰决定的一幕</text>
+          <text class="script-act-text">{{script.choiceAct}}</text>
+        </view>
+        <text class="script-closing">{{script.closing}}</text>
+        <text class="script-disclaimer">{{script.disclaimer}}</text>
+      </view>
+
+      <view wx:if="{{choicePreview}}" class="script-section script-ab">
+        <text class="eyebrow">选择改写 · 本地预览</text>
+        <text class="script-section-title serif">另一条路，会不一样，但不一定更好</text>
+        <text class="script-small-note">{{choicePreview.theme}} · {{choicePreview.stage}} · 本地规则预览，不发送 AI</text>
+
+        <view class="script-ab-block">
+          <text class="script-ab-label">A · 原来这条路</text>
+          <text class="script-ab-text">{{choicePreview.original.text}}</text>
+        </view>
+        <view class="script-ab-block is-alt">
+          <text class="script-ab-label">B · 另一条路</text>
+          <text class="script-ab-text">{{choicePreview.diff.sections[0].text}}</text>
+        </view>
+
+        <view class="script-diff">
+          <text class="script-diff-title">得到的 / 失去的 / 没有变的</text>
+          <view class="script-diff-row"><text>得到</text><text>{{choicePreview.diff.summary.gained.join('、')}}</text></view>
+          <view class="script-diff-row"><text>失去</text><text>{{choicePreview.diff.summary.lost.join('、')}}</text></view>
+          <view class="script-diff-row"><text>没有变</text><text>{{choicePreview.diff.summary.unchanged.join('、')}}</text></view>
+        </view>
+        <text class="script-choice-note">这不是预测，也不是“更好的版本”。只是把另一条路写出来看看。</text>
+      </view>
+
+      <view class="script-section script-ai">
+        <text class="eyebrow">内测 · 个性化</text>
+        <text class="script-section-title serif">让 AI 把这份剧本写得更具体</text>
+        <text class="script-ai-copy">AI 是可选增强。没有 Key、模型超时或返回异常时，会自动使用本地兜底文案，免费剧本不会中断。只发送匿名摘要，不发送出生日期、地点、原句或微信身份。</text>
+        <view class="btn btn-primary script-ai-btn" bindtap="generateAI">{{aiBusy ? '正在生成…' : '生成增强版（可选）'}}</view>
+        <text wx:if="{{aiFallback}}" class="script-ai-fallback">这次模型没有返回，先用本地兜底文案。你仍然可以继续读免费剧本。</text>
+        <text wx:if="{{aiError}}" class="script-error">{{aiError}}</text>
+
+        <block wx:if="{{aiScript}}">
+          <view class="script-ai-result">
+            <text class="script-ai-kicker">AI 剧本</text>
+            <text class="script-result-title serif">{{aiScript.title}}</text>
+            <text class="script-ai-prologue">{{aiScript.prologue}}</text>
+            <view wx:for="{{aiScript.acts}}" wx:key="label" class="script-act">
+              <text class="script-act-label">{{item.label}}</text>
+              <text class="script-act-text">{{item.text}}</text>
+            </view>
+            <view class="script-choice">
+              <text class="script-act-label">不由星辰决定的一幕</text>
+              <text class="script-act-text">{{aiScript.choiceAct}}</text>
+            </view>
+            <text class="script-closing">{{aiScript.closing}}</text>
+          </view>
+
+          <view wx:if="{{aiDiff && aiDiff.summary}}" class="script-diff">
+            <text class="script-diff-title">选择改写 · 差异</text>
+            <view class="script-diff-row">
+              <text>得到</text>
+              <text>{{aiDiff.summary.gained.join('、')}}</text>
+            </view>
+            <view class="script-diff-row">
+              <text>失去</text>
+              <text>{{aiDiff.summary.lost.join('、')}}</text>
+            </view>
+            <view class="script-diff-row">
+              <text>没有变</text>
+              <text>{{aiDiff.summary.unchanged.join('、')}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <view class="script-actions">
+        <view class="btn btn-ghost" bindtap="editAgain">重新输入</view>
+        <view class="btn btn-primary" bindtap="copyScript">复制这份剧本</view>
+      </view>
+      <button class="btn btn-ghost script-share" open-type="share">分享</button>
+
+      <view class="script-bottom">
+        <text bindtap="goHome">回到首页</text>
+        <text class="script-dot">·</text>
+        <text bindtap="openPrivacy">隐私说明</text>
+      </view>
+      <text class="script-disclaimer">出生信息与剧本只保存在本机。所有内容为虚构文化叙事，不是预测。</text>
+    </view>
+  </block>
+</view>

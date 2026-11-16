@@ -1,0 +1,103 @@
+<view class="page profile-page">
+  <nav-bar title="我的星图" />
+
+  <view class="profile-head shell">
+    <view class="profile-top">
+      <view class="big-avatar">{{initial}}</view>
+      <view class="profile-title">
+        <text class="eyebrow">我的星图</text>
+        <text class="profile-name serif">{{name || '一位未署名的旅人'}}</text>
+        <text class="profile-sub">{{loggedIn ? '微信身份 · 记录保存在这台设备' : '记录保存在这台设备上'}}</text>
+      </view>
+    </view>
+
+    <view class="profile-stats">
+      <view class="stat-cell">
+        <text class="stat-value">{{stats.lives}}</text>
+        <text class="stat-label">抽到人生</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-value">{{stats.ssr}}</text>
+        <text class="stat-label">高光时刻</text>
+      </view>
+      <view class="stat-cell">
+        <text class="stat-value">{{stats.modes}}</text>
+        <text class="stat-label">走过路径</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="profile-section shell">
+    <view class="wechat-card {{loggedIn ? 'is-connected' : ''}}">
+      <view class="wechat-card-copy">
+        <view class="wechat-status">
+          <view class="wechat-dot"></view>
+          <text>{{loggedIn ? '微信已连接' : '微信身份'}}</text>
+        </view>
+        <text class="wechat-title serif">{{loggedIn ? '微信已连接' : '用微信标记你的星图'}}</text>
+        <text class="wechat-copy">{{loggedIn ? '你的星图已经关联微信身份。人生记录仍保存在本机。' : '登录只用于标记身份，不会读取头像、昵称或手机号。'}}</text>
+      </view>
+      <button
+        wx:if="{{!loggedIn}}"
+        class="btn btn-primary btn-small wechat-login-button"
+        bindtap="loginWechat"
+        loading="{{loginBusy}}"
+        disabled="{{loginBusy}}"
+      >微信登录</button>
+      <view wx:else class="wechat-logout" bindtap="logoutWechat">退出登录</view>
+    </view>
+  </view>
+
+  <view class="profile-section shell">
+    <view class="section-head">
+      <view>
+        <text class="eyebrow">你的宇宙坐标</text>
+        <text class="section-title serif">你的宇宙坐标</text>
+      </view>
+      <text class="edit-link" bindtap="toggleEdit">{{editing ? '取消' : '编辑'}}</text>
+    </view>
+
+    <view wx:if="{{editing}}" class="name-editor">
+      <input class="input" value="{{nameDraft}}" maxlength="24" placeholder="留下一个昵称" bindinput="onNameInput" />
+      <view class="btn btn-primary btn-small" bindtap="saveName">保存名字</view>
+    </view>
+    <view wx:else class="coordinates-card">
+      <view class="coordinate-row">
+        <text>称呼</text>
+        <text>{{name || '访客'}}</text>
+      </view>
+      <view class="coordinate-row">
+        <text>身份</text>
+        <text>{{loggedIn ? '微信用户' : '本机访客'}}</text>
+      </view>
+      <view class="coordinate-row">
+        <text>走过路径</text>
+        <text>{{stats.modes}} / 3</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="privacy-section shell">
+    <view class="privacy-actions">
+      <view class="privacy-action" bindtap="openPrivacy">
+        <view>
+          <text class="privacy-action-title">隐私说明</text>
+          <text class="privacy-action-copy">了解哪些内容保存在本机</text>
+        </view>
+        <text class="privacy-action-arrow">↗</text>
+      </view>
+      <view class="privacy-action is-danger" bindtap="clearData">
+        <view>
+          <text class="privacy-action-title">清除本机数据</text>
+          <text class="privacy-action-copy">删除人生记录、注脚、统计与昵称</text>
+        </view>
+        <text class="privacy-action-arrow">×</text>
+      </view>
+    </view>
+    <text class="privacy-note">昵称、出生信息、人生记录和暂停注脚只保存在这台设备上。清除后无法恢复。</text>
+  </view>
+
+  <view class="profile-foot shell">
+    <text>平行人生 · 所有故事均为虚构叙事</text>
+  </view>
+</view>

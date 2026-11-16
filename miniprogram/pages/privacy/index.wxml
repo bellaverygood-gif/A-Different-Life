@@ -1,0 +1,98 @@
+<view class="page privacy-page">
+  <nav-bar title="隐私说明" />
+
+  <view class="privacy-shell">
+    <view class="privacy-hero">
+      <text class="eyebrow">隐私说明 · 本机数据</text>
+      <view class="privacy-title serif"><text>你读过的人生，</text><text>先属于你自己。</text></view>
+      <text class="privacy-lede">这份说明解释「平行人生」会保存什么、保存在哪里，以及你可以怎样删除。</text>
+      <text class="privacy-updated">最后更新：{{updatedAt}}</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">01</text>
+      <text class="privacy-heading serif">我们会保存哪些信息</text>
+      <text class="privacy-text">当前版本只保存你主动产生的阅读记录：</text>
+      <view class="privacy-list">
+        <view class="privacy-item"><text>盲盒记录</text><text>你抽到过的人物、阅读时间、最近一条记录</text></view>
+        <view class="privacy-item"><text>情绪自评</text><text>你选择的“更轻松 / 更沉重 / 没感觉”</text></view>
+        <view class="privacy-item"><text>剧本出生信息</text><text>只有在你使用剧本人生时，才保存出生日期、出生时间、出生地、性别</text></view>
+        <view class="privacy-item"><text>剧本内容</text><text>命盘摘要、免费剧本正文、生成时间</text></view>
+        <view class="privacy-item"><text>本地偏好</text><text>最近读到谁、本机阅读或生成条数</text></view>
+      </view>
+      <text class="privacy-text">不会保存昵称、微信身份、手机号、通讯录、精确位置或相册内容。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">02</text>
+      <text class="privacy-heading serif">保存在哪里</text>
+      <text class="privacy-text">以上内容只保存在这台设备的微信本地缓存中。</text>
+      <text class="privacy-text">当前版本没有账号系统，没有云端数据库，也不会把阅读记录或情绪自评上传到开发者服务器或第三方服务。</text>
+      <text class="privacy-text">微信平台自身产生的运行数据、错误日志等，适用微信的隐私规则，不由本小程序控制。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">03</text>
+      <text class="privacy-heading serif">为什么保存</text>
+      <view class="privacy-list">
+        <view class="privacy-item"><text>恢复阅读</text><text>让你再次打开时能看到上次读到的人</text></view>
+        <view class="privacy-item"><text>本机统计</text><text>显示已经读过多少条人生</text></view>
+        <view class="privacy-item"><text>内容判断</text><text>用情绪自评判断内容是否让人更沉重</text></view>
+      </view>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">04</text>
+      <text class="privacy-heading serif">保存多久、怎么删除</text>
+      <text class="privacy-text">盲盒记录、剧本出生信息、命盘摘要和剧本正文会一直保存在本机，直到你主动清除小程序缓存、卸载小程序或更换设备。</text>
+      <text class="privacy-text">删除方式：</text>
+      <view class="privacy-list">
+        <view class="privacy-item"><text>微信内</text><text>微信 → 我 → 设置 → 通用 → 存储空间 → 小程序 → 清除缓存</text></view>
+        <view class="privacy-item"><text>系统内</text><text>卸载微信或清除微信全部数据也会使本地记录丢失</text></view>
+      </view>
+      <text class="privacy-text">清除后，阅读记录和情绪自评会消失，且无法恢复。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">05</text>
+      <text class="privacy-heading serif">分享会带走什么</text>
+      <text class="privacy-text">只有在你主动点击“分享这一生”时，小程序才会生成一段人生摘要，其中可能包含人物姓名、生卒年、出生地、六维信息或一段故事。</text>
+      <text class="privacy-text">分享由你主动发起，内容会通过微信的分享能力发送。我们不会在后台记录你的分享对象或分享次数。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">06</text>
+      <text class="privacy-heading serif">关于未成年人与内容</text>
+      <text class="privacy-text">如果你未满 18 岁，请在监护人指导下使用本小程序。</text>
+      <text class="privacy-text">「平行人生」中的全部人物、故事和六维信息均为虚构叙事，不是真实统计，不构成现实中的预测、医疗建议、投资建议、婚恋建议或职业决策依据。</text>
+      <text class="privacy-text">内容分级为 L0—L2：L0 为日常，L1 含贫困、疾病、丧偶等内容，L2 为重度内容且低频展示；L3 不写。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">07</text>
+      <text class="privacy-heading serif">关于微信登录</text>
+      <text class="privacy-text">当前版本不需要微信登录，也不会获取你的微信身份标识。</text>
+      <text class="privacy-text">如果后续开放云端备份，会在使用前单独说明用途并征得同意。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">08</text>
+      <text class="privacy-heading serif">AI 个性化生成（内测）</text>
+      <text class="privacy-text">只有在你主动点击“生成个性化剧本”时，小程序才会调用云函数，把匿名的命盘摘要、剧本骨架和选择主题发送给 AI 服务。</text>
+      <text class="privacy-text">不会发送出生日期、出生地、你写的选择原句、昵称或微信身份标识。AI 输出只用于当次展示，不用于训练。</text>
+      <text class="privacy-text">AI 可能出错，也可能生成不准确的内容；它不是预测，不构成医疗、投资、婚恋或职业建议。</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-index">09</text>
+      <text class="privacy-heading serif">联系与更新</text>
+      <text class="privacy-text">如果这份说明有更新，我们会在小程序内更新“最后更新”日期。</text>
+      <text class="privacy-text">如对数据处理有疑问，可以通过小程序资料页中展示的开发者联系方式联系开发者。</text>
+    </view>
+
+    <view class="privacy-foot">
+      <text>平行人生</text>
+      <text>本页是产品内的隐私说明，微信平台的《用户隐私保护指引》以公众平台后台配置为准。</text>
+    </view>
+  </view>
+</view>

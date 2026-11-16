@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "nav-bar": "/components/nav-bar/index",
+    "loading-mask": "/components/loading-mask/index"
+  },
+  "navigationBarTitleText": "推演人生"
+}

@@ -1,0 +1,231 @@
+<view class="page blind-page">
+  <nav-bar title="盲盒人生" />
+
+  <block wx:if="{{view === 'setup'}}">
+    <view class="blind-hero">
+      <image class="blind-hero-img" src="/assets/mode-blind.jpg" mode="aspectFill" />
+      <view class="blind-hero-shade"></view>
+      <view class="blind-hero-copy shell">
+        <text class="eyebrow">盲盒人生 · 一条完整的人生</text>
+        <view class="blind-title serif">
+          <text>盲盒之下，</text>
+          <text class="gold">是未知的人生碎片。</text>
+        </view>
+        <text class="blind-lede">一个盲盒里，是一个人完整的一生。打开它，你会看见这些碎片如何按时间拼成同一条命——没有分支，也没有需要你选择的结局。</text>
+        <view class="blind-actions">
+          <view class="btn btn-primary" bindtap="drawRandom">抽取一条人生 <text>✦</text></view>
+          <view class="btn btn-ghost" bindtap="openChooser">自己挑一条时间线 <text>↗</text></view>
+        </view>
+        <text class="blind-last-note">{{lastLifeNote}}</text>
+      </view>
+
+      <view class="blind-orb-wrap" aria-hidden="true">
+        <view class="orb-ring orb-ring-one"></view>
+        <view class="orb-ring orb-ring-two"></view>
+        <view class="orb-ring orb-ring-three"></view>
+        <view class="blind-orb"><text>?</text></view>
+      </view>
+    </view>
+
+    <view class="blind-note shell">
+      <text class="eyebrow">怎么读</text>
+      <text class="blind-note-title serif">不是拼图，是一条完整人生</text>
+      <text class="blind-note-copy">抽中的瞬间，盲盒已经打开。你会直接读到这个人从出生到晚年的完整故事。高光只标出这一生里叙事亮度最高的一段，不代表成功或人生价值。</text>
+    </view>
+  </block>
+
+  <block wx:if="{{view === 'result' && life}}">
+    <view class="life-hero">
+      <image class="life-hero-img" src="{{life.cover}}" mode="aspectFill" />
+      <view class="life-hero-shade"></view>
+      <view class="life-hero-copy shell">
+        <text class="eyebrow">盲盒人生 · 你打开的这一生</text>
+        <text class="life-birth">出生档案 · 已拆封 · {{life.birthFamily}} · {{life.birthYear}} · {{life.birthplace}}</text>
+        <text class="life-name serif">{{life.name}}</text>
+        <text class="life-alias">在另一条时间线里，这是你的名字。</text>
+        <view class="life-meta">
+          <text>{{life.years}}</text>
+          <text>{{life.birthplace}}</text>
+          <text>{{life.identity}}</text>
+        </view>
+        <text class="life-one-line">{{life.oneLine}}</text>
+        <text class="life-question">这一生留下的问题 · {{life.question}}</text>
+        <view class="life-tags">
+          <text wx:for="{{life.themes}}" wx:key="*this">{{item}}</text>
+          <text>{{life.era}}</text>
+        </view>
+        <view class="life-meter">
+          <view>
+            <text class="life-meter-kicker">一条完整的人生</text>
+            <text class="life-meter-title">完整一生</text>
+            <text class="life-meter-range">{{life.firstAge}} → {{life.lastAge}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="life-body shell">
+      <view class="life-story-head">
+        <text class="eyebrow">完整的一生</text>
+        <text class="life-story-title serif">{{life.name}}的一生</text>
+        <text class="life-story-lede">{{life.observerIntro}}</text>
+      </view>
+
+      <view class="life-chapters">
+        <view
+          wx:for="{{life.chapters}}"
+          wx:key="indexLabel"
+          id="life-chapter-{{index}}"
+          class="life-chapter {{item.rarity === 'SSR' ? 'is-ssr' : ''}}"
+        >
+          <view class="chapter-head">
+            <text class="chapter-index">{{item.indexLabel}}</text>
+            <view class="chapter-title-wrap">
+              <view class="chapter-age-row">
+                <text class="chapter-age">{{item.age}}</text>
+                <text class="chapter-tone {{item.toneClass}}">{{item.toneLabel}}</text>
+              </view>
+              <text class="chapter-era"><text>时代注脚</text>{{item.context}}</text>
+              <text class="chapter-title serif">{{item.title}}</text>
+            </view>
+            <text class="rarity-badge rarity-{{item.rarity}}">{{item.rarityLabel}}</text>
+          </view>
+          <text class="chapter-text">{{item.text}}</text>
+          <view class="chapter-facts">
+            <view class="chapter-fact"><text class="fact-label">地点</text><text class="fact-value">{{item.place}}</text></view>
+            <view class="chapter-fact"><text class="fact-label">身边的人</text><text class="fact-value">{{item.people}}</text></view>
+            <view class="chapter-fact"><text class="fact-label">留下的东西</text><text class="fact-value">{{item.artifact}}</text></view>
+          </view>
+          <text class="chapter-summary">{{item.summary}}</text>
+        </view>
+
+        <view wx:if="{{item.pauseQuestion}}" class="blind-pause">
+          <text class="blind-pause-kicker">暂停片刻 · {{item.age}}</text>
+          <text class="blind-pause-question">{{item.pauseQuestion}}</text>
+          <text class="blind-pause-label">如果是你，会怎么选？ <text>不会改变他/她的人生</text></text>
+          <textarea
+            class="textarea blind-pause-input"
+            value="{{item.reflection}}"
+            maxlength="200"
+            data-index="{{index}}"
+            placeholder="写下一句你此刻的想法"
+            placeholder-class="placeholder"
+            bindinput="onReflectionInput"
+          />
+          <view class="blind-pause-save" data-index="{{index}}" bindtap="saveReflection">留下这句话 ✦</view>
+        </view>
+      </view>
+
+      <view class="life-temperature">
+        <view class="life-temperature-head">
+          <view>
+            <text class="eyebrow">人生温度</text>
+            <text class="life-temperature-title serif">这一生的温度</text>
+          </view>
+          <text class="life-temperature-note">不是成功评分，是这一段记忆在人生里留下的温度。</text>
+        </view>
+        <view class="temperature-map">
+          <view
+            wx:for="{{life.chapters}}"
+            wx:key="indexLabel"
+            class="temperature-cell {{item.toneClass}}"
+            data-index="{{index}}"
+            bindtap="scrollToChapter"
+          >
+            <text class="temperature-age">{{item.age}}</text>
+            <text class="temperature-title">{{item.title}}</text>
+            <text class="temperature-label">{{item.toneLabel}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="life-record" id="life-record">
+        <text class="eyebrow">人生记录卡</text>
+        <text class="life-record-title serif">这一生，读完了。</text>
+        <text class="life-record-lede">{{life.oneLine}}</text>
+
+        <view class="record-facts">
+          <view class="record-fact"><text>姓名</text><text>{{life.name}}</text></view>
+          <view class="record-fact"><text>生卒</text><text>{{life.years}}</text></view>
+          <view class="record-fact"><text>出生</text><text>{{life.birthplace}}</text></view>
+          <view class="record-fact"><text>身份</text><text>{{life.identity}}</text></view>
+        </view>
+
+        <view class="record-keywords">
+          <text wx:for="{{life.themes}}" wx:key="*this">{{item}}</text>
+        </view>
+
+        <view class="record-highlights">
+          <view class="record-highlight">
+            <text>这一生最亮</text>
+            <text class="record-highlight-title">{{life.brightest.age}} · {{life.brightest.title}}</text>
+            <text class="record-highlight-copy">{{life.brightest.summary}}</text>
+          </view>
+          <view class="record-highlight is-hard">
+            <text>这一生最难</text>
+            <text class="record-highlight-title">{{life.hardest.age}} · {{life.hardest.title}}</text>
+            <text class="record-highlight-copy">{{life.hardest.summary}}</text>
+          </view>
+          <view class="record-highlight">
+            <text>留下的东西</text>
+            <text class="record-highlight-title">{{life.brightest.artifact}}</text>
+            <text class="record-highlight-copy">{{life.brightest.place}} · {{life.brightest.people}}</text>
+          </view>
+        </view>
+
+        <text class="record-cover-line">“{{life.oneLine}}”</text>
+
+        <view class="record-question">
+          <text>这一生留下的问题</text>
+          <text>{{life.question}}</text>
+        </view>
+
+        <view wx:if="{{life.reflectionList.length}}" class="record-reflections">
+          <text class="record-reflections-label">你留下的注脚</text>
+          <view wx:for="{{life.reflectionList}}" wx:key="indexLabel" class="record-reflection">
+            <text>{{item.age}}</text>
+            <text>{{item.reflection}}</text>
+          </view>
+        </view>
+
+        <view class="record-actions">
+          <button class="btn btn-ghost btn-small" open-type="share">分享这一生</button>
+          <view class="btn btn-quiet" bindtap="drawAgain">再抽一个盲盒</view>
+        </view>
+      </view>
+
+      <view class="quiet-link" bindtap="goHome">回到首页</view>
+      <text class="blind-disclaimer">所有人物与故事均为虚构。一个盲盒里是一条完整的人生，高光只表示这一段记忆的叙事亮度。</text>
+    </view>
+  </block>
+
+  <view wx:if="{{showChooser}}" class="modal-mask" catchtap="closeChooser" catchtouchmove="stopBubble">
+    <view class="modal-panel chooser-panel" catchtap="stopBubble">
+      <view class="chooser-head">
+        <view>
+          <text class="eyebrow">再选一个人生</text>
+          <text class="modal-title serif">自己挑一条时间线</text>
+        </view>
+        <view class="chooser-close" bindtap="closeChooser">×</view>
+      </view>
+      <text class="modal-copy">每张卡片只留下一个来自另一条时间线的线索。选中之后，你才会看见这个人的名字，以及他/她完整的一生。</text>
+      <view class="chooser-list">
+        <view
+          wx:for="{{lives}}"
+          wx:key="id"
+          class="chooser-card"
+          data-id="{{item.id}}"
+          bindtap="chooseLife"
+          hover-class="chooser-card-hover"
+        >
+          <text class="chooser-year">档案 · {{item.archiveYear}}</text>
+          <text class="chooser-clue serif">{{item.clue}}</text>
+          <text class="chooser-meta">{{item.clueMeta}}</text>
+          <text class="chooser-arrow">↗</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <loading-mask show="{{loading}}" text="{{loadingText}}" sub="{{loadingSub}}" />
+</view>

@@ -1,0 +1,416 @@
+.life-page {
+  padding-bottom: calc(50rpx + env(safe-area-inset-bottom));
+}
+
+.life-setup {
+  position: relative;
+  min-height: calc(100vh - 120rpx);
+  padding: 70rpx 34rpx 40rpx;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(205, 167, 109, 0.14), transparent 30%),
+    radial-gradient(circle at 85% 45%, rgba(78, 102, 155, 0.12), transparent 32%);
+}
+
+.life-setup-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96rpx;
+  height: 96rpx;
+  margin-bottom: 40rpx;
+  border: 1rpx solid rgba(213, 194, 157, 0.28);
+  border-radius: 50%;
+  color: #d9c18e;
+  font-size: 36rpx;
+  box-shadow: 0 0 60rpx rgba(205, 167, 109, 0.12);
+}
+
+.life-setup-title {
+  margin-top: 24rpx;
+  color: #f2ece1;
+  font-size: 60rpx;
+  line-height: 1.28;
+}
+
+.life-setup-title text {
+  display: block;
+}
+
+.life-setup-copy {
+  display: block;
+  max-width: 600rpx;
+  margin-top: 26rpx;
+  color: #9c9d9c;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 27rpx;
+  line-height: 1.9;
+}
+
+.life-setup-action {
+  margin-top: 56rpx;
+}
+
+.life-last {
+  display: block;
+  margin-top: 18rpx;
+  color: #727986;
+  font-size: 21rpx;
+  text-align: center;
+}
+
+.life-setup-notes {
+  margin-top: 54rpx;
+  border-top: 1rpx solid rgba(201, 207, 222, 0.09);
+}
+
+.life-note-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid rgba(201, 207, 222, 0.07);
+}
+
+.life-note-k {
+  flex: 0 0 110rpx;
+  color: #777e8a;
+  font-size: 21rpx;
+}
+
+.life-note-v {
+  flex: 1;
+  color: #c8c1b3;
+  font-size: 22rpx;
+  line-height: 1.7;
+}
+
+.life-disclaimer {
+  display: block;
+  margin-top: 34rpx;
+  color: #626976;
+  font-size: 20rpx;
+  line-height: 1.8;
+}
+
+.life-result-hero {
+  position: relative;
+  padding: 74rpx 34rpx 52rpx;
+  background:
+    radial-gradient(circle at 80% 8%, rgba(205, 167, 109, 0.18), transparent 30%),
+    radial-gradient(circle at 8% 40%, rgba(85, 107, 155, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(12, 18, 30, 0.7), #050811 96%);
+}
+
+.life-result-meta {
+  display: flex;
+  gap: 18rpx;
+  margin-top: 24rpx;
+  color: #8d8679;
+  font-size: 21rpx;
+}
+
+.life-result-meta text {
+  padding-right: 18rpx;
+  border-right: 1rpx solid rgba(201, 207, 222, 0.11);
+}
+
+.life-result-meta text:last-child {
+  border-right: 0;
+}
+
+.life-name {
+  display: block;
+  margin-top: 22rpx;
+  color: #f2ecdf;
+  font-size: 74rpx;
+  line-height: 1.2;
+  letter-spacing: 2rpx;
+}
+
+.life-one-line {
+  display: block;
+  max-width: 620rpx;
+  margin-top: 20rpx;
+  color: #bdb3a1;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 28rpx;
+  line-height: 1.8;
+}
+
+.life-level-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.life-level {
+  padding: 4rpx 12rpx;
+  border: 1rpx solid rgba(205, 167, 109, 0.32);
+  border-radius: 999rpx;
+  color: #cbb488;
+  font-size: 18rpx;
+}
+
+.life-level-note {
+  color: #6f7683;
+  font-size: 19rpx;
+}
+
+.life-mini-facts {
+  display: flex;
+  gap: 42rpx;
+  margin-top: 34rpx;
+  padding-top: 22rpx;
+  border-top: 1rpx solid rgba(201, 207, 222, 0.1);
+}
+
+.life-mini-facts view {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.life-mini-k {
+  color: #6f7682;
+  font-size: 18rpx;
+}
+
+.life-mini-v {
+  color: #d8d1c3;
+  font-size: 24rpx;
+}
+
+.life-body {
+  padding-top: 20rpx;
+}
+
+.life-section {
+  padding: 30rpx 0 34rpx;
+  border-bottom: 1rpx solid rgba(201, 207, 222, 0.08);
+}
+
+.life-section-title {
+  display: block;
+  margin-top: 10rpx;
+  color: #e8e1d4;
+  font-size: 40rpx;
+  line-height: 1.4;
+}
+
+.life-six {
+  margin-top: 22rpx;
+  border: 1rpx solid rgba(201, 207, 222, 0.09);
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.life-six-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 20rpx 22rpx;
+  border-bottom: 1rpx solid rgba(201, 207, 222, 0.07);
+}
+
+.life-six-row:last-child {
+  border-bottom: 0;
+}
+
+.life-six-label {
+  flex: 0 0 90rpx;
+  color: #b6a27f;
+  font-size: 21rpx;
+}
+
+.life-six-value {
+  flex: 1;
+  color: #c5c1b8;
+  font-size: 22rpx;
+  line-height: 1.75;
+}
+
+.life-prose {
+  display: block;
+  margin-top: 22rpx;
+  color: #c9c5bc;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 29rpx;
+  line-height: 2.05;
+}
+
+.life-para {
+  display: block;
+  margin-bottom: 18rpx;
+  word-break: break-word;
+}
+
+.life-timeline {
+  margin-top: 24rpx;
+}
+
+.life-time-row {
+  display: flex;
+  gap: 20rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid rgba(201, 207, 222, 0.07);
+}
+
+.life-time-axis {
+  flex: 0 0 108rpx;
+}
+
+.life-time-year {
+  display: block;
+  color: #cbb488;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 25rpx;
+}
+
+.life-time-age {
+  display: block;
+  margin-top: 6rpx;
+  color: #666e7b;
+  font-size: 18rpx;
+}
+
+.life-time-main {
+  flex: 1;
+}
+
+.life-time-event {
+  display: block;
+  color: #d8d2c6;
+  font-size: 23rpx;
+  line-height: 1.65;
+}
+
+.life-time-change {
+  display: block;
+  margin-top: 6rpx;
+  color: #7f8794;
+  font-size: 20rpx;
+  line-height: 1.6;
+}
+
+.life-emotion-row {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 24rpx;
+}
+
+.life-emotion-btn {
+  flex: 1;
+  padding: 20rpx 8rpx;
+  border: 1rpx solid rgba(201, 207, 222, 0.14);
+  border-radius: 999rpx;
+  color: #9b9d9f;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+.life-emotion-btn.is-active {
+  border-color: rgba(205, 167, 109, 0.65);
+  background: rgba(205, 167, 109, 0.13);
+  color: #e0c796;
+}
+
+.life-emotion-note {
+  display: block;
+  margin-top: 14rpx;
+  color: #676f7d;
+  font-size: 19rpx;
+}
+
+.life-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 38rpx;
+}
+
+.life-actions .btn {
+  flex: 1;
+}
+
+.life-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  margin-top: 32rpx;
+  color: #8f887b;
+  font-size: 22rpx;
+}
+
+.life-dot {
+  color: #4f5663;
+}
+
+.life-history {
+  margin-top: 42rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid rgba(201, 207, 222, 0.09);
+}
+
+.life-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid rgba(201, 207, 222, 0.07);
+}
+
+.life-history-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.life-history-name {
+  color: #d7d0c3;
+  font-family: "Songti SC", "STSong", "SimSun", Georgia, serif;
+  font-size: 28rpx;
+}
+
+.life-history-meta {
+  color: #6e7683;
+  font-size: 19rpx;
+}
+
+.life-history-emotion {
+  color: #a79b84;
+  font-size: 20rpx;
+}
+
+.life-card-actions {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 32rpx;
+}
+
+.life-card-btn {
+  width: 100%;
+  padding: 20rpx 12rpx;
+  border: 1rpx solid rgba(205, 167, 109, 0.3);
+  border-radius: 999rpx;
+  color: #cdb488;
+  font-size: 22rpx;
+  text-align: center;
+}
+
+.life-card-btn.is-ghost {
+  border-color: rgba(201, 207, 222, 0.14);
+  color: #8f887b;
+}
+
+.life-card-canvas {
+  position: fixed;
+  top: 0;
+  left: -3000px;
+  width: 750px;
+  height: 1000px;
+  pointer-events: none;
+  z-index: -1;
+}
