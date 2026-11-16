@@ -184,3 +184,9 @@
 .m1-privacy {
   color: #938a7b;
 }
+
+.m1-foot-links {
+  display: flex;
+  gap: 22rpx;
+  color: #938a7b;
+}

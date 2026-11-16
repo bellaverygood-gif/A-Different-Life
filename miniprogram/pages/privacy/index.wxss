@@ -125,3 +125,9 @@
   font-size: 16rpx;
   line-height: 1.7;
 }
+
+.privacy-agreement {
+  display: block;
+  margin-top: 12rpx;
+  color: #a99b84;
+}

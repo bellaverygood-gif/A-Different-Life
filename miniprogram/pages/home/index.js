@@ -11,6 +11,9 @@ Page({
   openPrivacy() {
     wx.navigateTo({ url: "/pages/privacy/index" });
   },
+  openAgreement() {
+    wx.navigateTo({ url: "/pages/agreement/index" });
+  },
   onShareAppMessage() {
     return {
       title: "抽一个盲盒，读完一个人的一生",

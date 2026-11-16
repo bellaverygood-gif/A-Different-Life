@@ -1,0 +1,76 @@
+<view class="page agreement-page">
+  <nav-bar title="用户协议" />
+
+  <view class="agreement-shell">
+    <view class="agreement-hero">
+      <text class="eyebrow">用户协议 · 使用前请阅读</text>
+      <view class="agreement-title serif">
+        <text>这是一份虚构叙事工具，</text>
+        <text>不是预测，也不是心理治疗。</text>
+      </view>
+      <text class="agreement-updated">最后更新：{{updatedAt}}</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">01</text>
+      <text class="agreement-heading serif">服务说明</text>
+      <text class="agreement-text">「平行人生」提供虚构人物故事、文化叙事剧本、情绪自评和可选 AI 增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或文化叙事，不是对现实个人或未来的预测。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">02</text>
+      <text class="agreement-heading serif">不构成专业建议</text>
+      <text class="agreement-text">本服务不构成医疗、心理、法律、投资、婚恋、职业或其他专业建议。不要依据本服务做出重大现实决定。如你正在经历心理危机，请优先联系身边可信任的人、当地急救或专业机构。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">03</text>
+      <text class="agreement-heading serif">使用条件</text>
+      <text class="agreement-text">你需要年满 18 周岁，或在监护人指导下使用。你应具备独立判断能力，并自行承担使用本服务产生的选择与后果。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">04</text>
+      <text class="agreement-heading serif">你填写的信息</text>
+      <text class="agreement-text">盲盒阅读不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在本机。</text>
+      <text class="agreement-text">如果你主动使用 AI 增强，只有匿名的命盘摘要、剧本骨架和选择主题会发送到云函数；不会发送出生日期、地点、你写的选择原句、昵称或微信身份。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">05</text>
+      <text class="agreement-heading serif">AI 增强</text>
+      <text class="agreement-text">AI 是可选的增强功能，不是主流程。模型可能超时、失败、返回不完整内容或生成不准确内容；出现这些情况时，页面会使用本地兜底文案，不保证 AI 结果一定可用。</text>
+      <text class="agreement-text">不要向输入框提交身份证号、联系方式、住址、病历、密码等敏感信息。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">06</text>
+      <text class="agreement-heading serif">禁止行为</text>
+      <text class="agreement-text">不得利用本服务从事违法活动、骚扰他人、冒充他人、批量抓取内容、反向工程、绕过限制，或将本服务内容用于虚假宣传、医疗诊断、投资承诺等场景。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">07</text>
+      <text class="agreement-heading serif">内容与知识产权</text>
+      <text class="agreement-text">小程序内的文本、视觉、结构、人物卡与剧本内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">08</text>
+      <text class="agreement-heading serif">免责声明</text>
+      <text class="agreement-text">本服务按现状提供。开发者不为内容的完整性、准确性、适用性作保证，也不对因使用本服务产生的间接损失承担责任。法律允许范围内，责任以实际损失为限。</text>
+    </view>
+
+    <view class="agreement-section">
+      <text class="agreement-index">09</text>
+      <text class="agreement-heading serif">变更与联系</text>
+      <text class="agreement-text">协议可能随功能更新而调整，更新后会在本页标注日期。继续使用即表示接受更新后的协议。如有问题，请通过小程序资料页公示的开发者联系方式联系。</text>
+    </view>
+
+    <view class="agreement-foot">
+      <text bindtap="openPrivacy">隐私说明</text>
+      <text>·</text>
+      <text bindtap="goBack">返回</text>
+    </view>
+  </view>
+</view>

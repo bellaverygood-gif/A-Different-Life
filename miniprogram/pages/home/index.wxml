@@ -39,7 +39,10 @@
 
     <view class="m1-foot">
       <text>平行人生</text>
-      <text class="m1-privacy" bindtap="openPrivacy">隐私说明</text>
+      <view class="m1-foot-links">
+        <text bindtap="openAgreement">用户协议</text>
+        <text bindtap="openPrivacy">隐私说明</text>
+      </view>
     </view>
   </view>
 </view>

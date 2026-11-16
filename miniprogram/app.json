@@ -3,7 +3,8 @@
     "pages/home/index",
     "pages/life/index",
     "pages/script/index",
-    "pages/privacy/index"
+    "pages/privacy/index",
+    "pages/agreement/index"
   ],
   "window": {
     "navigationStyle": "custom",
