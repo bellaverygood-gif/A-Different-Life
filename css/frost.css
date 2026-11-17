@@ -1094,3 +1094,26 @@ body::before {
   border-radius: 999px;
   font-size: 13px;
 }
+
+/* keep the viewport base painted during overscroll; transparent body + fixed backgrounds
+   can expose a white band above a sticky nav in some browsers */
+html {
+  background-color: var(--frost-paper);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--frost-paper);
+  background-image:
+    radial-gradient(circle at 7% 8%, rgba(186, 224, 196, 0.95), transparent 34%),
+    radial-gradient(circle at 94% 14%, rgba(255, 201, 211, 0.86), transparent 37%),
+    radial-gradient(circle at 73% 88%, rgba(255, 231, 216, 0.9), transparent 43%),
+    linear-gradient(135deg, #eff7ed 0%, #fbf2ef 54%, #f7f3eb 100%);
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+#app {
+  min-height: 100vh;
+  background: transparent;
+}
