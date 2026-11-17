@@ -105,7 +105,7 @@ Page({
   },
   onShareAppMessage() {
     return {
-      title: "我的平行人生星图",
+      title: "我的此生之外星图",
       path: "/pages/home/index"
     };
   }

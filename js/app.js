@@ -104,7 +104,7 @@
     return `<header class="site-nav${overlay}">
       <a class="nav-brand" href="#/home">
         <span class="nav-seal">✦</span>
-        <span class="nav-brand-text"><strong>平行人生</strong><small>PARALLEL LIFE</small></span>
+        <span class="nav-brand-text"><strong>此生之外</strong><small>CI SHENG ZHI WAI</small></span>
       </a>
       <nav class="nav-center" aria-label="主导航">
         ${items.map(([key, label, en]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}"><span>${label}</span><small>${en}</small></a>`).join("")}
@@ -123,21 +123,21 @@
       ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
     </nav>`;
     return `${nav}<footer class="home-footer shell-wide">
-      <span>平行人生 · 虚构人物故事</span>
+      <span>此生之外 · 虚构人物故事</span>
       <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
     </footer>`;
   }
 
   function homePage() {
-    document.title = "平行人生 · 旁观一段人生";
+    document.title = "此生之外 · 旁观一段人生";
     const picks = [LIVES[0], LIVES[6], LIVES[12]].filter(Boolean);
     return `${header("home")}
       <div class="cin-page">
         <section class="cin-hero">
-          <div class="cin-hero-bg"><img src="assets/story-health.jpg" alt=""></div>
+          <div class="cin-hero-bg"><img src="assets/story-camera.jpg" alt=""></div>
           <div class="cin-hero-shade"></div>
           <div class="cin-hero-content">
-            <span class="cin-kicker">PARALLEL LIFE · FICTIONAL LIVES</span>
+            <span class="cin-kicker">CI SHENG ZHI WAI · FICTIONAL LIVES</span>
             <h1>从出生，<br>读到后来。</h1>
             <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
             <div class="cin-cta">
@@ -202,7 +202,7 @@
   }
 
   function blindPage() {
-    document.title = "盲盒人生 · 平行人生";
+    document.title = "盲盒人生 · 此生之外";
     const store = blindStore();
     const last = LIVES.find((item) => item.id === store.lastId);
     return `${header("blind")}
@@ -234,7 +234,7 @@
     const prev = store.history.find((item) => item.id === life.id);
     currentLife = life;
     emotion = emotion || (prev && prev.emotion) || "";
-    document.title = `${life.name}的一生 · 平行人生`;
+    document.title = `${life.name}的一生 · 此生之外`;
     const paragraphs = String(life.narrative || "").split(/\n\s*\n/).filter(Boolean);
     app.innerHTML = `${header("blind")}
       <article class="shell-wide">
@@ -321,7 +321,7 @@
 
   function shareLife() {
     if (!currentLife) return;
-    const text = `${currentLife.name} · ${currentLife.province} · ${currentLife.years}\n${currentLife.oneLine}\n\n来自「平行人生」：虚构人物故事，不是预测。`;
+    const text = `${currentLife.name} · ${currentLife.province} · ${currentLife.years}\n${currentLife.oneLine}\n\n来自「此生之外」：虚构人物故事，不是预测。`;
     if (navigator.share) {
       navigator.share({ title: `${currentLife.name}的一生`, text }).catch(() => {});
       return;
@@ -364,7 +364,7 @@
     ctx.strokeRect(42, 42, W - 84, H - 84);
     ctx.fillStyle = "#cdb488";
     ctx.font = "22px serif";
-    ctx.fillText("平行人生 · 虚构人物故事", 82, 110);
+    ctx.fillText("此生之外 · 虚构人物故事", 82, 110);
     ctx.fillStyle = "#f1eadf";
     ctx.font = "68px serif";
     ctx.fillText(life.name, 82, 225);
@@ -398,7 +398,7 @@
     cardData = canvas.toDataURL("image/jpeg", 0.92);
     const box = document.getElementById("cardAction");
     if (box) {
-      box.innerHTML = `<button class="btn btn-ghost" data-card>重新生成图卡</button><a class="btn btn-primary" href="${cardData}" download="${esc(life.name)}-平行人生.jpg">保存图卡</a><button class="btn btn-ghost" data-share>分享这一生</button>`;
+      box.innerHTML = `<button class="btn btn-ghost" data-card>重新生成图卡</button><a class="btn btn-primary" href="${cardData}" download="${esc(life.name)}-此生之外.jpg">保存图卡</a><button class="btn btn-ghost" data-share>分享这一生</button>`;
       box.querySelector("[data-card]").addEventListener("click", makeCard);
       box.querySelector("[data-share]").addEventListener("click", shareLife);
     }
@@ -597,7 +597,7 @@
 
   function renderScriptResult() {
     if (!scriptResult) { renderRoute(); return; }
-    document.title = `${scriptResult.script.title} · 平行人生`;
+    document.title = `${scriptResult.script.title} · 此生之外`;
     app.innerHTML = scriptResultView(scriptResult);
     document.querySelector("[data-edit-script]").addEventListener("click", () => { scriptResult = null; renderRoute(); });
     document.querySelector("[data-ai]").addEventListener("click", applyLocalAI);
@@ -630,7 +630,7 @@
   function legalPage(kind) {
     const agreement = kind === "agreement";
     const sections = agreement ? [
-      ["01", "服务说明", "「平行人生」提供虚构人物故事、文化叙事剧本、情绪自评和可选的本地增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或文化叙事，不是对现实个人或未来的预测。"],
+      ["01", "服务说明", "「此生之外」提供虚构人物故事、文化叙事剧本、情绪自评和可选的本地增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或文化叙事，不是对现实个人或未来的预测。"],
       ["02", "不构成专业建议", "本服务不构成医疗、心理、法律、投资、婚恋、职业或其他专业建议。不要依据本服务做出重大现实决定。如你正在经历心理危机，请优先联系身边可信任的人、当地急救或专业机构。"],
       ["03", "使用条件", "你需要年满 18 周岁，或在监护人指导下使用。你应具备独立判断能力，并自行承担使用本服务产生的选择与后果。"],
       ["04", "你填写的信息", "盲盒阅读不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在浏览器本机。"],
@@ -650,7 +650,7 @@
       ["08", "联系与更新", "如果这份说明有更新，会在本页更新日期。"]
     ];
     const title = agreement ? "用户协议" : "隐私说明";
-    document.title = `${title} · 平行人生`;
+    document.title = `${title} · 此生之外`;
     return `${header("legal")}
       <div class="shell legal">
         <span class="eyebrow">${agreement ? "用户协议 · 使用前请阅读" : "隐私说明 · 本机数据"}</span>

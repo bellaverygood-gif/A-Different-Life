@@ -189,7 +189,7 @@ Page({
 
       ctx.setFillStyle("#cdb488");
       ctx.setFontSize(24);
-      ctx.fillText("平行人生 · 虚构人物故事", 82, 112);
+      ctx.fillText("此生之外 · 虚构人物故事", 82, 112);
 
       ctx.setFillStyle("#f1eadf");
       ctx.setFontSize(72);

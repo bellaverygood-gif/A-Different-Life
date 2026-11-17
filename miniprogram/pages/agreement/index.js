@@ -12,7 +12,7 @@ Page({
   },
   onShareAppMessage() {
     return {
-      title: "平行人生 · 用户协议",
+      title: "此生之外 · 用户协议",
       path: "/pages/home/index"
     };
   }

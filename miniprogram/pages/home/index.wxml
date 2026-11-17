@@ -5,7 +5,7 @@
     <image class="m1-hero-img" src="/assets/hero-portal-clean.jpg" mode="aspectFill" />
     <view class="m1-hero-shade"></view>
     <view class="m1-hero-meta shell">
-      <text class="m1-hero-kicker">平行人生 · 虚构人物故事</text>
+      <text class="m1-hero-kicker">此生之外 · 虚构人物故事</text>
       <text class="m1-hero-caption">从出生，读到后来。</text>
     </view>
   </view>
@@ -38,7 +38,7 @@
     </view>
 
     <view class="m1-foot">
-      <text>平行人生</text>
+      <text>此生之外</text>
       <view class="m1-foot-links">
         <text bindtap="openAgreement">用户协议</text>
         <text bindtap="openPrivacy">隐私说明</text>

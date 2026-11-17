@@ -7,7 +7,7 @@
 
 ## 一、小程序信息
 
-- 小程序名称：平行人生
+- 小程序名称：此生之外
 - 版本：2.0.2
 - 隐私说明页：`/pages/privacy/index`
 - 用户协议页：`/pages/agreement/index`

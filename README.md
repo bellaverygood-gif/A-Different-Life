@@ -1,8 +1,8 @@
-# 平行人生
+# 此生之外
 
 > 旁观一段人生，不急着判断。
 
-「平行人生」包含两个端：
+「此生之外」包含两个端：
 
 - **Web 静态版**：零依赖单页应用
 - **微信小程序版**：原生小程序，当前上传版本 2.0.2
@@ -11,7 +11,7 @@
 
 ## Web 版
 
-线上地址：[https://parallel-life-c25.pages.dev/](https://parallel-life-c25.pages.dev/)
+线上地址：[https://cishengzhiwai.pages.dev/](https://cishengzhiwai.pages.dev/)
 
 ```bash
 cd /Users/bellahuang/Desktop/deepseek
@@ -63,7 +63,7 @@ rm -rf dist
 mkdir -p dist
 cp index.html dist/
 cp -R css js assets dist/
-cd dist && zip -r ../parallel-life-web.zip ./*
+cd dist && zip -r ../cishengzhiwai-web.zip ./*
 ```
 
 ## 微信小程序版

@@ -5,7 +5,7 @@
       <view class="nav-brand" bindtap="goHome" hover-class="tap-dim">
         <view class="brand-mark">✦</view>
         <view class="brand-copy">
-          <text class="brand-cn">平行人生</text>
+          <text class="brand-cn">此生之外</text>
         </view>
       </view>
     </view>
