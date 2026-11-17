@@ -591,14 +591,13 @@
           <span class="disclaimer">${esc(script.disclaimer)}</span>
         </div>
         ${choicePreview ? `<div class="section"><span class="eyebrow">选择改写 · 本地预览</span><h2 class="section-title">另一条路，会不一样，但不一定更好</h2><span class="small-note">${esc(choicePreview.theme)} · ${esc(choicePreview.stage)} · 本地规则预览</span><div class="ab-block"><span class="ab-label">A · 原来这条路</span><span class="ab-text">${esc(choicePreview.original.text)}</span></div><div class="ab-block is-alt"><span class="ab-label">B · 另一条路</span><span class="ab-text">${esc(choicePreview.diff.sections[0].text)}</span></div><div class="diff-box"><span class="diff-title">得到的 / 失去的 / 没有变的</span><div class="diff-row"><span>得到</span><span>${esc(choicePreview.diff.summary.gained.join("、"))}</span></div><div class="diff-row"><span>失去</span><span>${esc(choicePreview.diff.summary.lost.join("、"))}</span></div><div class="diff-row"><span>没有变</span><span>${esc(choicePreview.diff.summary.unchanged.join("、"))}</span></div></div></div>` : ""}
-        <div class="section script-ai">
-          <span class="eyebrow">可选增强 · 网页端</span><h2 class="section-title">生成一份更具体的版本</h2>
-          <span class="ai-copy">网页端暂未接入 DeepSeek；点击后使用本地兜底文案。不会上传出生信息。</span>
-          <div class="script-actions"><button class="btn btn-primary" data-ai>生成增强版（本地）</button><button class="btn btn-ghost" data-copy-script>复制剧本</button></div>
-          <div id="aiArea"></div>
+        <div class="script-actions script-actions-main">
+          <button class="btn btn-ghost" data-edit-script>重新输入</button>
+          <button class="btn btn-primary" data-share-script>分享我的剧本</button>
         </div>
-        <div class="bottom-links"><a href="#/home">回到首页</a><span>·</span><a href="#/privacy">隐私说明</a></div>
+        <div class="bottom-links"><a href="#/home">回到首页</a><span>·</span><a href="#/privacy">说明</a></div>
       </div>
+      <canvas id="scriptShareCanvas" class="script-share-canvas" width="750" height="1000" aria-hidden="true"></canvas>
       ${footer()}`;
   }
 
@@ -606,42 +605,133 @@
     if (!scriptResult) { renderRoute(); return; }
     document.title = `${scriptResult.script.title} · 此生之外`;
     app.innerHTML = scriptResultView(scriptResult);
-    document.querySelector("[data-edit-script]").addEventListener("click", () => { scriptResult = null; renderRoute(); });
-    document.querySelector("[data-ai]").addEventListener("click", applyLocalAI);
-    document.querySelector("[data-copy-script]").addEventListener("click", () => {
-      const s = scriptResult.script;
-      const text = [s.title, s.prologue, ...s.acts.map((a) => `${a.label}：${a.text}`), s.choiceAct, s.closing, s.disclaimer].join("\n");
-      navigator.clipboard && navigator.clipboard.writeText(text).then(() => toast("已复制")).catch(() => toast("浏览器不支持复制"));
-    });
+    document.querySelectorAll("[data-edit-script]").forEach((el) => el.addEventListener("click", () => { scriptResult = null; renderRoute(); }));
+    const share = document.querySelector("[data-share-script]");
+    if (share) share.addEventListener("click", shareScript);
     window.scrollTo(0, 0);
   }
 
-  function applyLocalAI() {
-    if (!scriptResult) return;
-    const s = scriptResult.script;
-    const preview = scriptResult.choicePreview;
-    const acts = preview ? preview.alternate.acts : s.acts;
-    const aiScript = {
-      title: `${s.title} · 本地版`,
-      prologue: s.prologue,
-      acts,
-      choiceAct: preview ? preview.alternate.choiceAct : s.choiceAct,
-      closing: preview ? preview.alternate.closing : s.closing
+  function scriptExcerpt(script) {
+    const raw = `${script.prologue || ""} ${script.acts && script.acts[0] ? script.acts[0].text : ""}`.replace(/\s+/g, "");
+    const chars = Array.from(raw);
+    return chars.length > 100 ? `${chars.slice(0, 100).join("")}……` : chars.join("");
+  }
+
+  function roundedRect(ctx, x, y, w, h, r) {
+    const radius = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.arcTo(x + w, y, x + w, y + h, radius);
+    ctx.arcTo(x + w, y + h, x, y + h, radius);
+    ctx.arcTo(x, y + h, x, y, radius);
+    ctx.arcTo(x, y, x + w, y, radius);
+    ctx.closePath();
+  }
+
+  function showShareImage(dataUrl) {
+    document.getElementById("shareOverlay")?.remove();
+    const overlay = document.createElement("div");
+    overlay.id = "shareOverlay";
+    overlay.className = "share-overlay";
+    overlay.innerHTML = `<div class="share-panel" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <button class="share-close share-x" type="button" aria-label="关闭">×</button>
+      <span class="cin-label">分享我的剧本</span>
+      <h2 id="shareTitle">这一段，值得被另一个人读到</h2>
+      <img src="${dataUrl}" alt="我的剧本分享图">
+      <div class="share-actions">
+        <a class="btn btn-primary" href="${dataUrl}" download="此生之外-我的剧本.png">保存分享图</a>
+        <button class="btn btn-ghost share-close-bottom" type="button">关闭</button>
+      </div>
+      <p>分享图包含剧本开头 100 字和小程序码，其他内容以省略号收住。</p>
+    </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
+    overlay.querySelector(".share-close").addEventListener("click", close);
+    overlay.querySelector(".share-close-bottom").addEventListener("click", close);
+  }
+
+  function shareScript() {
+    if (!scriptResult || !scriptResult.script) return;
+    const canvas = document.getElementById("scriptShareCanvas");
+    if (!canvas) return;
+    const script = scriptResult.script;
+    const ctx = canvas.getContext("2d");
+    const W = 750;
+    const H = 1000;
+
+    const bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, "#edf7ed");
+    bg.addColorStop(0.5, "#fdf2f1");
+    bg.addColorStop(1, "#f7f2e9");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const glow = ctx.createRadialGradient(120, 120, 20, 120, 120, 340);
+    glow.addColorStop(0, "rgba(172, 219, 183, .65)");
+    glow.addColorStop(1, "rgba(172, 219, 183, 0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = "rgba(255,255,255,.44)";
+    roundedRect(ctx, 34, 34, W - 68, H - 68, 30);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,.78)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = "#5d6d61";
+    ctx.font = "20px -apple-system, PingFang SC, sans-serif";
+    ctx.fillText("此生之外 · 虚构人物故事", 76, 96);
+
+    ctx.fillStyle = "#26342b";
+    ctx.font = "42px Songti SC, STSong, serif";
+    wrapCanvasText(ctx, script.title, 76, 168, W - 152, 54, 2);
+
+    ctx.strokeStyle = "rgba(56,83,66,.18)";
+    ctx.beginPath();
+    ctx.moveTo(76, 256);
+    ctx.lineTo(W - 76, 256);
+    ctx.stroke();
+
+    ctx.fillStyle = "#4c5c50";
+    ctx.font = "25px -apple-system, PingFang SC, sans-serif";
+    wrapCanvasText(ctx, scriptExcerpt(script), 76, 310, W - 152, 44, 6);
+
+    ctx.fillStyle = "#6d5c4c";
+    ctx.font = "20px Songti SC, STSong, serif";
+    ctx.fillText("这是叙事，不是预测。", 76, 710);
+
+    const qr = new Image();
+    qr.onload = () => {
+      ctx.fillStyle = "rgba(255,255,255,.72)";
+      roundedRect(ctx, 74, 752, 176, 176, 14);
+      ctx.fill();
+      ctx.drawImage(qr, 80, 758, 164, 164);
+      ctx.fillStyle = "#5d6d61";
+      ctx.font = "19px -apple-system, PingFang SC, sans-serif";
+      ctx.fillText("微信扫码，读我的剧本", 278, 800);
+      ctx.fillStyle = "#8b9589";
+      ctx.font = "16px -apple-system, PingFang SC, sans-serif";
+      ctx.fillText("打开小程序，抽一段人生", 278, 834);
+      ctx.fillStyle = "#9aa298";
+      ctx.font = "16px -apple-system, PingFang SC, sans-serif";
+      ctx.fillText("本产品不构成医疗、法律、投资或命运预测建议", 76, 958);
+      const dataUrl = canvas.toDataURL("image/png");
+      showShareImage(dataUrl);
     };
-    const area = document.getElementById("aiArea");
-    if (!area) return;
-    area.innerHTML = `<div class="ai-result"><span class="ai-kicker">本地增强版</span><h2 class="section-title">${esc(aiScript.title)}</h2><div class="ai-fallback">网页端没有接入 AI，先用本地兜底文案。你仍然可以继续读免费剧本。</div>${aiScript.acts.map((act) => `<div class="act"><span class="act-label">${esc(act.label)}</span><span class="act-text">${esc(act.text)}</span></div>`).join("")}<div class="choice-block"><span class="act-label">不由星辰决定的一幕</span><span class="act-text">${esc(aiScript.choiceAct)}</span></div><span class="script-closing">${esc(aiScript.closing)}</span></div>`;
-    toast("已使用本地兜底文案");
+    qr.onerror = () => toast("分享图生成失败，请重试");
+    qr.src = "assets/mini-program-qr.jpg";
   }
 
   function legalPage(kind) {
     const agreement = kind === "agreement";
     const sections = agreement ? [
-      ["01", "服务说明", "「此生之外」提供虚构人物故事、剧本、情绪自评和可选的本地增强。所有人物、事件、金额、命盘摘要与剧本均为虚构叙事，不是对现实个人或未来的预测。"],
+      ["01", "服务说明", "「此生之外」提供虚构人物故事、剧本、情绪自评和分享图。所有人物、事件、金额、命盘摘要与剧本均为虚构叙事，不是对现实个人或未来的预测。"],
       ["02", "不构成专业建议", "本服务不构成医疗、心理、法律、投资、婚恋、职业或其他专业建议。不要依据本服务做出重大现实决定。如你正在经历心理危机，请优先联系身边可信任的人、当地急救或专业机构。"],
       ["03", "使用条件", "你需要年满 18 周岁，或在监护人指导下使用。你应具备独立判断能力，并自行承担使用本服务产生的选择与后果。"],
       ["04", "你填写的信息", "阅读一段人生不需要填写个人信息。看自己的剧本会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在浏览器本机。"],
-      ["05", "本地增强", "网页端暂未接入外部 AI。点击增强版时只使用本地兜底文案，不会上传出生日期、地点或选择原句。"],
+      ["05", "分享图", "分享图只包含剧本开头 100 字和固定的小程序码，不包含出生日期、地点或原始输入。"],
       ["06", "禁止行为", "不得利用本服务从事违法活动、骚扰他人、冒充他人、批量抓取内容、反向工程、绕过限制，或将本服务内容用于虚假宣传、医疗诊断、投资承诺等场景。"],
       ["07", "内容与知识产权", "小程序和网页内的文本、视觉、结构、人物卡与剧本内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。"],
       ["08", "免责声明", "本服务按现状提供。开发者不为内容的完整性、准确性、适用性作保证，也不对因使用本服务产生的间接损失承担责任。"],
