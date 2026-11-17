@@ -744,3 +744,171 @@ body::before {
   .cin-hero { min-height: 640px; }
   .cin-hero-content { width: calc(100% - 32px); padding: 30px 22px 28px; }
 }
+
+/* ── active nav + Apple-like frosted buttons ───────────── */
+.nav-center a {
+  position: relative;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.nav-center a.is-active,
+.nav-overlay .nav-center a.is-active,
+.site-nav.nav-paper .nav-center a.is-active {
+  border-color: rgba(255, 255, 255, 0.64);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.24));
+  color: var(--frost-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(63, 86, 68, 0.045),
+    0 5px 16px rgba(58, 82, 65, 0.07);
+  backdrop-filter: blur(14px) saturate(1.12);
+  -webkit-backdrop-filter: blur(14px) saturate(1.12);
+}
+
+.nav-center a.is-active::after {
+  content: "";
+  position: absolute;
+  right: 22%;
+  bottom: 3px;
+  left: 22%;
+  height: 1.5px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, var(--frost-rose), transparent);
+  opacity: 0.85;
+}
+
+.nav-center a:not(.is-active):hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+/* Apple-like glass buttons */
+.cin-btn,
+.btn,
+.nav-cta {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.22));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(64, 88, 69, 0.05),
+    0 8px 22px rgba(57, 81, 63, 0.1);
+  color: var(--frost-ink);
+  backdrop-filter: blur(18px) saturate(1.18);
+  -webkit-backdrop-filter: blur(18px) saturate(1.18);
+  transition:
+    transform 160ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.cin-btn::before,
+.btn::before,
+.nav-cta::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 8%;
+  left: 8%;
+  height: 44%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+  pointer-events: none;
+}
+
+.cin-btn:hover,
+.btn:hover,
+.nav-cta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.9);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.32));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 10px 26px rgba(57, 81, 63, 0.13);
+}
+
+.cin-btn:active,
+.btn:active,
+.nav-cta:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow:
+    inset 0 1px 3px rgba(57, 81, 63, 0.08),
+    0 4px 12px rgba(57, 81, 63, 0.08);
+}
+
+.cin-btn-primary,
+.btn-primary {
+  border-color: rgba(255, 255, 255, 0.26);
+  background:
+    linear-gradient(180deg, rgba(67, 91, 72, 0.94), rgba(41, 62, 48, 0.9));
+  color: #f8fbf6;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(18, 33, 23, 0.16),
+    0 10px 26px rgba(44, 65, 51, 0.22);
+}
+
+.cin-btn-primary::before,
+.btn-primary::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent);
+}
+
+.cin-btn-primary:hover,
+.btn-primary:hover {
+  border-color: rgba(255, 255, 255, 0.38);
+  background:
+    linear-gradient(180deg, rgba(75, 101, 80, 0.98), rgba(45, 67, 51, 0.94));
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 12px 30px rgba(44, 65, 51, 0.26);
+}
+
+.cin-btn-ghost,
+.btn-ghost {
+  border-color: rgba(255, 255, 255, 0.68);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.18));
+  color: var(--frost-ink);
+}
+
+.cin-btn-ghost:hover,
+.btn-ghost:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0.26));
+  border-color: rgba(255, 255, 255, 0.86);
+}
+
+/* soft glass on secondary choices */
+.emotion-btn,
+.pill-toggle,
+.seg {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (max-width: 900px) {
+  .nav-center a.is-active::after { bottom: 2px; right: 24%; left: 24%; }
+}
+
+/* slightly more translucent primary glass */
+.cin-btn-primary,
+.btn-primary {
+  background:
+    linear-gradient(180deg, rgba(63, 88, 69, 0.74), rgba(39, 61, 46, 0.64));
+  backdrop-filter: blur(20px) saturate(1.18);
+  -webkit-backdrop-filter: blur(20px) saturate(1.18);
+}
+.cin-btn-primary:hover,
+.btn-primary:hover {
+  background:
+    linear-gradient(180deg, rgba(69, 96, 75, 0.84), rgba(43, 66, 50, 0.72));
+}
