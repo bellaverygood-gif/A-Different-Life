@@ -99,19 +99,18 @@
   }
 
   function header(active) {
-    const items = [["home", "首页", "HOME"], ["blind", "盲盒", "BLIND"], ["script", "剧本", "SCRIPT"], ["privacy", "说明", "ABOUT"]];
+    const items = [["home", "首页"], ["blind", "抽一个人生"], ["script", "看自己的剧本"], ["privacy", "说明"]];
     const overlay = active === "home" ? " nav-overlay" : " nav-paper";
     return `<header class="site-nav${overlay}">
       <a class="nav-brand" href="#/home">
         <span class="nav-seal">✦</span>
-        <span class="nav-brand-text"><strong>此生之外</strong><small>CI SHENG ZHI WAI</small></span>
+        <span class="nav-brand-text"><strong>此生之外</strong></span>
       </a>
       <nav class="nav-center" aria-label="主导航">
-        ${items.map(([key, label, en]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}"><span>${label}</span><small>${en}</small></a>`).join("")}
+        ${items.map(([key, label]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}"><span>${label}</span></a>`).join("")}
       </nav>
       <div class="nav-right">
-        <a class="nav-text" href="#/agreement">用户协议</a>
-        <a class="nav-cta" href="#/blind">抽一个人生</a>
+        <button type="button" class="nav-cta" data-login>登录</button>
       </div>
     </header>`;
   }
@@ -137,13 +136,20 @@
           <div class="cin-hero-bg"><img src="assets/story-camera.jpg" alt=""></div>
           <div class="cin-hero-shade"></div>
           <div class="cin-hero-content">
-            <span class="cin-kicker">CI SHENG ZHI WAI · FICTIONAL LIVES</span>
-            <h1>从出生，<br>读到后来。</h1>
-            <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
-            <div class="cin-cta">
-              <a class="cin-btn" href="#/blind">抽一个人生</a>
-              <a class="cin-btn" href="#/script">看自己的剧本</a>
+            <div class="cin-hero-copy">
+              <span class="cin-kicker">此生之外 · 虚构人物故事</span>
+              <h1>从出生，<br>读到后来。</h1>
+              <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+              <div class="cin-cta">
+                <a class="cin-btn cin-btn-primary" href="#/blind">抽一个人生</a>
+                <a class="cin-btn cin-btn-ghost" href="#/script">看自己的剧本</a>
+              </div>
             </div>
+            <aside class="cin-hero-side">
+              <div><strong>${LIVES.length}</strong><span>段虚构人生</span></div>
+              <div><strong>约 2 分钟</strong><span>读完一段</span></div>
+              <div><strong>无需登录</strong><span>先读，再决定</span></div>
+            </aside>
           </div>
           <a class="cin-scroll" href="#cin-about"><span>向下探索</span><i>↓</i></a>
         </section>
@@ -159,20 +165,22 @@
         <section class="cin-features">
           <a class="cin-feature" href="#/blind">
             <span class="cin-feature-num">01</span>
-            <div><span class="cin-label">盲盒人生 / BLIND LIFE</span><h3>抽一个人生</h3><p>从出生读到后来。没有分支，也不需要你选择结局。</p><span class="cin-link">打开盲盒 <i>→</i></span></div>
+            <div><span class="cin-label">盲盒人生</span><h3>抽一个人生</h3><p>从出生读到后来。没有分支，也不需要你选择结局。</p><span class="cin-link">打开盲盒 <i>→</i></span></div>
+            <span class="cin-feature-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="cin-feature" href="#/script">
             <span class="cin-feature-num">02</span>
-            <div><span class="cin-label">剧本人生 / SCRIPT</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。不是预测。</p><span class="cin-link">进入剧本 <i>→</i></span></div>
+            <div><span class="cin-label">剧本人生</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。不是预测。</p><span class="cin-link">进入剧本 <i>→</i></span></div>
+            <span class="cin-feature-arrow" aria-hidden="true">↗</span>
           </a>
         </section>
 
         <section class="cin-people">
-          <div class="cin-section-head"><span class="cin-label">02 / 人物卡</span><span class="cin-note">FICTIONAL LIVES · 18</span></div>
+          <div class="cin-section-head"><span class="cin-label">02 / 人物卡</span><span class="cin-note">${LIVES.length} 段虚构人生</span></div>
           <div class="cin-people-grid">
             ${picks.map((life, index) => `<a class="cin-person" href="#/blind">
-              <div class="cin-person-img"><img src="assets/${["story-love.jpg", "story-camera.jpg", "story-career.jpg"][index]}" alt=""></div>
-              <div class="cin-person-meta"><span>${esc(life.province)} / ${esc(life.years)}</span><span>${esc(life.gender)}</span></div>
+              <div class="cin-person-img"><img src="assets/${["life-market.jpg", "life-workshop.jpg", "life-warehouse.jpg"][index]}" alt=""></div>
+              <div class="cin-person-meta"><span>${esc(life.province)}</span><span>${esc(life.gender)}</span></div>
               <h3>${esc(life.name)}</h3>
               <p>${esc(life.oneLine)}</p>
             </a>`).join("")}
@@ -661,6 +669,34 @@
       </div>
       ${footer()}`;
   }
+
+  function showLogin() {
+    const old = document.getElementById("loginOverlay");
+    if (old) old.remove();
+    const overlay = document.createElement("div");
+    overlay.id = "loginOverlay";
+    overlay.className = "login-overlay";
+    overlay.innerHTML = `<div class="login-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <button class="login-close" type="button" aria-label="关闭">×</button>
+      <span class="cin-label">登录</span>
+      <h2 id="loginTitle">微信扫码登录</h2>
+      <p>登录用于识别你的微信身份。当前不做云备份，阅读记录仍只保存在本机。</p>
+      <div class="login-qr-placeholder"><span>微信扫码登录</span><small>小程序登录桥接入后在此显示二维码</small></div>
+      <button class="btn btn-ghost login-later" type="button">先不登录，继续阅读</button>
+    </div>`;
+    document.body.appendChild(overlay);
+    const close = () => overlay.remove();
+    overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
+    overlay.querySelector(".login-close").addEventListener("click", close);
+    overlay.querySelector(".login-later").addEventListener("click", close);
+    document.addEventListener("keydown", function onKey(event) {
+      if (event.key === "Escape") { close(); document.removeEventListener("keydown", onKey); }
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-login]")) showLogin();
+  });
 
   function renderRoute() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
