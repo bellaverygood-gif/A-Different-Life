@@ -14,7 +14,7 @@
     <view class="agreement-section">
       <text class="agreement-index">01</text>
       <text class="agreement-heading serif">服务说明</text>
-      <text class="agreement-text">「此生之外」提供虚构人物故事、文化叙事剧本、情绪自评和可选 AI 增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或文化叙事，不是对现实个人或未来的预测。</text>
+      <text class="agreement-text">「此生之外」提供虚构人物故事、剧本、情绪自评和可选 AI 增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或虚构叙事，不是对现实个人或未来的预测。</text>
     </view>
 
     <view class="agreement-section">
@@ -32,7 +32,7 @@
     <view class="agreement-section">
       <text class="agreement-index">04</text>
       <text class="agreement-heading serif">你填写的信息</text>
-      <text class="agreement-text">盲盒阅读不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在本机。</text>
+      <text class="agreement-text">阅读一段人生不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在本机。</text>
       <text class="agreement-text">如果你主动使用 AI 增强，只有匿名的命盘摘要、剧本骨架和选择主题会发送到云函数；不会发送出生日期、地点、你写的选择原句、昵称或微信身份。</text>
     </view>
 

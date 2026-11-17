@@ -73,7 +73,7 @@ Page({
     canLeap: true,
     choiceThemes: CHOICE_THEMES,
     choiceStages: CHOICE_STAGES,
-    hasChoice: false,
+    hasChoice: true,
     choiceThemeIndex: 0,
     choiceStageIndex: 0,
     choiceText: "",
@@ -412,7 +412,7 @@ Page({
   },
   onShareAppMessage() {
     return {
-      title: this.data.chart ? `${this.data.chart.dayMasterLabel}日主的一份文化叙事剧本` : "看一份自己的文化叙事剧本",
+      title: this.data.chart ? `${this.data.chart.dayMasterLabel}日主的一份剧本` : "看一份自己的剧本",
       path: "/pages/home/index"
     };
   }

@@ -1,30 +1,30 @@
 <view class="page life-page">
-  <nav-bar title="盲盒人生" />
+  <nav-bar title="抽一个人生" />
 
   <block wx:if="{{view === 'setup'}}">
     <view class="life-setup">
       <view class="life-setup-mark">◉</view>
-      <text class="eyebrow">盲盒人生 · 18 段虚构人生 · L0—L1</text>
+      <text class="eyebrow">抽一个人生 · {{livesCount}} 段虚构人生</text>
       <view class="life-setup-title serif">
         <text>抽一个人生，</text>
         <text class="gold">从出生读到后来。</text>
       </view>
-      <text class="life-setup-copy">不是你的另一种结局，也不是预测。只是一个陌生人的一生，恰好被你打开。</text>
+      <text class="life-setup-copy">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生，恰好被你打开。</text>
 
       <view class="life-setup-action">
-        <view class="btn btn-primary" bindtap="drawLife">抽取一条人生 <text>✦</text></view>
+        <view class="btn btn-primary" bindtap="drawLife">抽一个人生 <text>✦</text></view>
         <text wx:if="{{lastLifeName}}" class="life-last">上次读到：{{lastLifeName}}</text>
-        <text wx:else class="life-last">一个盲盒里，是一条完整的人生。</text>
+        <text wx:else class="life-last">一个人生里，是几个可以慢慢读的阶段。</text>
       </view>
 
       <view class="life-setup-notes">
         <view class="life-note-row">
           <text class="life-note-k">读什么</text>
-          <text class="life-note-v">出生、另一半、事业、子女、财富、寿命</text>
+          <text class="life-note-v">出生地、家庭经济、营生类型、几个阶段</text>
         </view>
         <view class="life-note-row">
           <text class="life-note-k">怎么读</text>
-          <text class="life-note-v">没有分支，不需要你选择结局</text>
+          <text class="life-note-v">没有分支，也不需要你选择结局</text>
         </view>
         <view class="life-note-row">
           <text class="life-note-k">本机记录</text>
@@ -49,66 +49,47 @@
         </view>
       </view>
 
-      <text class="life-disclaimer">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</text>
+      <text class="life-disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</text>
     </view>
   </block>
 
   <block wx:if="{{view === 'result' && life}}">
     <view class="life-result-hero">
-      <text class="eyebrow">盲盒人生 · 已拆封</text>
+      <text class="eyebrow">抽一个人生 · 已打开</text>
       <view class="life-result-meta">
         <text>{{life.province}}</text>
-        <text>{{life.years}}</text>
         <text>{{life.gender}}</text>
       </view>
       <text class="life-name serif">{{life.name}}</text>
       <text class="life-one-line">{{life.oneLine}}</text>
-      <view class="life-level-row">
-        <text class="life-level">{{life.level}}</text>
-        <text class="life-level-note">{{life.levelNote}}</text>
-      </view>
-      <view class="life-mini-facts">
-        <view><text class="life-mini-k">出生</text><text class="life-mini-v">{{life.birthYear}}</text></view>
-        <view><text class="life-mini-k">寿命</text><text class="life-mini-v">{{life.deathAge}} 岁</text></view>
-        <view><text class="life-mini-k">六维</text><text class="life-mini-v">完整人生</text></view>
-      </view>
     </view>
 
     <view class="life-body shell">
       <view class="life-section">
-        <text class="eyebrow">六维总览</text>
-        <text class="life-section-title serif">这一生的六个面</text>
-        <view class="life-six">
-          <view wx:for="{{life.sixDim}}" wx:key="label" class="life-six-row">
-            <text class="life-six-label">{{item.label}}</text>
-            <text class="life-six-value">{{item.value}}</text>
+        <text class="eyebrow">骨架</text>
+        <text class="life-section-title serif">这一段人生的起点</text>
+        <view class="life-skeleton">
+          <view wx:for="{{life.skeleton}}" wx:key="label" class="life-skeleton-row">
+            <text class="life-skeleton-label">{{item.label}}</text>
+            <text class="life-skeleton-value">{{item.value}}</text>
           </view>
         </view>
       </view>
 
       <view class="life-section">
-        <text class="eyebrow">完整叙述</text>
-        <text class="life-section-title serif">{{life.name}}的一生</text>
-        <view class="life-prose">
-          <text wx:for="{{life.paragraphs}}" wx:key="*this" class="life-para">{{item}}</text>
+        <text class="eyebrow">逐段阅读</text>
+        <text class="life-section-title serif">从早年，到后来</text>
+        <view class="life-fragments">
+          <view wx:for="{{life.fragments}}" wx:key="key" class="life-fragment">
+            <text class="life-fragment-stage">{{item.stage}}</text>
+            <text class="life-fragment-text">{{item.text}}</text>
+          </view>
         </view>
       </view>
 
-      <view class="life-section">
-        <text class="eyebrow">时间轴</text>
-        <text class="life-section-title serif">从哪一年，走到哪一年</text>
-        <view class="life-timeline">
-          <view wx:for="{{life.timeline}}" wx:key="key" class="life-time-row">
-            <view class="life-time-axis">
-              <text class="life-time-year">{{item.year}}</text>
-              <text class="life-time-age">{{item.age}} 岁</text>
-            </view>
-            <view class="life-time-main">
-              <text class="life-time-event">{{item.event}}</text>
-              <text class="life-time-change">{{item.change}}</text>
-            </view>
-          </view>
-        </view>
+      <view class="life-section life-landing">
+        <text class="eyebrow">一句落点</text>
+        <text class="life-landing-text serif">{{life.landing}}</text>
       </view>
 
       <view class="life-section life-emotion">
@@ -127,11 +108,11 @@
       </view>
 
       <view class="life-card-actions">
-        <view class="life-card-btn" bindtap="onCardAction">{{cardPath ? '保存这一生的图卡' : '生成这一生的图卡'}}</view>
+        <view class="life-card-btn" bindtap="onCardAction">{{cardPath ? '保存这一段人生的图卡' : '生成这一段人生的图卡'}}</view>
       </view>
 
       <view class="life-actions">
-        <button class="btn btn-ghost" open-type="share">分享这一生</button>
+        <button class="btn btn-ghost" open-type="share">分享这一段人生</button>
         <view class="btn btn-primary" bindtap="drawAgain">再抽一个</view>
       </view>
 
@@ -140,10 +121,10 @@
         <text class="life-dot">·</text>
         <text bindtap="openPrivacy">隐私说明</text>
       </view>
-      <text class="life-disclaimer">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</text>
+      <text class="life-disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</text>
     </view>
   </block>
 
   <canvas canvas-id="lifeCard" class="life-card-canvas"></canvas>
-  <loading-mask show="{{loading}}" text="正在打开一个盲盒" sub="里面是一个人的一生" />
+  <loading-mask show="{{loading}}" text="正在打开一段人生" sub="里面是几个可以慢慢读的阶段" />
 </view>

@@ -6,6 +6,32 @@ const EMOTIONS = [
   { key: "heavier", label: "更沉重" },
   { key: "neutral", label: "没感觉" }
 ];
+const DAILY_KEY = "parallel-life-m1-daily";
+const DAILY_LIMIT = 3;
+const NEGATIVE = /去世|死亡|死了|死|病|癌|丧|亡|伤|残|债|穷|灾|苦|瘫|中风|高血压|糖尿病|手术|住院|吃药|失明|自杀|自残/i;
+
+function todayKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+}
+
+function dailyState() {
+  try {
+    const raw = wx.getStorageSync(DAILY_KEY);
+    if (raw && raw.date === todayKey()) return raw;
+  } catch (error) {}
+  return { date: todayKey(), count: 0 };
+}
+
+function dailyLimitReached() {
+  return dailyState().count >= DAILY_LIMIT;
+}
+
+function bumpDaily() {
+  const state = dailyState();
+  state.count += 1;
+  try { wx.setStorageSync(DAILY_KEY, state); } catch (error) {}
+}
 
 function readLocal() {
   try {
@@ -47,13 +73,39 @@ function decorateHistory(history) {
 }
 
 function decorateLife(life) {
+  const paragraphs = String(life.narrative || "").split(/\n\s*\n/).filter(Boolean);
+  const safe = paragraphs.filter((p) => !NEGATIVE.test(p));
+  const chosen = (safe.length ? safe : paragraphs).slice(0, 7);
+  const fragments = chosen.map((text, index) => ({
+    key: `fragment-${index}`,
+    stage: index < 2 ? "早年" : index < 4 ? "中年" : "后来",
+    text
+  }));
+  const dim = (label) => {
+    const item = (life.sixDim || []).find((entry) => entry.label === label);
+    return item ? item.value : "";
+  };
+  const birth = dim("出生").split("；")[0] || life.province;
+  const job = dim("事业").split("；")[0] || "普通工作";
+  const wealth = dim("财富") || "";
+  const wealthMatch = wealth.match(/贫困|温饱|小康|中等|偏下|偏上|普通/);
+  const cleanLine = NEGATIVE.test(life.oneLine || "")
+    ? "后来，日子还在继续。"
+    : life.oneLine;
   return {
     ...life,
-    paragraphs: String(life.narrative || "").split(/\n\s*\n/).filter(Boolean),
-    timeline: (life.timeline || []).map((item, index) => ({ ...item, key: index }))
+    oneLine: cleanLine,
+    fragments,
+    skeleton: [
+      { label: "出生地", value: life.province },
+      { label: "性别", value: life.gender },
+      { label: "家庭经济", value: wealthMatch ? wealthMatch[0] : "普通家庭" },
+      { label: "营生类型", value: job }
+    ],
+    landing: cleanLine,
+    birthNote: birth
   };
 }
-
 function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
   const chars = String(text || "").split("");
   let line = "";
@@ -89,8 +141,11 @@ Page({
     cardPath: "",
     cardBusy: false
   },
-  onLoad() {
+  onLoad(options) {
     this.syncLocal();
+    if (options && String(options.draw) === "1") {
+      this.drawLife();
+    }
   },
   syncLocal() {
     const local = readLocal();
@@ -103,6 +158,15 @@ Page({
   },
   drawLife() {
     if (this.data.loading) return;
+    if (dailyLimitReached()) {
+      wx.showModal({
+        title: "今天先读到这里",
+        content: "每人每天可以打开 3 段人生。明天再来，或者先写一份自己的剧本。",
+        showCancel: false,
+        confirmText: "知道了"
+      });
+      return;
+    }
     const local = readLocal();
     const pool = LIVES.filter((item) => item.id !== local.lastId);
     const chosen = pool[Math.floor(Math.random() * pool.length)] || LIVES[0];
@@ -122,6 +186,7 @@ Page({
         lastId: chosen.id
       };
       writeLocal(next);
+      bumpDaily();
       this.setData({
         loading: false,
         view: "result",
@@ -212,14 +277,14 @@ Page({
       ctx.setFillStyle("#8e877b");
       ctx.setFontSize(24);
       ctx.fillText("出生", 82, 700);
-      ctx.fillText("寿命", 292, 700);
+      ctx.fillText("阶段", 292, 700);
       ctx.fillText("读完", 502, 700);
 
       ctx.setFillStyle("#ece4d7");
-      ctx.setFontSize(38);
+      ctx.setFontSize(34);
       ctx.fillText(String(life.birthYear), 82, 754);
-      ctx.fillText(`${life.deathAge} 岁`, 292, 754);
-      ctx.fillText("一生", 502, 754);
+      ctx.fillText("早年 → 后来", 292, 754);
+      ctx.fillText("一段人生", 502, 754);
 
       ctx.setFillStyle("#726c61");
       ctx.setFontSize(22);
@@ -227,7 +292,7 @@ Page({
 
       ctx.setFillStyle("#cdb488");
       ctx.setFontSize(22);
-      ctx.fillText("一个盲盒，一条完整的人生。", 82, 944);
+      ctx.fillText("抽一个人生，读完一个人的一生。", 82, 944);
       ctx.setFillStyle("#726c61");
       ctx.setFontSize(18);
       ctx.fillText(`内容分级 ${life.level} · ${life.levelNote}`, 82, 976);
@@ -295,7 +360,7 @@ Page({
   onShareAppMessage() {
     const life = this.data.life;
     const payload = {
-      title: life ? `我读完了${life.name}的一生` : "抽一个盲盒，读完一个人的一生",
+      title: life ? `我读完了${life.name}的一生` : "抽一个人生，读完一个人的一生",
       path: "/pages/home/index"
     };
     if (this.data.cardPath) payload.imageUrl = this.data.cardPath;
