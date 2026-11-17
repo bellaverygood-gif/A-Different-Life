@@ -352,7 +352,30 @@
         line = next;
       }
     }
-    if (line && lines < maxLines) ctx.fillText(line, x, y + lines * lineHeight);
+    if (line && lines < maxLines) {
+      ctx.fillText(line, x, y + lines * lineHeight);
+      lines += 1;
+    }
+    return lines;
+  }
+
+  function countCanvasLines(ctx, text, maxWidth, maxLines) {
+    const chars = Array.from(String(text || ""));
+    let line = "";
+    let lines = 0;
+    for (let i = 0; i < chars.length; i += 1) {
+      const next = line + chars[i];
+      const width = ctx.measureText ? ctx.measureText(next).width : next.length * 32;
+      if (width > maxWidth && line) {
+        lines += 1;
+        line = chars[i];
+        if (lines >= maxLines) return lines;
+      } else {
+        line = next;
+      }
+    }
+    if (line) lines += 1;
+    return Math.min(lines, maxLines);
   }
 
   function makeCard() {
@@ -656,10 +679,21 @@
     const canvas = document.getElementById("scriptShareCanvas");
     if (!canvas) return;
     const script = scriptResult.script;
-    const ctx = canvas.getContext("2d");
     const W = 750;
-    const H = 1000;
+    const excerpt = scriptExcerpt(script);
 
+    const measure = document.createElement("canvas").getContext("2d");
+    measure.font = "25px -apple-system, PingFang SC, sans-serif";
+    const excerptLines = countCanvasLines(measure, excerpt, W - 152, 6);
+    const excerptY = 306;
+    const excerptBottom = excerptY + excerptLines * 44;
+    const metaY = excerptBottom + 34;
+    const qrY = metaY + 34;
+    const H = Math.max(760, qrY + 250);
+
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
     const bg = ctx.createLinearGradient(0, 0, W, H);
     bg.addColorStop(0, "#edf7ed");
     bg.addColorStop(0.5, "#fdf2f1");
@@ -682,41 +716,41 @@
 
     ctx.fillStyle = "#5d6d61";
     ctx.font = "20px -apple-system, PingFang SC, sans-serif";
-    ctx.fillText("此生之外 · 虚构人物故事", 76, 96);
+    ctx.fillText("此生之外 · 虚构人物故事", 76, 94);
 
     ctx.fillStyle = "#26342b";
     ctx.font = "42px Songti SC, STSong, serif";
-    wrapCanvasText(ctx, script.title, 76, 168, W - 152, 54, 2);
+    wrapCanvasText(ctx, script.title, 76, 162, W - 152, 54, 2);
 
     ctx.strokeStyle = "rgba(56,83,66,.18)";
     ctx.beginPath();
-    ctx.moveTo(76, 256);
-    ctx.lineTo(W - 76, 256);
+    ctx.moveTo(76, 250);
+    ctx.lineTo(W - 76, 250);
     ctx.stroke();
 
     ctx.fillStyle = "#4c5c50";
     ctx.font = "25px -apple-system, PingFang SC, sans-serif";
-    wrapCanvasText(ctx, scriptExcerpt(script), 76, 310, W - 152, 44, 6);
+    wrapCanvasText(ctx, excerpt, 76, excerptY, W - 152, 44, 6);
 
     ctx.fillStyle = "#6d5c4c";
     ctx.font = "20px Songti SC, STSong, serif";
-    ctx.fillText("这是叙事，不是预测。", 76, 710);
+    ctx.fillText("这是叙事，不是预测。", 76, metaY);
 
     const qr = new Image();
     qr.onload = () => {
       ctx.fillStyle = "rgba(255,255,255,.72)";
-      roundedRect(ctx, 74, 752, 176, 176, 14);
+      roundedRect(ctx, 74, qrY, 176, 176, 14);
       ctx.fill();
-      ctx.drawImage(qr, 80, 758, 164, 164);
+      ctx.drawImage(qr, 80, qrY + 6, 164, 164);
       ctx.fillStyle = "#5d6d61";
       ctx.font = "19px -apple-system, PingFang SC, sans-serif";
-      ctx.fillText("微信扫码，读我的剧本", 278, 800);
+      ctx.fillText("微信扫码，读我的剧本", 278, qrY + 48);
       ctx.fillStyle = "#8b9589";
       ctx.font = "16px -apple-system, PingFang SC, sans-serif";
-      ctx.fillText("打开小程序，抽一段人生", 278, 834);
+      ctx.fillText("打开小程序，抽一段人生", 278, qrY + 82);
       ctx.fillStyle = "#9aa298";
-      ctx.font = "16px -apple-system, PingFang SC, sans-serif";
-      ctx.fillText("本产品不构成医疗、法律、投资或命运预测建议", 76, 958);
+      ctx.font = "15px -apple-system, PingFang SC, sans-serif";
+      ctx.fillText("本产品不构成医疗、法律、投资或命运预测建议", 76, qrY + 214);
       const dataUrl = canvas.toDataURL("image/png");
       showShareImage(dataUrl);
     };
