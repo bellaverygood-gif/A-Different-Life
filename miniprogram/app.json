@@ -4,7 +4,8 @@
     "pages/life/index",
     "pages/script/index",
     "pages/privacy/index",
-    "pages/agreement/index"
+    "pages/agreement/index",
+    "pages/auth/bridge"
   ],
   "window": {
     "navigationStyle": "custom",

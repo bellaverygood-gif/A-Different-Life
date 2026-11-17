@@ -1117,3 +1117,22 @@ body {
   min-height: 100vh;
   background: transparent;
 }
+
+.login-qr-image {
+  display: block;
+  width: 190px;
+  height: 190px;
+  margin: 20px auto 10px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+.login-scan-note {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--frost-faint);
+  font-size: 9px;
+  text-align: center;
+}
+.login-actions { display: flex; gap: 8px; margin-top: 8px; }
+.login-actions .btn { flex: 1; }
+.login-qr-placeholder strong { color: var(--frost-ink); font-family: var(--serif); font-size: 20px; font-weight: 400; }

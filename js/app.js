@@ -13,6 +13,8 @@
   const BLIND_KEY = "parallel-life-web-blind";
   const SCRIPT_KEY = "parallel-life-web-script";
   const FORM_KEY = "parallel-life-web-script-form";
+  const AUTH_API = "https://cishengzhiwai-auth.bellaverygood.workers.dev";
+  const AUTH_KEY = "cishengzhiwai-auth-session";
 
   const LUNAR_YEARS = Array.from({ length: 161 }, (_, i) => String(1940 + i));
   const LUNAR_MONTHS = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"];
@@ -793,6 +795,36 @@
       ${footer()}`;
   }
 
+  function authToken() {
+    try { return localStorage.getItem(AUTH_KEY) || ""; } catch (error) { return ""; }
+  }
+
+  function setAuthToken(token) {
+    try { token ? localStorage.setItem(AUTH_KEY, token) : localStorage.removeItem(AUTH_KEY); } catch (error) {}
+    updateLoginButton();
+  }
+
+  function updateLoginButton() {
+    document.querySelectorAll("[data-login]").forEach((button) => {
+      button.textContent = authToken() ? "已登录" : "登录";
+    });
+  }
+
+  async function authRequest(path, options = {}) {
+    const token = authToken();
+    const headers = Object.assign({ "Content-Type": "application/json" }, options.headers || {});
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const response = await fetch(`${AUTH_API}${path}`, Object.assign({}, options, { headers }));
+    let data = {};
+    try { data = await response.json(); } catch (error) {}
+    if (!response.ok) {
+      const err = new Error(data.code || "AUTH_HTTP_" + response.status);
+      err.code = data.code || "AUTH_HTTP_" + response.status;
+      throw err;
+    }
+    return data;
+  }
+
   function showLogin() {
     const old = document.getElementById("loginOverlay");
     if (old) old.remove();
@@ -802,16 +834,65 @@
     overlay.innerHTML = `<div class="login-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
       <button class="login-close" type="button" aria-label="关闭">×</button>
       <span class="cin-label">登录</span>
-      <h2 id="loginTitle">微信扫码登录</h2>
-      <p>微信扫码登录正在接入小程序登录桥。接入前，阅读记录只保存在本机。</p>
-      <div class="login-qr-placeholder"><span>微信扫码登录</span><small>小程序登录桥接入后在此显示二维码</small></div>
-      <button class="btn btn-ghost login-later" type="button">关闭</button>
+      <h2 id="loginTitle">${authToken() ? "已登录" : "微信扫码登录"}</h2>
+      <p>${authToken() ? "当前浏览器已登录微信身份。登录只用于识别，不保存阅读内容。" : "用微信扫描小程序码，在小程序里确认登录。登录只用于识别微信身份，不保存阅读内容。"}</p>
+      <div id="loginBody">${authToken() ? '<div class="login-qr-placeholder"><strong>已登录</strong><small>当前浏览器已保存登录会话</small></div>' : '<div class="login-qr-placeholder"><span>正在生成二维码…</span></div>'}</div>
+      <div class="login-actions">
+        ${authToken() ? '<button class="btn btn-ghost" type="button" data-logout>退出登录</button>' : ""}
+        <button class="btn btn-ghost login-later" type="button">关闭</button>
+      </div>
     </div>`;
     document.body.appendChild(overlay);
-    const close = () => overlay.remove();
+    let timer = null;
+    let closed = false;
+    const close = () => {
+      closed = true;
+      if (timer) clearInterval(timer);
+      overlay.remove();
+    };
     overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
     overlay.querySelector(".login-close").addEventListener("click", close);
     overlay.querySelector(".login-later").addEventListener("click", close);
+    const logout = overlay.querySelector("[data-logout]");
+    if (logout) logout.addEventListener("click", async () => {
+      try { await authRequest("/api/auth/logout", { method: "POST" }); } catch (error) {}
+      setAuthToken("");
+      close();
+      toast("已退出登录");
+    });
+    if (authToken()) return;
+    const body = document.getElementById("loginBody");
+    authRequest("/api/auth/start")
+      .then((data) => {
+        if (closed) return;
+        body.innerHTML = `<img class="login-qr-image" src="data:image/jpeg;base64,${data.qr}" alt="微信登录二维码"><small class="login-scan-note">微信扫码后，在小程序里确认登录</small>`;
+        timer = setInterval(async () => {
+          if (closed) return;
+          try {
+            const result = await authRequest(`/api/auth/status?ticket=${encodeURIComponent(data.ticket)}`);
+            if (result.status === "bound" && result.session) {
+              if (timer) clearInterval(timer);
+              setAuthToken(result.session);
+              close();
+              toast("登录成功");
+            }
+          } catch (error) {
+            if (error.code === "EXPIRED") {
+              if (timer) clearInterval(timer);
+              body.innerHTML = '<div class="login-qr-placeholder"><strong>二维码已过期</strong><small>请关闭后重新打开登录</small></div>';
+            }
+          }
+        }, 1500);
+      })
+      .catch((error) => {
+        if (closed) return;
+        const messages = {
+          AUTH_NOT_CONFIGURED: "登录服务尚未配置 AppSecret。",
+          WECHAT_QR_FAILED: "小程序登录页尚未发布，暂时不能生成二维码。",
+          WECHAT_TOKEN_FAILED: "微信登录服务暂时不可用。"
+        };
+        body.innerHTML = `<div class="login-qr-placeholder"><strong>登录暂时不可用</strong><small>${messages[error.code] || "请稍后再试"}</small></div>`;
+      });
     document.addEventListener("keydown", function onKey(event) {
       if (event.key === "Escape") { close(); document.removeEventListener("keydown", onKey); }
     });
@@ -843,6 +924,7 @@
     } else {
       app.innerHTML = homePage();
     }
+    updateLoginButton();
     window.scrollTo(0, 0);
   }
 
