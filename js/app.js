@@ -99,100 +99,87 @@
   }
 
   function header(active) {
-    const items = [
-      ["home", "首页", "spark"],
-      ["blind", "盲盒人生", "dice"],
-      ["script", "剧本人生", "book"],
-      ["privacy", "隐私说明", "shield"]
-    ];
-    const rail = `<aside class="side-rail">
-      <a class="rail-brand" href="#/home">
-        <span class="brand-mark">✦</span>
-        <span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span>
+    const items = [["home", "首页", "HOME"], ["blind", "盲盒", "BLIND"], ["script", "剧本", "SCRIPT"], ["privacy", "说明", "ABOUT"]];
+    const overlay = active === "home" ? " nav-overlay" : " nav-paper";
+    return `<header class="site-nav${overlay}">
+      <a class="nav-brand" href="#/home">
+        <span class="nav-seal">✦</span>
+        <span class="nav-brand-text"><strong>平行人生</strong><small>PARALLEL LIFE</small></span>
       </a>
-      <nav class="rail-nav" aria-label="主导航">
-        ${items.map(([key, label, ico]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
+      <nav class="nav-center" aria-label="主导航">
+        ${items.map(([key, label, en]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}"><span>${label}</span><small>${en}</small></a>`).join("")}
       </nav>
-      <div class="rail-foot">
-        <span class="rail-label">内容库</span>
-        <strong>${LIVES.length} 段人生</strong>
-        <span>虚构人物故事</span>
-      </div>
-    </aside>`;
-    const mobile = `<header class="mobile-bar">
-      <a class="brand" href="#/home"><span class="brand-mark">✦</span><span class="brand-text"><strong>平行人生</strong><small>旁观者视角</small></span></a>
-      <div class="top-actions">
-        <span class="top-chip"><span class="dot"></span>${LIVES.length} 段</span>
-        <a class="header-icon" href="#/privacy" aria-label="隐私说明">${icon("shield", 16)}</a>
+      <div class="nav-right">
+        <a class="nav-text" href="#/agreement">用户协议</a>
+        <a class="nav-cta" href="#/blind">抽一个人生</a>
       </div>
     </header>`;
-    return rail + mobile;
   }
 
   function footer() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
-    const tabs = [["home", "首页", "spark"], ["blind", "盲盒", "dice"], ["script", "剧本", "book"], ["privacy", "我的", "shield"]];
-    return `<nav class="bottom-nav" aria-label="底部导航">
-      ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 19)}<span>${label}</span></a>`).join("")}
-    </nav>
-    <footer class="home-footer shell-wide">
+    const tabs = [["home", "首页", "spark"], ["blind", "盲盒", "dice"], ["script", "剧本", "book"], ["privacy", "说明", "shield"]];
+    const nav = route === "home" ? "" : `<nav class="bottom-nav" aria-label="底部导航">
+      ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
+    </nav>`;
+    return `${nav}<footer class="home-footer shell-wide">
       <span>平行人生 · 虚构人物故事</span>
       <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
     </footer>`;
-  }  function homePage() {
+  }
+
+  function homePage() {
     document.title = "平行人生 · 旁观一段人生";
-    const store = blindStore();
-    const recent = store.history.slice(0, 3).map((item) => {
-      const life = LIVES.find((entry) => entry.id === item.id);
-      return life ? Object.assign({}, life, { emotion: item.emotion }) : null;
-    }).filter(Boolean);
-    const hour = new Date().getHours();
-    const greet = hour < 6 ? "夜深了" : hour < 12 ? "早上好" : hour < 18 ? "下午好" : "晚上好";
+    const picks = [LIVES[0], LIVES[6], LIVES[12]].filter(Boolean);
     return `${header("home")}
-      <div class="shell-wide p-home">
-        <section class="p-hero">
-          <div class="p-hero-copy">
-            <span class="p-kicker">${greet}，旁观者</span>
+      <div class="cin-page">
+        <section class="cin-hero">
+          <div class="cin-hero-bg"><img src="assets/story-health.jpg" alt=""></div>
+          <div class="cin-hero-shade"></div>
+          <div class="cin-hero-content">
+            <span class="cin-kicker">PARALLEL LIFE · FICTIONAL LIVES</span>
             <h1>从出生，<br>读到后来。</h1>
-            <p class="p-lede">抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
-            <div class="p-actions">
-              <a class="btn btn-primary" href="#/blind">抽一个人生</a>
-              <a class="btn btn-ghost" href="#/script">看自己的剧本</a>
+            <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+            <div class="cin-cta">
+              <a class="cin-btn" href="#/blind">抽一个人生</a>
+              <a class="cin-btn" href="#/script">看自己的剧本</a>
             </div>
-            <div class="p-meta"><span>18 段虚构人生</span><span>06 个省份/区域</span><span>本地记录</span></div>
           </div>
-          <div class="p-terminal" aria-label="内容库概览">
-            <div class="p-term-top"><span class="p-dots"><i></i><i></i><i></i></span><span>parallel-life / index</span></div>
-            <div class="p-term-body">
-              <p><span class="p-prompt">$</span> open --blind</p>
-              <p class="p-term-muted">18 lives loaded · 06 regions</p>
-              ${LIVES.slice(0, 3).map((life, index) => `<p class="p-term-row"><span>0${index + 1}</span>${esc(life.name)}<em>${esc(life.province)} / ${esc(life.years)}</em></p>`).join("")}
-              <p class="p-term-row p-term-more"><span>…</span>15 more lives</p>
-              <p><span class="p-prompt">›</span> 读完一个人的一生<span class="p-cursor"></span></p>
-            </div>
+          <a class="cin-scroll" href="#cin-about"><span>向下探索</span><i>↓</i></a>
+        </section>
+
+        <section class="cin-about" id="cin-about">
+          <span class="cin-label">01 / 核心体验</span>
+          <div class="cin-about-grid">
+            <h2>两条路径，<br>读完一段人生。</h2>
+            <p>不是给你一个答案，而是把一段完整的人生摊开。你可以随机遇见一个人，也可以输入自己的出生信息，读一份文化叙事剧本。</p>
           </div>
         </section>
 
-        <section class="p-index">
-          <div class="p-section-head"><span class="p-label">入口 / 两条路径</span><span class="p-section-note">choose a way in</span></div>
-          <a class="p-entry" href="#/blind">
-            <span class="p-entry-num">01</span>
-            <div class="p-entry-main"><h2>盲盒人生</h2><p>从出生读到后来。没有分支，也不需要你选择结局。</p></div>
-            <span class="p-entry-arrow">↗</span>
+        <section class="cin-features">
+          <a class="cin-feature" href="#/blind">
+            <span class="cin-feature-num">01</span>
+            <div><span class="cin-label">盲盒人生 / BLIND LIFE</span><h3>抽一个人生</h3><p>从出生读到后来。没有分支，也不需要你选择结局。</p><span class="cin-link">打开盲盒 <i>→</i></span></div>
           </a>
-          <a class="p-entry" href="#/script">
-            <span class="p-entry-num">02</span>
-            <div class="p-entry-main"><h2>剧本人生</h2><p>输入出生信息，读一份文化叙事剧本。不是预测。</p></div>
-            <span class="p-entry-arrow">↗</span>
+          <a class="cin-feature" href="#/script">
+            <span class="cin-feature-num">02</span>
+            <div><span class="cin-label">剧本人生 / SCRIPT</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。不是预测。</p><span class="cin-link">进入剧本 <i>→</i></span></div>
           </a>
         </section>
 
-        <section class="p-recent">
-          <div class="p-section-head"><h2>最近读过</h2><a href="#/blind">全部记录 →</a></div>
-          ${recent.length ? recent.map((life) => `<a class="p-recent-row" href="#/blind" data-side-life="${esc(life.id)}"><span class="p-recent-name">${esc(life.name)}</span><span class="p-recent-meta">${esc(life.province)} · ${esc(life.years)}</span><span class="p-recent-emotion">${esc(historyEmotion(life.emotion))}</span></a>`).join("") : `<div class="p-empty">还没有读过一段人生。<a href="#/blind">从第一个盲盒开始 →</a></div>`}
+        <section class="cin-people">
+          <div class="cin-section-head"><span class="cin-label">02 / 人物卡</span><span class="cin-note">FICTIONAL LIVES · 18</span></div>
+          <div class="cin-people-grid">
+            ${picks.map((life, index) => `<a class="cin-person" href="#/blind">
+              <div class="cin-person-img"><img src="assets/${["story-love.jpg", "story-camera.jpg", "story-career.jpg"][index]}" alt=""></div>
+              <div class="cin-person-meta"><span>${esc(life.province)} / ${esc(life.years)}</span><span>${esc(life.gender)}</span></div>
+              <h3>${esc(life.name)}</h3>
+              <p>${esc(life.oneLine)}</p>
+            </a>`).join("")}
+          </div>
         </section>
 
-        <div class="p-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
+        <div class="cin-foot-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
       </div>
       ${footer()}`;
   }
