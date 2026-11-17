@@ -2,7 +2,6 @@ const BaziCore = require("../../utils/bazi");
 const { buildFreeScript } = require("../../utils/freeScript");
 const { findLongitude } = require("../../utils/cities");
 const { lunarToSolar, leapMonthOf } = require("../../utils/lunar");
-const ai = require("../../utils/ai");
 const { buildChoicePreview } = require("../../utils/choicePreview");
 
 const STORAGE_KEY = "parallel-life-script-m1";
@@ -78,11 +77,6 @@ Page({
     choiceStageIndex: 0,
     choiceText: "",
     choiceGivenUp: "",
-    aiBusy: false,
-    aiError: "",
-    aiScript: null,
-    aiDiff: null,
-    aiFallback: false,
     choicePreview: null,
     history: [],
     localCount: 0,
@@ -246,120 +240,12 @@ Page({
       view: "result",
       chart,
       script,
-      aiScript: null,
-      aiDiff: null,
-      aiFallback: false,
-      aiError: "",
       choicePreview,
       history: decorateHistory(history),
       localCount: Math.min(history.length, 20),
       error: ""
     });
     wx.pageScrollTo({ scrollTop: 0, duration: 0 });
-  },
-  applyFallback() {
-    if (!this.data.script) return;
-    const script = this.data.script;
-    const preview = this.data.choicePreview || (this.data.hasChoice
-      ? buildChoicePreview(script, CHOICE_THEMES[this.data.choiceThemeIndex], this.data.choiceStageIndex)
-      : null);
-    const acts = preview ? preview.alternate.acts : script.acts;
-    this.aiRequestId = 0;
-    if (this.aiTimer) clearTimeout(this.aiTimer);
-    this.aiTimer = null;
-    this.setData({
-      aiBusy: false,
-      aiError: "",
-      aiFallback: true,
-      aiScript: {
-        title: `${script.title} · 本地版`,
-        prologue: script.prologue,
-        acts,
-        choiceAct: preview ? preview.alternate.choiceAct : script.choiceAct,
-        closing: preview ? preview.alternate.closing : script.closing
-      },
-      aiDiff: preview ? preview.diff : null
-    });
-  },
-  generateAI() {
-    if (this.data.aiBusy || !this.data.script || !this.data.chart) return;
-    const choiceText = String(this.data.choiceText || "");
-    if (/自杀|自残|不想活|结束生命|伤害自己|活不下去/i.test(choiceText)) {
-      wx.showModal({
-        title: "先停一下",
-        content: "这段文字不适合继续生成。如果你正在经历很难的时刻，请先联系身边的人或当地求助热线。",
-        showCancel: false,
-        confirmText: "知道了"
-      });
-      return;
-    }
-    const chart = this.data.chart;
-    const script = this.data.script;
-    const safeChart = {
-      pillars: chart.pillars,
-      counts: chart.counts,
-      dayMasterStem: chart.dayMasterStem,
-      dominantLabel: chart.dominantLabel,
-      weakestLabel: chart.weakestLabel,
-      monthJie: chart.monthJie,
-      timeUnknown: chart.timeUnknown
-    };
-    const place = String(this.data.birthPlace || "").trim();
-    const safeScript = {
-      title: script.title,
-      acts: script.acts.map((act) => ({
-        label: act.label,
-        text: place ? String(act.text).split(place).join("出生地") : act.text
-      })),
-      choiceAct: script.choiceAct,
-      closing: script.closing
-    };
-    const choice = this.data.hasChoice
-      ? { theme: CHOICE_THEMES[this.data.choiceThemeIndex], stage: CHOICE_STAGES[this.data.choiceStageIndex] }
-      : null;
-    const requestId = Date.now() + Math.random();
-    this.aiRequestId = requestId;
-    this.setData({ aiBusy: true, aiError: "", aiFallback: false });
-    if (this.aiTimer) clearTimeout(this.aiTimer);
-    this.aiTimer = setTimeout(() => {
-      if (this.aiRequestId === requestId) this.applyFallback();
-    }, 28000);
-    ai.generate({ chart: safeChart, script: safeScript, choice })
-      .then((data) => {
-        if (this.aiRequestId !== requestId) return;
-        const valid = data && data.title && data.prologue && data.choiceAct && data.closing
-          && Array.isArray(data.acts) && data.acts.length === 3
-          && data.acts.every((act) => act && act.label && act.text);
-        if (!valid) {
-          this.applyFallback();
-          return;
-        }
-        const diff = data.diff && data.diff.summary
-          ? {
-            summary: {
-              gained: Array.isArray(data.diff.summary.gained) ? data.diff.summary.gained : [],
-              lost: Array.isArray(data.diff.summary.lost) ? data.diff.summary.lost : [],
-              unchanged: Array.isArray(data.diff.summary.unchanged) ? data.diff.summary.unchanged : []
-            },
-            sections: Array.isArray(data.diff.sections) ? data.diff.sections : []
-          }
-          : null;
-        if (this.aiTimer) clearTimeout(this.aiTimer);
-        this.aiTimer = null;
-        this.aiRequestId = 0;
-        this.setData({
-          aiBusy: false,
-          aiError: "",
-          aiFallback: false,
-          aiScript: data,
-          aiDiff: diff
-        });
-        wx.pageScrollTo({ scrollTop: 0, duration: 0 });
-      })
-      .catch(() => {
-        if (this.aiRequestId !== requestId) return;
-        this.applyFallback();
-      });
   },
   openHistory(event) {
     const id = String(event.currentTarget.dataset.id || "");
@@ -370,19 +256,12 @@ Page({
       view: "result",
       chart: item.chart,
       script: item.script,
-      aiScript: null,
-      aiDiff: null,
-      aiFallback: false,
-      aiError: "",
-      choicePreview: null
+              choicePreview: null
     });
     wx.pageScrollTo({ scrollTop: 0, duration: 0 });
   },
   editAgain() {
-    this.aiRequestId = 0;
-    if (this.aiTimer) clearTimeout(this.aiTimer);
-    this.aiTimer = null;
-    this.setData({ view: "setup", chart: null, script: null, aiScript: null, aiDiff: null, aiFallback: false, aiError: "", choicePreview: null, error: "" });
+    this.setData({ view: "setup", chart: null, script: null, choicePreview: null, error: "" });
     wx.pageScrollTo({ scrollTop: 0, duration: 0 });
   },
   copyScript() {

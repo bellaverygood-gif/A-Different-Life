@@ -39,7 +39,7 @@
     </view>
 
     <view class="m1-trust">
-      <text>不用登录。你写下的内容只保存在本机。读完大约 2 分钟。</text>
+      <text>你写下的内容只保存在本机。读完大约 2 分钟。</text>
     </view>
 
     <view class="m1-note">

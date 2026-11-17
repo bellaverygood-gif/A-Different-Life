@@ -1,5 +1,3 @@
-const store = require("./utils/store");
-
 App({
   onLaunch() {
     let statusBarHeight = 20;
@@ -13,7 +11,6 @@ App({
     }
     this.globalData.statusBarHeight = statusBarHeight;
     this.globalData.windowWidth = windowWidth;
-    store.bumpVisit();
   },
   globalData: {
     statusBarHeight: 20,

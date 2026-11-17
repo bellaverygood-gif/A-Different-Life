@@ -70,21 +70,6 @@
 
     <view class="privacy-section">
       <text class="privacy-index">07</text>
-      <text class="privacy-heading serif">关于微信登录</text>
-      <text class="privacy-text">当前版本不需要微信登录，也不会获取你的微信身份标识。</text>
-      <text class="privacy-text">如果后续开放云端备份，会在使用前单独说明用途并征得同意。</text>
-    </view>
-
-    <view class="privacy-section">
-      <text class="privacy-index">08</text>
-      <text class="privacy-heading serif">AI 个性化生成（内测）</text>
-      <text class="privacy-text">只有在你主动点击“生成个性化剧本”时，小程序才会调用云函数，把匿名的剧本摘要、剧本骨架和选择主题发送给 AI 服务。</text>
-      <text class="privacy-text">不会发送出生日期、出生地、你写的选择原句、昵称或微信身份标识。AI 输出只用于当次展示，不用于训练。</text>
-      <text class="privacy-text">AI 可能出错，也可能生成不准确的内容；它不是预测，不构成医疗、投资、婚恋或职业建议。</text>
-    </view>
-
-    <view class="privacy-section">
-      <text class="privacy-index">09</text>
       <text class="privacy-heading serif">联系与更新</text>
       <text class="privacy-text">如果这份说明有更新，我们会在小程序内更新“最后更新”日期。</text>
       <text class="privacy-text">如对数据处理有疑问，可以通过小程序资料页中展示的开发者联系方式联系开发者。</text>

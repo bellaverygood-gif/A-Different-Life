@@ -93,7 +93,7 @@
             </view>
             <textarea class="script-choice-input" value="{{choiceText}}" maxlength="80" placeholder="当时你选了什么？一句话" placeholder-class="script-placeholder" bindinput="onChoiceTextInput" />
             <textarea class="script-choice-input" value="{{choiceGivenUp}}" maxlength="80" placeholder="你放弃了什么？可不填" placeholder-class="script-placeholder" bindinput="onChoiceGivenUpInput" />
-            <text class="script-choice-note">原句只保存在本机，不上传 AI。</text>
+            <text class="script-choice-note">原句只保存在本机。</text>
           </block>
         </view>
 
@@ -184,7 +184,7 @@
       <view wx:if="{{choicePreview}}" class="script-section script-ab">
         <text class="eyebrow">选择改写 · 本地预览</text>
         <text class="script-section-title serif">另一条路，会不一样，但不一定更好</text>
-        <text class="script-small-note">{{choicePreview.theme}} · {{choicePreview.stage}} · 本地规则预览，不发送 AI</text>
+        <text class="script-small-note">{{choicePreview.theme}} · {{choicePreview.stage}} · 本地规则预览</text>
 
         <view class="script-ab-block">
           <text class="script-ab-label">A · 原来这条路</text>
@@ -202,48 +202,6 @@
           <view class="script-diff-row"><text>没有变</text><text>{{choicePreview.diff.summary.unchanged.join('、')}}</text></view>
         </view>
         <text class="script-choice-note">这不是预测，也不是“更好的版本”。只是把另一条路写出来看看。</text>
-      </view>
-
-      <view class="script-section script-ai">
-        <text class="eyebrow">内测 · 个性化</text>
-        <text class="script-section-title serif">让 AI 把这份剧本写得更具体</text>
-        <text class="script-ai-copy">AI 是可选增强。没有 Key、模型超时或返回异常时，会自动使用本地兜底文案，免费剧本不会中断。只发送匿名摘要，不发送出生日期、地点、原句或微信身份。</text>
-        <view class="btn btn-primary script-ai-btn" bindtap="generateAI">{{aiBusy ? '正在生成…' : '生成增强版（可选）'}}</view>
-        <text wx:if="{{aiFallback}}" class="script-ai-fallback">这次模型没有返回，先用本地兜底文案。你仍然可以继续读免费剧本。</text>
-        <text wx:if="{{aiError}}" class="script-error">{{aiError}}</text>
-
-        <block wx:if="{{aiScript}}">
-          <view class="script-ai-result">
-            <text class="script-ai-kicker">AI 剧本</text>
-            <text class="script-result-title serif">{{aiScript.title}}</text>
-            <text class="script-ai-prologue">{{aiScript.prologue}}</text>
-            <view wx:for="{{aiScript.acts}}" wx:key="label" class="script-act">
-              <text class="script-act-label">{{item.label}}</text>
-              <text class="script-act-text">{{item.text}}</text>
-            </view>
-            <view class="script-choice">
-              <text class="script-act-label">不由星辰决定的一幕</text>
-              <text class="script-act-text">{{aiScript.choiceAct}}</text>
-            </view>
-            <text class="script-closing">{{aiScript.closing}}</text>
-          </view>
-
-          <view wx:if="{{aiDiff && aiDiff.summary}}" class="script-diff">
-            <text class="script-diff-title">选择改写 · 差异</text>
-            <view class="script-diff-row">
-              <text>得到</text>
-              <text>{{aiDiff.summary.gained.join('、')}}</text>
-            </view>
-            <view class="script-diff-row">
-              <text>失去</text>
-              <text>{{aiDiff.summary.lost.join('、')}}</text>
-            </view>
-            <view class="script-diff-row">
-              <text>没有变</text>
-              <text>{{aiDiff.summary.unchanged.join('、')}}</text>
-            </view>
-          </view>
-        </block>
       </view>
 
       <view class="script-actions">
