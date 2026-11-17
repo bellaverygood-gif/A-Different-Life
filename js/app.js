@@ -99,7 +99,7 @@
   }
 
   function header(active) {
-    const items = [["home", "首页"], ["blind", "抽一个人生"], ["script", "看自己的剧本"], ["privacy", "说明"]];
+    const items = [["home", "首页"], ["blind", "抽一个人生"], ["script", "看自己的剧本"]];
     const overlay = active === "home" ? " nav-overlay" : " nav-paper";
     return `<header class="site-nav${overlay}">
       <a class="nav-brand" href="#/home">
@@ -117,13 +117,13 @@
 
   function footer() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
-    const tabs = [["home", "首页", "spark"], ["blind", "盲盒", "dice"], ["script", "剧本", "book"], ["privacy", "说明", "shield"]];
+    const tabs = [["home", "首页", "spark"], ["blind", "抽人生", "dice"], ["script", "看剧本", "book"]];
     const nav = route === "home" ? "" : `<nav class="bottom-nav" aria-label="底部导航">
       ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
     </nav>`;
     return `${nav}<footer class="home-footer shell-wide">
       <span>此生之外 · 虚构人物故事</span>
-      <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">隐私说明</a></span>
+      <span><a href="#/agreement">用户协议</a> · <a href="#/privacy">说明</a></span>
     </footer>`;
   }
 
@@ -139,7 +139,7 @@
             <div class="cin-hero-copy">
               <span class="cin-kicker">此生之外 · 虚构人物故事</span>
               <h1>从出生，<br>读到后来。</h1>
-              <p>抽一个盲盒，读完一个人的一生。不是预测，也不是你的另一种结局。</p>
+              <p>抽一个人生，读完一个人的一生。不是预测，也不评判任何人的选择。</p>
               <div class="cin-cta">
                 <a class="cin-btn cin-btn-primary" href="#/blind">抽一个人生</a>
                 <a class="cin-btn cin-btn-ghost" href="#/script">看自己的剧本</a>
@@ -148,7 +148,6 @@
             <aside class="cin-hero-side">
               <div><strong>${LIVES.length}</strong><span>段虚构人生</span></div>
               <div><strong>约 2 分钟</strong><span>读完一段</span></div>
-              <div><strong>无需登录</strong><span>先读，再决定</span></div>
             </aside>
           </div>
           <a class="cin-scroll" href="#cin-about"><span>向下探索</span><i>↓</i></a>
@@ -158,19 +157,19 @@
           <span class="cin-label">01 / 核心体验</span>
           <div class="cin-about-grid">
             <h2>两条路径，<br>读完一段人生。</h2>
-            <p>不是给你一个答案，而是把一段完整的人生摊开。你可以随机遇见一个人，也可以输入自己的出生信息，读一份文化叙事剧本。</p>
+            <p>不是给你一个答案，而是把一段完整的人生摊开。你可以随机遇见一个人，也可以输入自己的出生信息，写一份只属于自己的剧本。</p>
           </div>
         </section>
 
         <section class="cin-features">
           <a class="cin-feature" href="#/blind">
             <span class="cin-feature-num">01</span>
-            <div><span class="cin-label">盲盒人生</span><h3>抽一个人生</h3><p>从出生读到后来。没有分支，也不需要你选择结局。</p><span class="cin-link">打开盲盒 <i>→</i></span></div>
+            <div><span class="cin-label">一段人生</span><h3>抽一个人生</h3><p>从出生读到后来。没有分支，也不需要你选择结局。</p><span class="cin-link">开始阅读 <i>→</i></span></div>
             <span class="cin-feature-arrow" aria-hidden="true">↗</span>
           </a>
           <a class="cin-feature" href="#/script">
             <span class="cin-feature-num">02</span>
-            <div><span class="cin-label">剧本人生</span><h3>看自己的剧本</h3><p>输入出生信息，读一份文化叙事剧本。不是预测。</p><span class="cin-link">进入剧本 <i>→</i></span></div>
+            <div><span class="cin-label">自己的剧本</span><h3>看自己的剧本</h3><p>用你的出生日子，写一份只属于自己的剧本。还可以写下一个你偶尔会想起的选择。</p><span class="cin-link">开始写 <i>→</i></span></div>
             <span class="cin-feature-arrow" aria-hidden="true">↗</span>
           </a>
         </section>
@@ -187,7 +186,7 @@
           </div>
         </section>
 
-        <div class="cin-foot-note">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</div>
+        <div class="cin-foot-note">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</div>
       </div>
       ${footer()}`;
   }
@@ -210,21 +209,21 @@
   }
 
   function blindPage() {
-    document.title = "盲盒人生 · 此生之外";
+    document.title = "抽一个人生 · 此生之外";
     const store = blindStore();
     const last = LIVES.find((item) => item.id === store.lastId);
     return `${header("blind")}
       <div class="shell-wide">
         <section class="blind-setup">
           <div class="blind-mark">◉</div>
-          <span class="eyebrow">盲盒人生 · 18 段虚构人生 · L0—L1</span>
+          <span class="eyebrow">抽一个人生 · 18 段虚构人生</span>
           <h1 class="blind-title">抽一个人生，<span class="gold">从出生读到后来。</span></h1>
-          <p class="blind-lede">不是你的另一种结局，也不是预测。只是一个陌生人的一生，恰好被你打开。</p>
+          <p class="blind-lede">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生。</p>
           <div class="blind-actions">
             <button class="btn btn-primary" data-draw>抽取一条人生 <span>✦</span></button>
             <a class="btn btn-ghost" href="#/home">回到首页</a>
           </div>
-          <p class="blind-hint">${last ? `上次读到：${esc(last.name)} · ${esc(last.province)}` : "一个盲盒里，是一条完整的人生。"}</p>
+          <p class="blind-hint">${last ? `上次读到：${esc(last.name)} · ${esc(last.province)}` : "一个人生里，是几个可以慢慢读的阶段。"}</p>
           <div class="blind-notes">
             <div class="note-row"><span class="note-k">读什么</span><span class="note-v">出生、另一半、事业、子女、财富、寿命</span></div>
             <div class="note-row"><span class="note-k">怎么读</span><span class="note-v">没有分支，不需要你选择结局</span></div>
@@ -248,7 +247,7 @@
       <article class="shell-wide">
         <header class="life-hero">
           <div class="life-hero-art" aria-hidden="true"><img src="assets/mode-blind.jpg" alt=""></div>
-          <span class="eyebrow">盲盒人生 · 已拆封</span>
+          <span class="eyebrow">抽一个人生 · 已打开</span>
           <div class="life-meta"><span>${esc(life.province)}</span><span>${esc(life.years)}</span><span>${esc(life.gender)}</span></div>
           <h1 class="life-name">${esc(life.name)}</h1>
           <p class="life-one-line">${esc(life.oneLine)}</p>
@@ -289,7 +288,7 @@
           </div>
           <div class="life-actions">
             <button class="btn btn-primary" data-draw-again>再抽一个</button>
-            <a class="btn btn-ghost" href="#/blind">返回盲盒</a>
+            <a class="btn btn-ghost" href="#/blind">返回</a>
           </div>
           <div class="bottom-links"><a href="#/home">回到首页</a><span>·</span><a href="#/privacy">隐私说明</a></div>
           <span class="disclaimer">所有人物与故事均为虚构。不是真实统计，不是预测，也不构成医疗、投资或决策建议。</span>
@@ -402,7 +401,7 @@
     wrapCanvasText(ctx, "不是预测，不是真实统计，也不构成医疗、投资或决策建议。", 82, 858, W - 164, 30, 2);
     ctx.fillStyle = "#cdb488";
     ctx.font = "20px serif";
-    ctx.fillText("一个盲盒，一条完整的人生。", 82, 944);
+    ctx.fillText("抽一个人生，读完一个人的一生。", 82, 944);
     cardData = canvas.toDataURL("image/jpeg", 0.92);
     const box = document.getElementById("cardAction");
     if (box) {
@@ -431,7 +430,7 @@
     return `${header("script")}
       <div class="shell-wide">
         <section class="page-head">
-          <div><span class="eyebrow">剧本人生 · 文化叙事</span><h1>看一份自己的剧本</h1><p class="page-lede">输入出生信息，读一份文化叙事剧本。不是命理判断，也不是对未来的预测。</p></div>
+          <div><span class="eyebrow">你的剧本</span><h1>看一份自己的剧本</h1><p class="page-lede">输入出生信息，写一份只属于自己的剧本。不是预测，也不是对未来的判断。</p></div>
           <a class="back-link" href="#/home">回到首页 →</a>
         </section>
         <form class="form-card" id="scriptForm">
@@ -468,7 +467,7 @@
           <span class="form-note">支持公历 / 农历、闰月；按出生地城市经度 + 均时差校正。未做流年。出生信息只保存在本机。</span>
         </form>
         ${history.length ? `<div class="history"><span class="eyebrow">最近生成</span><div class="history-list">${history.map((item) => `<button class="history-row" data-script-history="${esc(item.id)}"><span class="history-main"><span class="history-name">${esc(item.script ? item.script.title : "一份剧本")}</span><span class="history-meta">${esc(item.chart ? item.chart.dayMasterLabel : "")}日主 · ${esc(item.birthDate || "")} · ${esc(formatDate(item.date))}</span></span><span class="history-emotion">→</span></button>`).join("")}</div></div>` : ""}
-        <span class="disclaimer">文化叙事视角，不是预测，不构成医疗、投资、婚恋或职业建议。</span>
+        <span class="disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</span>
       </div>
       ${footer()}`;
   }
@@ -573,7 +572,7 @@
     const { chart, script, choicePreview } = item;
     return `${header("script")}
       <div class="shell-wide">
-        <div class="page-head"><div><span class="eyebrow">你的剧本 · 文化叙事</span><h1 class="script-headline">${esc(script.title)}</h1><p class="script-prologue">${esc(script.prologue)}</p><span class="script-chart-line">${esc(script.chartLine)}</span></div><button class="back-link" data-edit-script>重新输入 →</button></div>
+        <div class="page-head"><div><span class="eyebrow">你的剧本</span><h1 class="script-headline">${esc(script.title)}</h1><p class="script-prologue">${esc(script.prologue)}</p><span class="script-chart-line">${esc(script.chartLine)}</span></div><button class="back-link" data-edit-script>重新输入 →</button></div>
         <div class="section">
           <span class="eyebrow">命盘摘要</span><h2 class="section-title">四柱与五行</h2>
           <div class="chart-grid ${chart.timeUnknown ? "is-three" : ""}">${chart.pillars.map((pillar) => `<div class="chart-pillar"><span class="chart-pillar-label">${esc(pillar.label)}</span><span class="chart-pillar-value">${esc(pillar.value)}</span></div>`).join("")}</div>
@@ -583,7 +582,7 @@
           ${chart.calendarNote ? `<span class="chart-meta">${esc(chart.calendarNote)}</span>` : ""}
           <span class="chart-meta">真太阳时：${esc(chart.trueSolarTime)}。${chart.solarCorrection ? `已校正 ${esc(chart.solarCorrection.minutes)} 分钟` : "未识别出生地城市，按北京时间"}</span>
         </div>
-        ${chart.dayun ? `<div class="section"><span class="eyebrow">大运 · 简化</span><h2 class="section-title">${esc(chart.dayun.direction)} · ${esc(chart.dayun.startText)}</h2><div class="chart-grid">${chart.dayun.cycles.map((cycle) => `<div class="chart-pillar"><span class="chart-pillar-label">${esc(cycle.label)}</span><span class="chart-pillar-value">${esc(cycle.ganZhi)}</span></div>`).join("")}</div><span class="small-note">按三天折一年估算起运，未做流年；只作文化叙事。</span></div>` : ""}
+        ${chart.dayun ? `<div class="section"><span class="eyebrow">大运 · 简化</span><h2 class="section-title">${esc(chart.dayun.direction)} · ${esc(chart.dayun.startText)}</h2><div class="chart-grid">${chart.dayun.cycles.map((cycle) => `<div class="chart-pillar"><span class="chart-pillar-label">${esc(cycle.label)}</span><span class="chart-pillar-value">${esc(cycle.ganZhi)}</span></div>`).join("")}</div><span class="small-note">按三天折一年估算起运，未做流年；只作叙事参考。</span></div>` : ""}
         <div class="section">
           <span class="eyebrow">剧本</span>
           ${script.acts.map((act) => `<div class="act"><span class="act-label">${esc(act.label)}</span><span class="act-text">${esc(act.text)}</span></div>`).join("")}
@@ -638,17 +637,17 @@
   function legalPage(kind) {
     const agreement = kind === "agreement";
     const sections = agreement ? [
-      ["01", "服务说明", "「此生之外」提供虚构人物故事、文化叙事剧本、情绪自评和可选的本地增强。所有人物、事件、金额、命盘摘要与剧本均为虚构或文化叙事，不是对现实个人或未来的预测。"],
+      ["01", "服务说明", "「此生之外」提供虚构人物故事、剧本、情绪自评和可选的本地增强。所有人物、事件、金额、命盘摘要与剧本均为虚构叙事，不是对现实个人或未来的预测。"],
       ["02", "不构成专业建议", "本服务不构成医疗、心理、法律、投资、婚恋、职业或其他专业建议。不要依据本服务做出重大现实决定。如你正在经历心理危机，请优先联系身边可信任的人、当地急救或专业机构。"],
       ["03", "使用条件", "你需要年满 18 周岁，或在监护人指导下使用。你应具备独立判断能力，并自行承担使用本服务产生的选择与后果。"],
-      ["04", "你填写的信息", "盲盒阅读不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在浏览器本机。"],
+      ["04", "你填写的信息", "阅读一段人生不需要填写个人信息。看自己的剧本会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在浏览器本机。"],
       ["05", "本地增强", "网页端暂未接入外部 AI。点击增强版时只使用本地兜底文案，不会上传出生日期、地点或选择原句。"],
       ["06", "禁止行为", "不得利用本服务从事违法活动、骚扰他人、冒充他人、批量抓取内容、反向工程、绕过限制，或将本服务内容用于虚假宣传、医疗诊断、投资承诺等场景。"],
       ["07", "内容与知识产权", "小程序和网页内的文本、视觉、结构、人物卡与剧本内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。"],
       ["08", "免责声明", "本服务按现状提供。开发者不为内容的完整性、准确性、适用性作保证，也不对因使用本服务产生的间接损失承担责任。"],
       ["09", "变更与联系", "协议可能随功能更新而调整，更新后会在本页标注日期。继续使用即表示接受更新后的协议。"]
     ] : [
-      ["01", "保存哪些信息", "盲盒记录、情绪自评、剧本出生信息（日期、时间、地点、性别）、命盘摘要和剧本正文。出生信息只在你使用剧本时保存。"],
+      ["01", "保存哪些信息", "阅读记录、情绪自评、剧本出生信息（日期、时间、地点、性别）、命盘摘要和剧本正文。出生信息只在你使用剧本时保存。"],
       ["02", "保存在哪里", "以上内容只保存在当前浏览器的 localStorage 中。网页端没有账号系统，不会把这些内容上传到服务器。"],
       ["03", "为什么保存", "用于恢复最近阅读、再次打开剧本、显示本机阅读条数和判断内容体验。"],
       ["04", "保存多久、怎么删除", "保存在本机，直到你清除浏览器站点数据或手动清除本地记录。清除后无法恢复。"],
@@ -680,9 +679,9 @@
       <button class="login-close" type="button" aria-label="关闭">×</button>
       <span class="cin-label">登录</span>
       <h2 id="loginTitle">微信扫码登录</h2>
-      <p>登录用于识别你的微信身份。当前不做云备份，阅读记录仍只保存在本机。</p>
+      <p>微信扫码登录正在接入小程序登录桥。接入前，阅读记录只保存在本机。</p>
       <div class="login-qr-placeholder"><span>微信扫码登录</span><small>小程序登录桥接入后在此显示二维码</small></div>
-      <button class="btn btn-ghost login-later" type="button">先不登录，继续阅读</button>
+      <button class="btn btn-ghost login-later" type="button">关闭</button>
     </div>`;
     document.body.appendChild(overlay);
     const close = () => overlay.remove();

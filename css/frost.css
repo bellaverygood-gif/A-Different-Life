@@ -912,3 +912,86 @@ body::before {
   background:
     linear-gradient(180deg, rgba(69, 96, 75, 0.84), rgba(43, 66, 50, 0.72));
 }
+
+/* scale buttons with the page hierarchy */
+.cin-btn {
+  min-width: 156px;
+  min-height: 52px;
+  padding: 0 30px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+
+.btn {
+  min-height: 46px;
+  padding: 0 24px;
+  font-size: 13px;
+}
+
+.form-submit,
+.btn-block {
+  min-height: 52px;
+  font-size: 14px;
+}
+
+.card-action .btn,
+.life-actions .btn,
+.script-actions .btn {
+  min-height: 48px;
+  font-size: 13px;
+}
+
+.emotion-btn {
+  min-height: 44px;
+  font-size: 12px;
+}
+
+.life-card-btn {
+  min-height: 48px;
+  font-size: 13px;
+}
+
+.nav-cta {
+  min-height: 38px;
+  padding: 0 18px;
+  font-size: 11px;
+}
+
+.back-link {
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.login-later {
+  min-height: 46px;
+}
+
+@media (max-width: 900px) {
+  .cin-btn {
+    min-width: 0;
+    min-height: 48px;
+    flex: 1;
+    padding: 0 16px;
+    font-size: 13px;
+  }
+  .btn {
+    min-height: 46px;
+    padding: 0 20px;
+    font-size: 13px;
+  }
+  .form-submit,
+  .btn-block {
+    min-height: 50px;
+    font-size: 14px;
+  }
+  .nav-cta {
+    min-height: 34px;
+    padding: 0 13px;
+    font-size: 10px;
+  }
+  .card-action .btn,
+  .life-actions .btn,
+  .script-actions .btn {
+    min-height: 46px;
+  }
+}
