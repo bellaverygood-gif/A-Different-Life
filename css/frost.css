@@ -716,3 +716,31 @@ body::before {
   .cin-feature { grid-template-columns: 32px minmax(0, 1fr) 20px; }
   .login-panel { padding: 24px 20px; }
 }
+
+/* fix: paragraph selectors broke when copy was wrapped for the hero side stats */
+.cin-hero-copy > p {
+  max-width: 560px;
+  margin: 18px auto 0;
+  color: var(--frost-muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.cin-hero-copy > .cin-kicker { color: var(--frost-rose); }
+
+@media (max-width: 900px) {
+  .cin-hero-copy > p { max-width: 340px; font-size: 12px; }
+}
+
+/* the hero should occupy the full content band, not float as a narrow card */
+.cin-hero { min-height: 660px; }
+.cin-hero-content {
+  width: min(1180px, calc(100% - 56px));
+  grid-template-columns: minmax(0, 1fr) 190px;
+  padding: 50px 56px;
+}
+@media (max-width: 900px) {
+  .cin-hero { min-height: 640px; }
+  .cin-hero-content { width: calc(100% - 32px); padding: 30px 22px 28px; }
+}
