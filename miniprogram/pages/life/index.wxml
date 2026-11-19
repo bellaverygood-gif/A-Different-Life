@@ -5,7 +5,6 @@
     <view class="life-setup">
       <image class="life-cover" src="/assets/mode-blind.jpg" mode="aspectFill" />
       <view class="life-setup-mark">◉</view>
-      <text class="eyebrow">抽一个人生 · {{livesCount}} 段虚构人生</text>
       <view class="life-setup-title serif">
         <text>抽一个人生，</text>
         <text class="gold">从出生读到后来。</text>
@@ -14,8 +13,6 @@
 
       <view class="life-setup-action">
         <view class="btn btn-primary" bindtap="drawLife">抽盲盒人生 <text>✦</text></view>
-        <text wx:if="{{lastLifeName}}" class="life-last">上次读到：{{lastLifeName}}</text>
-        <text wx:else class="life-last">一个人生里，是几个可以慢慢读的阶段。</text>
       </view>
 
       <view class="life-setup-notes">
@@ -26,10 +23,6 @@
         <view class="life-note-row">
           <text class="life-note-k">怎么读</text>
           <text class="life-note-v">没有分支，也不需要你选择结局</text>
-        </view>
-        <view class="life-note-row">
-          <text class="life-note-k">本机记录</text>
-          <text class="life-note-v">{{historyCount}} / 20</text>
         </view>
       </view>
 
