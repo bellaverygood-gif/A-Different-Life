@@ -43,7 +43,8 @@ function dateLabel(value) {
 }
 
 function decorateHistory(history) {
-  return (Array.isArray(history) ? history : []).map((item) => ({
+  // 最近生成只展示最近 3 条，完整记录仍保存在本机
+  return (Array.isArray(history) ? history : []).slice(0, 3).map((item) => ({
     ...item,
     dateLabel: dateLabel(item.date),
     title: item.script && item.script.title ? item.script.title : "一段故事",
