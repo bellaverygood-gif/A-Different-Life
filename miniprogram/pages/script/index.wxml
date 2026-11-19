@@ -3,6 +3,7 @@
 
   <block wx:if="{{view === 'setup'}}">
     <view class="script-setup">
+      <image class="script-cover" src="/assets/story-love.jpg" mode="aspectFill" />
       <text class="eyebrow">与你有关的故事 · 虚构叙事</text>
       <view class="script-title serif">
         <text>写一段与你有关的故事，</text>
@@ -128,14 +129,19 @@
 
   <block wx:if="{{view === 'result' && chart && script}}">
     <view class="script-result-hero">
-      <text class="eyebrow">你的故事 · 虚构叙事</text>
-      <text class="script-result-title serif">{{script.title}}</text>
-      <text class="script-result-prologue">{{script.prologue}}</text>
-      <text class="script-chart-line">{{script.chartLine}}</text>
+      <image class="script-hero-img" src="/assets/story-camera.jpg" mode="aspectFill" />
+      <view class="script-hero-shade"></view>
+      <view class="script-hero-inner">
+        <text class="eyebrow">你的故事 · 虚构叙事</text>
+        <text class="script-result-title serif">{{script.title}}</text>
+        <text class="script-result-prologue">{{script.prologue}}</text>
+        <text class="script-chart-line">{{script.chartLine}}</text>
+      </view>
     </view>
 
     <view class="script-body shell">
       <view class="script-section">
+        <image class="script-deco" src="/assets/story-career.jpg" mode="aspectFill" />
         <text class="eyebrow">命盘故事摘要</text>
         <text class="script-section-title serif">四柱与五行</text>
         <view class="script-pillars {{chart.timeUnknown ? 'is-three' : ''}}">
@@ -157,6 +163,7 @@
       </view>
 
       <view wx:if="{{chart.dayun}}" class="script-section">
+        <image class="script-deco" src="/assets/story-health.jpg" mode="aspectFill" />
         <text class="eyebrow">大运 · 简化</text>
         <text class="script-section-title serif">{{chart.dayun.direction}} · {{chart.dayun.startText}}</text>
         <view class="script-dayun">
@@ -169,6 +176,7 @@
       </view>
 
       <view class="script-section">
+        <image class="script-deco" src="/assets/story-love.jpg" mode="aspectFill" />
         <text class="eyebrow">故事</text>
         <view wx:for="{{script.acts}}" wx:key="label" class="script-act">
           <text class="script-act-label">{{item.label}}</text>
@@ -183,6 +191,7 @@
       </view>
 
       <view wx:if="{{choicePreview}}" class="script-section script-ab">
+        <image class="script-deco" src="/assets/mode-blind.jpg" mode="aspectFill" />
         <text class="eyebrow">选择改写 · 本地预览</text>
         <text class="script-section-title serif">另一条路，会不一样，但不一定更好</text>
         <text class="script-small-note">{{choicePreview.theme}} · {{choicePreview.stage}} · 本地规则预览</text>

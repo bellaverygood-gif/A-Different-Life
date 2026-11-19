@@ -3,6 +3,7 @@
 
   <block wx:if="{{view === 'setup'}}">
     <view class="life-setup">
+      <image class="life-cover" src="/assets/mode-blind.jpg" mode="aspectFill" />
       <view class="life-setup-mark">◉</view>
       <text class="eyebrow">抽一个人生 · {{livesCount}} 段虚构人生</text>
       <view class="life-setup-title serif">
@@ -55,17 +56,22 @@
 
   <block wx:if="{{view === 'result' && life}}">
     <view class="life-result-hero">
-      <text class="eyebrow">抽一个人生 · 已打开</text>
-      <view class="life-result-meta">
-        <text>{{life.province}}</text>
-        <text>{{life.gender}}</text>
+      <image class="life-hero-img" src="/assets/mode-blind.jpg" mode="aspectFill" />
+      <view class="life-hero-shade"></view>
+      <view class="life-hero-inner">
+        <text class="eyebrow">抽一个人生 · 已打开</text>
+        <view class="life-result-meta">
+          <text>{{life.province}}</text>
+          <text>{{life.gender}}</text>
+        </view>
+        <text class="life-name serif">{{life.name}}</text>
+        <text class="life-one-line">{{life.oneLine}}</text>
       </view>
-      <text class="life-name serif">{{life.name}}</text>
-      <text class="life-one-line">{{life.oneLine}}</text>
     </view>
 
     <view class="life-body shell">
       <view class="life-section">
+        <image class="life-deco" src="/assets/story-camera.jpg" mode="aspectFill" />
         <text class="eyebrow">骨架</text>
         <text class="life-section-title serif">这一段人生的起点</text>
         <view class="life-skeleton">
@@ -77,6 +83,7 @@
       </view>
 
       <view class="life-section">
+        <image class="life-deco" src="/assets/story-love.jpg" mode="aspectFill" />
         <text class="eyebrow">逐段阅读</text>
         <text class="life-section-title serif">从早年，到后来</text>
         <view class="life-fragments">
@@ -88,11 +95,13 @@
       </view>
 
       <view class="life-section life-landing">
+        <image class="life-deco" src="/assets/story-career.jpg" mode="aspectFill" />
         <text class="eyebrow">一句落点</text>
         <text class="life-landing-text serif">{{life.landing}}</text>
       </view>
 
       <view class="life-section life-emotion">
+        <image class="life-deco" src="/assets/story-health.jpg" mode="aspectFill" />
         <text class="eyebrow">读完之后</text>
         <text class="life-section-title serif">这一生，让你更轻松还是更沉重？</text>
         <view class="life-emotion-row">
