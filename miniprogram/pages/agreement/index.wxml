@@ -14,7 +14,7 @@
     <view class="agreement-section">
       <text class="agreement-index">01</text>
       <text class="agreement-heading serif">服务说明</text>
-      <text class="agreement-text">「此生之外」提供虚构人物故事、剧本、情绪自评和分享图。所有人物、事件、金额、命盘摘要与剧本均为虚构或虚构叙事，不是对现实个人或未来的预测。</text>
+      <text class="agreement-text">「此生之外」提供虚构人物故事、写自己的故事、情绪自评和分享图。所有人物、事件、金额与故事内容均为虚构叙事，不是对现实个人或未来的预测。</text>
     </view>
 
     <view class="agreement-section">
@@ -32,13 +32,13 @@
     <view class="agreement-section">
       <text class="agreement-index">04</text>
       <text class="agreement-heading serif">你填写的信息</text>
-      <text class="agreement-text">阅读一段人生不需要填写个人信息。剧本人生会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在本机。</text>
+      <text class="agreement-text">阅读一段人生不需要填写个人信息。写自己的故事会请你填写日期、时间、地点和性别，用于本地生成虚构故事；这些信息默认只保存在本机。</text>
     </view>
 
     <view class="agreement-section">
       <text class="agreement-index">05</text>
       <text class="agreement-heading serif">分享图</text>
-      <text class="agreement-text">分享图只包含剧本开头 100 字和固定的小程序码，不包含出生日期、地点或你写的选择原句。</text>
+      <text class="agreement-text">分享图只包含故事开头 100 字和固定的小程序码，不包含日期、地点或你写的选择原句。</text>
       <text class="agreement-text">不要向输入框提交身份证号、联系方式、住址、病历、密码等敏感信息。</text>
     </view>
 
@@ -51,7 +51,7 @@
     <view class="agreement-section">
       <text class="agreement-index">07</text>
       <text class="agreement-heading serif">内容与知识产权</text>
-      <text class="agreement-text">小程序内的文本、视觉、结构、人物卡与剧本内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。</text>
+      <text class="agreement-text">小程序内的文本、视觉、结构、人物卡与故事内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。</text>
     </view>
 
     <view class="agreement-section">

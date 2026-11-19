@@ -13,8 +13,6 @@
   const BLIND_KEY = "parallel-life-web-blind";
   const SCRIPT_KEY = "parallel-life-web-script";
   const FORM_KEY = "parallel-life-web-script-form";
-  const AUTH_API = "https://cishengzhiwai-auth.bellaverygood.workers.dev";
-  const AUTH_KEY = "cishengzhiwai-auth-session";
 
   const LUNAR_YEARS = Array.from({ length: 161 }, (_, i) => String(1940 + i));
   const LUNAR_MONTHS = ["正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"];
@@ -101,25 +99,25 @@
   }
 
   function header(active) {
-    const items = [["home", "首页"], ["blind", "抽一个人生"], ["script", "看自己的剧本"]];
+    const items = [["home", "首页"], ["blind", "抽一个人生"], ["script", "看故事"]];
     const overlay = active === "home" ? " nav-overlay" : " nav-paper";
     return `<header class="site-nav${overlay}">
       <a class="nav-brand" href="#/home">
-        <span class="nav-seal">✦</span>
+        <img class="nav-seal nav-logo" src="assets/logo.png" alt="">
         <span class="nav-brand-text"><strong>此生之外</strong></span>
       </a>
       <nav class="nav-center" aria-label="主导航">
         ${items.map(([key, label]) => `<a href="#/${key}" class="${active === key ? "is-active" : ""}"><span>${label}</span></a>`).join("")}
       </nav>
       <div class="nav-right">
-        <button type="button" class="nav-cta" data-login>登录</button>
+        <button type="button" class="nav-cta" data-login>微信体验</button>
       </div>
     </header>`;
   }
 
   function footer() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
-    const tabs = [["home", "首页", "spark"], ["blind", "抽人生", "dice"], ["script", "看剧本", "book"]];
+    const tabs = [["home", "首页", "spark"], ["blind", "抽人生", "dice"], ["script", "看故事", "book"]];
     const nav = route === "home" ? "" : `<nav class="bottom-nav" aria-label="底部导航">
       ${tabs.map(([key, label, ico]) => `<a href="#/${key}" class="${route === key ? "is-active" : ""}">${icon(ico, 18)}<span>${label}</span></a>`).join("")}
     </nav>`;
@@ -140,11 +138,11 @@
           <div class="cin-hero-content">
             <div class="cin-hero-copy">
               <span class="cin-kicker">此生之外 · 虚构人物故事</span>
-              <h1>从出生，<br>读到后来。</h1>
-              <p>抽一个人生，读完一个人的一生。不是预测，也不评判任何人的选择。</p>
+              <h1>从年少，<br>读到后来。</h1>
+              <p>抽一个人生，读完一个虚构人物的几段生活。不评判任何人的选择。</p>
               <div class="cin-cta">
-                <a class="cin-btn cin-btn-primary" href="#/blind">抽一个人生</a>
-                <a class="cin-btn cin-btn-ghost" href="#/script">看自己的剧本</a>
+                <a class="cin-btn cin-btn-primary" href="#/blind">抽盲盒人生</a>
+                <a class="cin-btn cin-btn-ghost" href="#/script">看一段故事</a>
               </div>
             </div>
             <aside class="cin-hero-side">
@@ -159,7 +157,7 @@
           <span class="cin-label">01 / 核心体验</span>
           <div class="cin-about-grid">
             <h2>两条路径，<br>读完一段人生。</h2>
-            <p>不是给你一个答案，而是把一段完整的人生摊开。你可以随机遇见一个人，也可以输入自己的出生信息，写一份只属于自己的剧本。</p>
+            <p>不是给你一个答案，而是把一段完整的人生摊开。你可以随机遇见一个人，也可以从熟悉的时间与地方出发，写一段只属于自己的叙述。</p>
           </div>
         </section>
 
@@ -171,7 +169,7 @@
           </a>
           <a class="cin-feature" href="#/script">
             <span class="cin-feature-num">02</span>
-            <div><span class="cin-label">自己的剧本</span><h3>看自己的剧本</h3><p>用你的出生日子，写一份只属于自己的剧本。还可以写下一个你偶尔会想起的选择。</p><span class="cin-link">开始写 <i>→</i></span></div>
+            <div><span class="cin-label">自己的故事</span><h3>看一个与你有关的故事</h3><p>从你熟悉的时间与地方出发，写一段只属于你的叙述。也可以写下一个你偶尔会想起的选择。</p><span class="cin-link">开始写 <i>→</i></span></div>
             <span class="cin-feature-arrow" aria-hidden="true">↗</span>
           </a>
         </section>
@@ -179,7 +177,7 @@
         <section class="cin-people">
           <div class="cin-section-head"><span class="cin-label">02 / 人物卡</span><span class="cin-note">${LIVES.length} 段虚构人生</span></div>
           <div class="cin-people-grid">
-            ${picks.map((life, index) => `<a class="cin-person" href="#/blind">
+            ${picks.map((life, index) => `<a class="cin-person" href="#/blind?life=${encodeURIComponent(life.id)}">
               <div class="cin-person-img"><img src="assets/${["life-market.jpg", "life-workshop.jpg", "life-warehouse.jpg"][index]}" alt=""></div>
               <div class="cin-person-meta"><span>${esc(life.province)}</span><span>${esc(life.gender)}</span></div>
               <h3>${esc(life.name)}</h3>
@@ -188,7 +186,7 @@
           </div>
         </section>
 
-        <div class="cin-foot-note">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</div>
+        <div class="cin-foot-note">本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。</div>
       </div>
       ${footer()}`;
   }
@@ -222,12 +220,12 @@
           <h1 class="blind-title">抽一个人生，<span class="gold">从出生读到后来。</span></h1>
           <p class="blind-lede">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生。</p>
           <div class="blind-actions">
-            <button class="btn btn-primary" data-draw>抽取一条人生 <span>✦</span></button>
+            <button class="btn btn-primary" data-draw>抽盲盒人生 <span>✦</span></button>
             <a class="btn btn-ghost" href="#/home">回到首页</a>
           </div>
           <p class="blind-hint">${last ? `上次读到：${esc(last.name)} · ${esc(last.province)}` : "一个人生里，是几个可以慢慢读的阶段。"}</p>
           <div class="blind-notes">
-            <div class="note-row"><span class="note-k">读什么</span><span class="note-v">出生、另一半、事业、子女、财富、寿命</span></div>
+            <div class="note-row"><span class="note-k">读什么</span><span class="note-v">出生、另一半、事业、子女、财富</span></div>
             <div class="note-row"><span class="note-k">怎么读</span><span class="note-v">没有分支，不需要你选择结局</span></div>
             <div class="note-row"><span class="note-k">本机记录</span><span class="note-v">${store.history.length} / 20</span></div>
           </div>
@@ -250,13 +248,12 @@
         <header class="life-hero">
           <div class="life-hero-art" aria-hidden="true"><img src="assets/mode-blind.jpg" alt=""></div>
           <span class="eyebrow">抽一个人生 · 已打开</span>
-          <div class="life-meta"><span>${esc(life.province)}</span><span>${esc(life.years)}</span><span>${esc(life.gender)}</span></div>
+          <div class="life-meta"><span>${esc(life.province)}</span><span>${esc(life.gender)}</span></div>
           <h1 class="life-name">${esc(life.name)}</h1>
           <p class="life-one-line">${esc(life.oneLine)}</p>
           <div class="level-line"><span class="level-pill">${esc(life.level || "L0")}</span><span>${esc(life.levelNote || "日常叙事")}</span></div>
           <div class="fact-row">
             <div><span class="fact-k">出生</span><span class="fact-v">${esc(life.birthYear)}</span></div>
-            <div><span class="fact-k">寿命</span><span class="fact-v">${esc(life.deathAge)} 岁</span></div>
             <div><span class="fact-k">六维</span><span class="fact-v">完整人生</span></div>
           </div>
         </header>
@@ -265,6 +262,7 @@
             <span class="eyebrow">六维总览</span>
             <h2 class="section-title">这一生的六个面</h2>
             <div class="six-grid">${(life.sixDim || []).map((item) => `<div class="six-row"><span class="six-label">${esc(item.label)}</span><span class="six-value">${esc(item.value)}</span></div>`).join("")}</div>
+            <span class="small-note">人物生卒年、年龄与寿命均为虚构设定，不是真实统计，也不构成对现实寿命的预测。</span>
           </section>
           <section class="section">
             <span class="eyebrow">完整叙述</span>
@@ -330,7 +328,7 @@
 
   function shareLife() {
     if (!currentLife) return;
-    const text = `${currentLife.name} · ${currentLife.province} · ${currentLife.years}\n${currentLife.oneLine}\n\n来自「此生之外」：虚构人物故事，不是预测。`;
+    const text = `${currentLife.name} · ${currentLife.province}\n${currentLife.oneLine}\n\n来自「此生之外」：虚构人物故事，不是预测。`;
     if (navigator.share) {
       navigator.share({ title: `${currentLife.name}的一生`, text }).catch(() => {});
       return;
@@ -402,7 +400,7 @@
     ctx.fillText(life.name, 82, 225);
     ctx.fillStyle = "#a99d88";
     ctx.font = "24px serif";
-    ctx.fillText(`${life.province} · ${life.years} · ${life.gender}`, 84, 280);
+    ctx.fillText(`${life.province} · ${life.gender}`, 84, 280);
     ctx.strokeStyle = "rgba(205,167,109,.25)";
     ctx.beginPath();
     ctx.moveTo(82, 325);
@@ -414,13 +412,11 @@
     ctx.fillStyle = "#8e877b";
     ctx.font = "20px serif";
     ctx.fillText("出生", 82, 690);
-    ctx.fillText("寿命", 292, 690);
-    ctx.fillText("读完", 502, 690);
+    ctx.fillText("读完", 352, 690);
     ctx.fillStyle = "#ece4d7";
     ctx.font = "34px serif";
     ctx.fillText(String(life.birthYear), 82, 744);
-    ctx.fillText(`${life.deathAge} 岁`, 292, 744);
-    ctx.fillText("一生", 502, 744);
+    ctx.fillText("一生", 352, 744);
     ctx.fillStyle = "#726c61";
     ctx.font = "18px serif";
     wrapCanvasText(ctx, "不是预测，不是真实统计，也不构成医疗、投资或决策建议。", 82, 858, W - 164, 30, 2);
@@ -455,12 +451,12 @@
     return `${header("script")}
       <div class="shell-wide">
         <section class="page-head">
-          <div><span class="eyebrow">你的剧本</span><h1>看一份自己的剧本</h1><p class="page-lede">输入出生信息，写一份只属于自己的剧本。不是预测，也不是对未来的判断。</p></div>
+          <div><span class="eyebrow">你的故事</span><h1>写一段自己的故事</h1><p class="page-lede">从你熟悉的时间与地方出发，写一段只属于自己的故事。不是预测，也不是对未来的判断。</p><span class="form-note">tips：日期、时间和地点，可以是你出生的。</span></div>
           <a class="back-link" href="#/home">回到首页 →</a>
         </section>
         <form class="form-card" id="scriptForm">
           <div class="field">
-            <div class="label-row"><span class="field-label">出生日期</span><span class="seg"><button type="button" class="${form.calendar === "solar" ? "is-active" : ""}" data-calendar="solar">公历</button><button type="button" class="${form.calendar === "lunar" ? "is-active" : ""}" data-calendar="lunar">农历</button></span></div>
+            <div class="label-row"><span class="field-label">日期</span><span class="seg"><button type="button" class="${form.calendar === "solar" ? "is-active" : ""}" data-calendar="solar">公历</button><button type="button" class="${form.calendar === "lunar" ? "is-active" : ""}" data-calendar="lunar">农历</button></span></div>
             ${form.calendar === "solar"
               ? `<input type="date" name="birthDate" value="${esc(form.birthDate)}" min="1940-01-01" max="2100-12-31">`
               : `<div class="lunar-row">
@@ -473,10 +469,10 @@
           </div>
           <div class="form-grid">
             <div class="field">
-              <div class="label-row"><span class="field-label">出生时间</span><button type="button" class="pill-toggle ${form.timeUnknown ? "is-on" : ""}" data-time-unknown><span class="pill-dot"></span>${form.timeUnknown ? "已选不清楚" : "不清楚"}</button></div>
-              ${form.timeUnknown ? `<input type="text" value="按三柱处理，不显示时柱" disabled>` : `<input type="time" name="birthTime" value="${esc(form.birthTime)}">`}
+              <div class="label-row"><span class="field-label">时间</span><button type="button" class="pill-toggle ${form.timeUnknown ? "is-on" : ""}" data-time-unknown><span class="pill-dot"></span>${form.timeUnknown ? "已选不清楚" : "不清楚"}</button></div>
+              ${form.timeUnknown ? `<input type="text" value="不清楚时间也可以，故事按早年 / 中年 / 后来展开" disabled>` : `<input type="time" name="birthTime" value="${esc(form.birthTime)}">`}
             </div>
-            <div class="field"><label class="field-label" for="birthPlace">出生地 <span class="optional">选填</span></label><input id="birthPlace" name="birthPlace" value="${esc(form.birthPlace)}" placeholder="例如：湖南益阳"></div>
+            <div class="field"><label class="field-label" for="birthPlace">地点 <span class="optional">选填</span></label><input id="birthPlace" name="birthPlace" value="${esc(form.birthPlace)}" placeholder="例如：湖南益阳"></div>
             <div class="field"><label class="field-label" for="gender">性别 <span class="optional">选填</span></label><select id="gender" name="gender"><option value="female" ${form.gender === "female" ? "selected" : ""}>女</option><option value="male" ${form.gender === "male" ? "selected" : ""}>男</option><option value="none" ${form.gender === "none" ? "selected" : ""}>不填</option></select></div>
           </div>
           <div class="field full">
@@ -488,11 +484,11 @@
               <div class="field full"><label class="field-label">你放弃了什么？ <span class="optional">可不填</span></label><textarea name="choiceGivenUp" maxlength="120">${esc(form.choiceGivenUp)}</textarea></div>
             </div>` : ""}
           </div>
-          <button class="btn btn-primary btn-block form-submit" type="submit">生成我的剧本 ✦</button>
-          <span class="form-note">支持公历 / 农历、闰月；按出生地城市经度 + 均时差校正。未做流年。出生信息只保存在本机。</span>
+          <button class="btn btn-primary btn-block form-submit" type="submit">生成我的故事 ✦</button>
+          <span class="form-note">支持公历 / 农历、闰月；日期、时间与地点只用来写这一段叙述，只保存在本机。</span>
         </form>
-        ${history.length ? `<div class="history"><span class="eyebrow">最近生成</span><div class="history-list">${history.map((item) => `<button class="history-row" data-script-history="${esc(item.id)}"><span class="history-main"><span class="history-name">${esc(item.script ? item.script.title : "一份剧本")}</span><span class="history-meta">${esc(item.chart ? item.chart.dayMasterLabel : "")}日主 · ${esc(item.birthDate || "")} · ${esc(formatDate(item.date))}</span></span><span class="history-emotion">→</span></button>`).join("")}</div></div>` : ""}
-        <span class="disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</span>
+        ${history.length ? `<div class="history"><span class="eyebrow">最近生成</span><div class="history-list">${history.map((item) => `<button class="history-row" data-script-history="${esc(item.id)}"><span class="history-main"><span class="history-name">${esc(item.script ? item.script.title : "一段故事")}</span><span class="history-meta">${esc(item.birthDate || "")} · ${esc(formatDate(item.date))}</span></span><span class="history-emotion">→</span></button>`).join("")}</div></div>` : ""}
+        <span class="disclaimer">本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。</span>
       </div>
       ${footer()}`;
   }
@@ -545,7 +541,7 @@
       birthDate = `${solar.year}-${pad(solar.month)}-${pad(solar.day)}`;
       calendarNote = `农历 ${form.lunarYear} 年${form.lunarLeap ? "闰" : ""}${LUNAR_MONTHS[Number(form.lunarMonth) - 1]}${form.lunarDay}日 → 公历 ${birthDate}`;
     }
-    if (!birthDate) { toast("先选一个出生日期"); return; }
+    if (!birthDate) { toast("先选一个日期"); return; }
     const longitude = Cities ? Cities.findLongitude(form.birthPlace) : null;
     const bazi = Bazi.computeBazi(birthDate, form.timeUnknown ? "12:00" : form.birthTime, { longitude, gender: form.gender });
     if (!bazi) { toast("这个日期排不出来，换一个日期再试"); return; }
@@ -597,9 +593,9 @@
     const { chart, script, choicePreview } = item;
     return `${header("script")}
       <div class="shell-wide">
-        <div class="page-head"><div><span class="eyebrow">你的剧本</span><h1 class="script-headline">${esc(script.title)}</h1><p class="script-prologue">${esc(script.prologue)}</p><span class="script-chart-line">${esc(script.chartLine)}</span></div><button class="back-link" data-edit-script>重新输入 →</button></div>
+        <div class="page-head"><div><span class="eyebrow">你的故事</span><h1 class="script-headline">${esc(script.title)}</h1><p class="script-prologue">${esc(script.prologue)}</p><span class="script-chart-line">${esc(script.chartLine)}</span></div><button class="back-link" data-edit-script>重新输入 →</button></div>
         <div class="section">
-          <span class="eyebrow">命盘摘要</span><h2 class="section-title">四柱与五行</h2>
+          <span class="eyebrow">命盘故事摘要</span><h2 class="section-title">四柱与五行</h2>
           <div class="chart-grid ${chart.timeUnknown ? "is-three" : ""}">${chart.pillars.map((pillar) => `<div class="chart-pillar"><span class="chart-pillar-label">${esc(pillar.label)}</span><span class="chart-pillar-value">${esc(pillar.value)}</span></div>`).join("")}</div>
           ${chart.timeUnknown ? `<span class="small-note">出生时间不清楚，只显示三柱。</span>` : ""}
           <div class="elements">${chart.counts.map((item2) => `<span class="element-pill">${esc(item2.label)} <strong>${esc(item2.value)}</strong></span>`).join("")}</div>
@@ -609,16 +605,16 @@
         </div>
         ${chart.dayun ? `<div class="section"><span class="eyebrow">大运 · 简化</span><h2 class="section-title">${esc(chart.dayun.direction)} · ${esc(chart.dayun.startText)}</h2><div class="chart-grid">${chart.dayun.cycles.map((cycle) => `<div class="chart-pillar"><span class="chart-pillar-label">${esc(cycle.label)}</span><span class="chart-pillar-value">${esc(cycle.ganZhi)}</span></div>`).join("")}</div><span class="small-note">按三天折一年估算起运，未做流年；只作叙事参考。</span></div>` : ""}
         <div class="section">
-          <span class="eyebrow">剧本</span>
+          <span class="eyebrow">故事</span>
           ${script.acts.map((act) => `<div class="act"><span class="act-label">${esc(act.label)}</span><span class="act-text">${esc(act.text)}</span></div>`).join("")}
-          <div class="choice-block"><span class="act-label">不由星辰决定的一幕</span><span class="act-text">${esc(script.choiceAct)}</span></div>
+          <div class="choice-block"><span class="act-label">不由这些线索决定的一幕</span><span class="act-text">${esc(script.choiceAct)}</span></div>
           <span class="script-closing">${esc(script.closing)}</span>
           <span class="disclaimer">${esc(script.disclaimer)}</span>
         </div>
         ${choicePreview ? `<div class="section"><span class="eyebrow">选择改写 · 本地预览</span><h2 class="section-title">另一条路，会不一样，但不一定更好</h2><span class="small-note">${esc(choicePreview.theme)} · ${esc(choicePreview.stage)} · 本地规则预览</span><div class="ab-block"><span class="ab-label">A · 原来这条路</span><span class="ab-text">${esc(choicePreview.original.text)}</span></div><div class="ab-block is-alt"><span class="ab-label">B · 另一条路</span><span class="ab-text">${esc(choicePreview.diff.sections[0].text)}</span></div><div class="diff-box"><span class="diff-title">得到的 / 失去的 / 没有变的</span><div class="diff-row"><span>得到</span><span>${esc(choicePreview.diff.summary.gained.join("、"))}</span></div><div class="diff-row"><span>失去</span><span>${esc(choicePreview.diff.summary.lost.join("、"))}</span></div><div class="diff-row"><span>没有变</span><span>${esc(choicePreview.diff.summary.unchanged.join("、"))}</span></div></div></div>` : ""}
         <div class="script-actions script-actions-main">
           <button class="btn btn-ghost" data-edit-script>重新输入</button>
-          <button class="btn btn-primary" data-share-script>分享我的剧本</button>
+          <button class="btn btn-primary" data-share-script>分享我的故事</button>
         </div>
         <div class="bottom-links"><a href="#/home">回到首页</a><span>·</span><a href="#/privacy">说明</a></div>
       </div>
@@ -660,14 +656,14 @@
     overlay.className = "share-overlay";
     overlay.innerHTML = `<div class="share-panel" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
       <button class="share-close share-x" type="button" aria-label="关闭">×</button>
-      <span class="cin-label">分享我的剧本</span>
+      <span class="cin-label">分享我的故事</span>
       <h2 id="shareTitle">这一段，值得被另一个人读到</h2>
-      <img src="${dataUrl}" alt="我的剧本分享图">
+      <img src="${dataUrl}" alt="我的故事分享图">
       <div class="share-actions">
-        <a class="btn btn-primary" href="${dataUrl}" download="此生之外-我的剧本.png">保存分享图</a>
+        <a class="btn btn-primary" href="${dataUrl}" download="此生之外-我的故事.png">保存分享图</a>
         <button class="btn btn-ghost share-close-bottom" type="button">关闭</button>
       </div>
-      <p>分享图包含剧本开头 100 字和小程序码，其他内容以省略号收住。</p>
+      <p>分享图包含故事开头 100 字和小程序码，其他内容以省略号收住。</p>
     </div>`;
     document.body.appendChild(overlay);
     const close = () => overlay.remove();
@@ -746,13 +742,13 @@
       ctx.drawImage(qr, 80, qrY + 6, 164, 164);
       ctx.fillStyle = "#5d6d61";
       ctx.font = "19px -apple-system, PingFang SC, sans-serif";
-      ctx.fillText("微信扫码，读我的剧本", 278, qrY + 48);
+      ctx.fillText("微信扫码，读我的故事", 278, qrY + 48);
       ctx.fillStyle = "#8b9589";
       ctx.font = "16px -apple-system, PingFang SC, sans-serif";
       ctx.fillText("打开小程序，抽一段人生", 278, qrY + 82);
       ctx.fillStyle = "#9aa298";
       ctx.font = "15px -apple-system, PingFang SC, sans-serif";
-      ctx.fillText("本产品不构成医疗、法律、投资或命运预测建议", 76, qrY + 214);
+      ctx.fillText("本产品不构成医疗、法律、投资或其他专业建议", 76, qrY + 214);
       const dataUrl = canvas.toDataURL("image/png");
       showShareImage(dataUrl);
     };
@@ -763,22 +759,22 @@
   function legalPage(kind) {
     const agreement = kind === "agreement";
     const sections = agreement ? [
-      ["01", "服务说明", "「此生之外」提供虚构人物故事、剧本、情绪自评和分享图。所有人物、事件、金额、命盘摘要与剧本均为虚构叙事，不是对现实个人或未来的预测。"],
+      ["01", "服务说明", "「此生之外」提供虚构人物故事、写自己的故事、情绪自评和分享图。所有人物、事件、金额与故事内容均为虚构叙事，不是对现实个人或未来的预测。"],
       ["02", "不构成专业建议", "本服务不构成医疗、心理、法律、投资、婚恋、职业或其他专业建议。不要依据本服务做出重大现实决定。如你正在经历心理危机，请优先联系身边可信任的人、当地急救或专业机构。"],
       ["03", "使用条件", "你需要年满 18 周岁，或在监护人指导下使用。你应具备独立判断能力，并自行承担使用本服务产生的选择与后果。"],
-      ["04", "你填写的信息", "阅读一段人生不需要填写个人信息。看自己的剧本会请你填写出生日期、时间、地点和性别，用于本地排盘与剧本生成；这些信息默认只保存在浏览器本机。"],
-      ["05", "分享图", "分享图只包含剧本开头 100 字和固定的小程序码，不包含出生日期、地点或原始输入。"],
+      ["04", "你填写的信息", "阅读一段人生不需要填写个人信息。写自己的故事会请你填写日期、时间、地点和性别，用于本地生成虚构故事；这些信息默认只保存在浏览器本机。"],
+      ["05", "分享图", "分享图只包含故事开头 100 字和固定的小程序码，不包含日期、地点或原始输入。"],
       ["06", "禁止行为", "不得利用本服务从事违法活动、骚扰他人、冒充他人、批量抓取内容、反向工程、绕过限制，或将本服务内容用于虚假宣传、医疗诊断、投资承诺等场景。"],
-      ["07", "内容与知识产权", "小程序和网页内的文本、视觉、结构、人物卡与剧本内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。"],
+      ["07", "内容与知识产权", "小程序和网页内的文本、视觉、结构、人物卡与故事内容归开发者或相应权利人所有。你可以为个人阅读和分享保存图卡，但不得批量复制、出售或用于商业培训。"],
       ["08", "免责声明", "本服务按现状提供。开发者不为内容的完整性、准确性、适用性作保证，也不对因使用本服务产生的间接损失承担责任。"],
       ["09", "变更与联系", "协议可能随功能更新而调整，更新后会在本页标注日期。继续使用即表示接受更新后的协议。"]
     ] : [
-      ["01", "保存哪些信息", "阅读记录、情绪自评、剧本出生信息（日期、时间、地点、性别）、命盘摘要和剧本正文。出生信息只在你使用剧本时保存。"],
+      ["01", "保存哪些信息", "阅读记录、情绪自评、故事信息（日期、时间、地点、性别）和故事正文。这些信息只在你写自己的故事时保存。"],
       ["02", "保存在哪里", "以上内容只保存在当前浏览器的 localStorage 中。网页端没有账号系统，不会把这些内容上传到服务器。"],
-      ["03", "为什么保存", "用于恢复最近阅读、再次打开剧本、显示本机阅读条数和判断内容体验。"],
+      ["03", "为什么保存", "用于恢复最近阅读、再次打开故事、显示本机阅读条数和判断内容体验。"],
       ["04", "保存多久、怎么删除", "保存在本机，直到你清除浏览器站点数据或手动清除本地记录。清除后无法恢复。"],
-      ["05", "分享带走什么", "只有你主动点击分享或保存图卡时，才会生成包含人物姓名、生卒年、出生地、六维信息或故事的文本/图片。"],
-      ["06", "未成年人", "建议 18 周岁以上使用；未满 18 周岁需在监护人指导下使用。所有人物、故事和六维信息均为虚构叙事，不是真实统计，也不是预测。"],
+      ["05", "分享带走什么", "只有你主动点击分享或保存图卡时，才会生成包含人物姓名、籍贯、几段生活或故事的文本/图片。"],
+      ["06", "未成年人", "建议 18 周岁以上使用；未满 18 周岁需在监护人指导下使用。所有人物、故事和相关信息均为虚构叙事，不是真实统计，也不是预测。"],
       ["07", "外部服务", "网页端当前没有接入 DeepSeek 或其他外部 AI；如果后续接入，会在使用前单独说明并征得同意。"],
       ["08", "联系与更新", "如果这份说明有更新，会在本页更新日期。"]
     ];
@@ -795,37 +791,7 @@
       ${footer()}`;
   }
 
-  function authToken() {
-    try { return localStorage.getItem(AUTH_KEY) || ""; } catch (error) { return ""; }
-  }
-
-  function setAuthToken(token) {
-    try { token ? localStorage.setItem(AUTH_KEY, token) : localStorage.removeItem(AUTH_KEY); } catch (error) {}
-    updateLoginButton();
-  }
-
-  function updateLoginButton() {
-    document.querySelectorAll("[data-login]").forEach((button) => {
-      button.textContent = authToken() ? "已登录" : "登录";
-    });
-  }
-
-  async function authRequest(path, options = {}) {
-    const token = authToken();
-    const headers = Object.assign({ "Content-Type": "application/json" }, options.headers || {});
-    if (token) headers.Authorization = `Bearer ${token}`;
-    const response = await fetch(`${AUTH_API}${path}`, Object.assign({}, options, { headers }));
-    let data = {};
-    try { data = await response.json(); } catch (error) {}
-    if (!response.ok) {
-      const err = new Error(data.code || "AUTH_HTTP_" + response.status);
-      err.code = data.code || "AUTH_HTTP_" + response.status;
-      throw err;
-    }
-    return data;
-  }
-
-  function showLogin() {
+  function showMiniCode() {
     const old = document.getElementById("loginOverlay");
     if (old) old.remove();
     const overlay = document.createElement("div");
@@ -833,78 +799,36 @@
     overlay.className = "login-overlay";
     overlay.innerHTML = `<div class="login-panel" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
       <button class="login-close" type="button" aria-label="关闭">×</button>
-      <span class="cin-label">登录</span>
-      <h2 id="loginTitle">${authToken() ? "已登录" : "微信扫码登录"}</h2>
-      <p>${authToken() ? "当前浏览器已登录微信身份。登录只用于识别，不保存阅读内容。" : "用微信扫描小程序码，在小程序里确认登录。登录只用于识别微信身份，不保存阅读内容。"}</p>
-      <div id="loginBody">${authToken() ? '<div class="login-qr-placeholder"><strong>已登录</strong><small>当前浏览器已保存登录会话</small></div>' : '<div class="login-qr-placeholder"><span>正在生成二维码…</span></div>'}</div>
-      <div class="login-actions">
-        ${authToken() ? '<button class="btn btn-ghost" type="button" data-logout>退出登录</button>' : ""}
-        <button class="btn btn-ghost login-later" type="button">关闭</button>
-      </div>
+      <span class="cin-label">小程序</span>
+      <h2 id="loginTitle">微信扫码，打开小程序</h2>
+      <p>用微信扫描下方小程序码，在小程序里体验。网页不需要登录，也不会上传你的阅读内容。</p>
+      <img class="login-qr-image" src="assets/mini-program-qr.jpg" alt="此生之外小程序码">
+      <small class="login-scan-note">微信扫一扫 · 进入小程序体验</small>
+      <button class="btn btn-ghost login-later" type="button">关闭</button>
     </div>`;
     document.body.appendChild(overlay);
-    let timer = null;
-    let closed = false;
-    const close = () => {
-      closed = true;
-      if (timer) clearInterval(timer);
-      overlay.remove();
-    };
+    const close = () => overlay.remove();
     overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
     overlay.querySelector(".login-close").addEventListener("click", close);
     overlay.querySelector(".login-later").addEventListener("click", close);
-    const logout = overlay.querySelector("[data-logout]");
-    if (logout) logout.addEventListener("click", async () => {
-      try { await authRequest("/api/auth/logout", { method: "POST" }); } catch (error) {}
-      setAuthToken("");
-      close();
-      toast("已退出登录");
-    });
-    if (authToken()) return;
-    const body = document.getElementById("loginBody");
-    authRequest("/api/auth/start")
-      .then((data) => {
-        if (closed) return;
-        body.innerHTML = `<img class="login-qr-image" src="data:image/jpeg;base64,${data.qr}" alt="微信登录二维码"><small class="login-scan-note">微信扫码后，在小程序里确认登录</small>`;
-        timer = setInterval(async () => {
-          if (closed) return;
-          try {
-            const result = await authRequest(`/api/auth/status?ticket=${encodeURIComponent(data.ticket)}`);
-            if (result.status === "bound" && result.session) {
-              if (timer) clearInterval(timer);
-              setAuthToken(result.session);
-              close();
-              toast("登录成功");
-            }
-          } catch (error) {
-            if (error.code === "EXPIRED") {
-              if (timer) clearInterval(timer);
-              body.innerHTML = '<div class="login-qr-placeholder"><strong>二维码已过期</strong><small>请关闭后重新打开登录</small></div>';
-            }
-          }
-        }, 1500);
-      })
-      .catch((error) => {
-        if (closed) return;
-        const messages = {
-          AUTH_NOT_CONFIGURED: "登录服务尚未配置 AppSecret。",
-          WECHAT_QR_FAILED: "小程序登录页尚未发布，暂时不能生成二维码。",
-          WECHAT_TOKEN_FAILED: "微信登录服务暂时不可用。"
-        };
-        body.innerHTML = `<div class="login-qr-placeholder"><strong>登录暂时不可用</strong><small>${messages[error.code] || "请稍后再试"}</small></div>`;
-      });
     document.addEventListener("keydown", function onKey(event) {
       if (event.key === "Escape") { close(); document.removeEventListener("keydown", onKey); }
     });
   }
 
   document.addEventListener("click", (event) => {
-    if (event.target.closest("[data-login]")) showLogin();
+    if (event.target.closest("[data-login]")) showMiniCode();
   });
 
   function renderRoute() {
     const route = (location.hash || "#/home").replace(/^#\/?/, "").split("?")[0] || "home";
     if (route === "blind") {
+      const query = new URLSearchParams((location.hash.split("?")[1] || ""));
+      const lifeId = query.get("life");
+      if (lifeId) {
+        const life = LIVES.find((item) => item.id === lifeId);
+        if (life) { renderBlindLife(life); return; }
+      }
       if (currentLife && location.hash.includes("life")) { renderBlindLife(currentLife); return; }
       app.innerHTML = blindPage();
       document.querySelectorAll("[data-draw]").forEach((button) => button.addEventListener("click", drawLife));
@@ -924,7 +848,6 @@
     } else {
       app.innerHTML = homePage();
     }
-    updateLoginButton();
     window.scrollTo(0, 0);
   }
 

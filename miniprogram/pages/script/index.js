@@ -46,8 +46,8 @@ function decorateHistory(history) {
   return (Array.isArray(history) ? history : []).map((item) => ({
     ...item,
     dateLabel: dateLabel(item.date),
-    title: item.script && item.script.title ? item.script.title : "一份剧本",
-    meta: item.chart ? `${item.chart.dayMasterLabel}日主 · ${item.chart.birthSolar || ""}` : ""
+    title: item.script && item.script.title ? item.script.title : "一段故事",
+    meta: item.chart ? `${item.chart.birthSolar || ""}` : ""
   }));
 }
 
@@ -176,7 +176,7 @@ Page({
       calendarNote = `农历 ${lunarYear} 年${isLeap ? "闰" : ""}${LUNAR_MONTHS[lunarMonth - 1]}${LUNAR_DAYS[lunarDay - 1]} → 公历 ${birthDate}`;
     }
     if (!birthDate) {
-      this.setData({ error: "先选一个出生日期。" });
+      this.setData({ error: "先选一个日期。" });
       return;
     }
     const timeValue = this.data.timeUnknown ? "12:00" : this.data.birthTime;
@@ -291,7 +291,7 @@ Page({
   },
   onShareAppMessage() {
     return {
-      title: this.data.chart ? `${this.data.chart.dayMasterLabel}日主的一份剧本` : "看一份自己的剧本",
+      title: this.data.script ? this.data.script.title : "写一段自己的故事",
       path: "/pages/home/index"
     };
   }

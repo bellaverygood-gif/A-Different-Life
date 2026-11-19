@@ -50,7 +50,7 @@ async function miniCode(env, ticket) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       scene: ticket,
-      page: "pages/auth/bridge",
+      page: "pages/auth/bridge/index",
       check_path: false,
       env_version: env.WECHAT_ENV_VERSION || "release"
     })

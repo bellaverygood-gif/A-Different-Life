@@ -12,7 +12,7 @@
       <text class="life-setup-copy">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生，恰好被你打开。</text>
 
       <view class="life-setup-action">
-        <view class="btn btn-primary" bindtap="drawLife">抽一个人生 <text>✦</text></view>
+        <view class="btn btn-primary" bindtap="drawLife">抽盲盒人生 <text>✦</text></view>
         <text wx:if="{{lastLifeName}}" class="life-last">上次读到：{{lastLifeName}}</text>
         <text wx:else class="life-last">一个人生里，是几个可以慢慢读的阶段。</text>
       </view>
@@ -20,7 +20,7 @@
       <view class="life-setup-notes">
         <view class="life-note-row">
           <text class="life-note-k">读什么</text>
-          <text class="life-note-v">出生地、家庭经济、营生类型、几个阶段</text>
+          <text class="life-note-v">来自、家庭经济、营生类型、几个阶段</text>
         </view>
         <view class="life-note-row">
           <text class="life-note-k">怎么读</text>
@@ -49,7 +49,7 @@
         </view>
       </view>
 
-      <text class="life-disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</text>
+      <text class="life-disclaimer">本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。</text>
     </view>
   </block>
 
@@ -121,7 +121,7 @@
         <text class="life-dot">·</text>
         <text bindtap="openPrivacy">隐私说明</text>
       </view>
-      <text class="life-disclaimer">本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</text>
+      <text class="life-disclaimer">本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。</text>
     </view>
   </block>
 

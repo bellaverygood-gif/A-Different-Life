@@ -2,5 +2,5 @@
   "usingComponents": {
     "nav-bar": "/components/nav-bar/index"
   },
-  "navigationBarTitleText": "剧本人生"
+  "navigationBarTitleText": "写一段自己的故事"
 }

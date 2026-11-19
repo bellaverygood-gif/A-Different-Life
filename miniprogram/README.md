@@ -13,7 +13,7 @@
 
 - `pages/home`：首页，盲盒人生 / 剧本人生两个入口。
 - `pages/life`：M1 盲盒阅读页，18 张虚构人物卡，六维总览 + 800 字正文 + 时间轴 + 情绪自评。
-- `pages/script`：M2 剧本人生，出生信息 → 四柱摘要 → 免费文化叙事剧本；无 AI。
+- `pages/script`：M2 剧本人生，出生信息 → 四柱摘要 → 免费虚构叙事剧本；无 AI。
 - `pages/privacy`：本机数据与虚构内容说明。
 
 旧的 `pages/login`、`pages/predict`、`pages/blind`、`pages/profile` 文件仍保留，但已不在 `app.json` 中，不作为当前入口。

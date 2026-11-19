@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "/components/nav-bar/index"
-  },
-  "navigationStyle": "custom",
-  "navigationBarTitleText": "微信登录"
-}

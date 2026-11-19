@@ -1,3 +1,5 @@
+> 交接状态以 `PROJECT_STATE.md` 为准；新对话请先读该文件，再查看 `git status` / `git diff`。
+
 # 此生之外
 
 > 旁观一段人生，不急着判断。

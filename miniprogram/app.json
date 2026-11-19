@@ -4,15 +4,14 @@
     "pages/life/index",
     "pages/script/index",
     "pages/privacy/index",
-    "pages/agreement/index",
-    "pages/auth/bridge"
+    "pages/agreement/index"
   ],
   "window": {
     "navigationStyle": "custom",
-    "backgroundColor": "#050811",
-    "backgroundTextStyle": "light",
-    "navigationBarTextStyle": "white",
-    "navigationBarBackgroundColor": "#050811"
+    "backgroundColor": "#f2f7f0",
+    "backgroundTextStyle": "dark",
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#f2f7f0"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",

@@ -97,7 +97,7 @@ function decorateLife(life) {
     oneLine: cleanLine,
     fragments,
     skeleton: [
-      { label: "出生地", value: life.province },
+      { label: "来自", value: life.province },
       { label: "性别", value: life.gender },
       { label: "家庭经济", value: wealthMatch ? wealthMatch[0] : "普通家庭" },
       { label: "营生类型", value: job }
@@ -161,7 +161,7 @@ Page({
     if (dailyLimitReached()) {
       wx.showModal({
         title: "今天先读到这里",
-        content: "每人每天可以打开 3 段人生。明天再来，或者先写一份自己的剧本。",
+        content: "每人每天可以打开 3 段人生。明天再来，或者先写一段自己的故事。",
         showCancel: false,
         confirmText: "知道了"
       });

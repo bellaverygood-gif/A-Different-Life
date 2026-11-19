@@ -315,7 +315,7 @@
       monthJie: currentJie.name,
       monthJieYear: currentJie.year,
       calculation: correction ? "beijing-solar-term-true-solar" : "beijing-solar-term",
-      methodLabel: correction ? "北京时间 · 节气排盘 · 真太阳时" : "北京时间 · 节气排盘",
+      methodLabel: correction ? "北京时间 · 节气换算 · 真太阳时" : "北京时间 · 节气换算",
       solarCorrection: correction
         ? { longitude: longitude, longitudeMinutes: longitudeMinutes, eotMinutes: eotMinutes, minutes: correction }
         : null,

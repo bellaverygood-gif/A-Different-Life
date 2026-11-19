@@ -2,53 +2,40 @@
   <nav-bar back="{{false}}" />
 
   <view class="m1-hero">
-    <image class="m1-hero-img" src="/assets/hero-portal-clean.jpg" mode="aspectFill" />
-    <view class="m1-hero-shade"></view>
     <view class="m1-hero-meta shell">
-      <text class="m1-hero-kicker">此生之外 · 虚构人物故事</text>
-      <text class="m1-hero-caption">从出生，读到后来。</text>
+      <text class="m1-hero-caption">旁观一段虚构人生</text>
+      <text class="m1-hero-sub">在别人的故事里，看见自己的回声。</text>
     </view>
   </view>
 
   <view class="m1-content shell">
     <view class="m1-primary">
-      <view class="m1-primary-top">
-        <text class="m1-primary-kicker">抽一个人生</text>
-        <text class="m1-primary-count">{{livesCount}} 段人生</text>
-      </view>
-      <text class="m1-primary-title serif">抽一个人生</text>
-      <text class="m1-primary-copy">抽一个人生，读完一个人的一生。不是预测，也不评判任何人的选择。</text>
+      <text class="m1-primary-title serif">随机遇见一个人</text>
+      <text class="m1-primary-copy">读完一个虚构人物的几段生活。不评判任何人的选择。</text>
       <text class="m1-sample">{{sample}}</text>
       <view class="m1-actions">
-        <view class="m1-btn m1-btn-primary" bindtap="openBlind" hover-class="m1-card-hover">抽一个人生</view>
+        <view class="m1-btn m1-btn-primary" bindtap="openBlind" hover-class="m1-card-hover">抽盲盒人生</view>
       </view>
     </view>
 
-    <view class="m1-script">
+    <view class="m1-script" bindtap="openScript" hover-class="m1-card-hover">
       <view class="m1-script-main">
-        <text class="m1-script-kicker">写一份自己的剧本</text>
-        <text class="m1-script-title serif">看自己的剧本</text>
-        <text class="m1-script-copy">用你的出生日子，写一份只属于你的剧本。</text>
-        <text class="m1-script-reason">还可以写下一个你偶尔会想起的选择，看看它改写了什么。不写也可以。</text>
+        <text class="m1-script-kicker">写一段自己的故事</text>
+        <text class="m1-script-title serif">看一个与你有关的故事</text>
+        <text class="m1-script-copy">从你熟悉的时间与地方出发，写一段只属于你的叙述。</text>
+        <text class="m1-script-reason">也可以写下一个你偶尔会想起的选择，看看它改变了什么。不写也可以。</text>
       </view>
       <text class="m1-script-arrow">→</text>
     </view>
 
-    <view class="m1-actions m1-secondary-actions">
-      <view class="m1-btn m1-btn-ghost" bindtap="openScript" hover-class="m1-card-hover">看自己的剧本</view>
-    </view>
-
-    <view class="m1-trust">
-      <text>你写下的内容只保存在本机。读完大约 2 分钟。</text>
-    </view>
-
     <view class="m1-note">
-      <text>本产品提供虚构叙事与自我反思工具，不构成心理咨询、医疗、法律、投资或命运预测建议。</text>
+      <text>本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。</text>
     </view>
 
     <view class="m1-foot">
       <text>此生之外</text>
       <view class="m1-foot-links">
+        <text bindtap="onMiniLogin">微信登录</text>
         <text bindtap="openAgreement">用户协议</text>
         <text bindtap="openPrivacy">隐私说明</text>
       </view>

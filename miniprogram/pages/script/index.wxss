@@ -30,6 +30,15 @@
   line-height: 1.9;
 }
 
+.script-tips {
+  display: block;
+  max-width: 620rpx;
+  margin-top: 12rpx;
+  color: #c8b184;
+  font-size: 21rpx;
+  line-height: 1.7;
+}
+
 .script-form {
   margin-top: 46rpx;
 }

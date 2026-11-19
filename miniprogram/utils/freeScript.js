@@ -39,32 +39,32 @@ function buildFreeScript(bazi, input = {}) {
   const weakest = ELEMENT_LABELS[bazi.weakest] || "水";
   const place = String(input.birthPlace || "").trim() || "一个没有写进地图的小地方";
   const timeNote = input.timeUnknown
-    ? "出生时辰没有写下来，这份剧本只排三柱。"
-    : `你出生在${input.birthDate || ""} ${input.birthTime || ""}，${place}。`;
-  const prologue = `${timeNote} 命盘里${dominant}气偏旺，${weakest}气偏弱。这不是判决，只是一张文化叙事的地图。`;
+    ? "时间没有写下来，这段故事就按早年、中年、后来三段展开。"
+    : `你从${input.birthDate || ""} ${input.birthTime || ""}、${place}出发。`;
+  const prologue = `${timeNote} 这不是结论，只是借用你熟悉的时间与地方，写一段与你有关的叙述。`;
   const acts = [
     {
       label: "早年",
-      text: `${trait.early} 你出生在${place}，家里的条件、父母的脾气、你排在兄弟姐妹里的位置，都会在你身上留下一些很早的习惯。`
+      text: `${trait.early} 你从${place}出发，家里的条件、父母的脾气、你排在兄弟姐妹里的位置，都会在你身上留下一些很早的习惯。`
     },
     {
       label: "中年",
-      text: `${trait.middle} 你会在一些具体的选择里反复确认自己：去哪里、做什么、和谁一起生活。命盘里的${dominant}气让你容易走某一条路，但路不是只有一条。`
+      text: `${trait.middle} 你会在一些具体的选择里反复确认自己：去哪里、做什么、和谁一起生活。你身上更明显的那个特点，容易让你走某一条路，但路不是只有一条。`
     },
     {
       label: "后来",
-      text: `${trait.later} 你会慢慢发现，${weakest}气偏弱的地方，不是你的缺陷，而是你需要主动去补的那一块。`
+      text: `${trait.later} 你会慢慢发现，那些你一直不太敢碰的地方，不是你的缺陷，而是你需要主动去补的那一块。`
     }
   ];
-  const choiceAct = "不由星辰决定的一幕：命盘只能写出你容易怎么反应，写不出你最后怎么选。真正改变后面的，往往是你在某个普通下午做的一个小决定：打一个电话、拒绝一次、搬一次家、把一件事做完。";
-  const closing = "这份剧本不是预测。它只是把一些文化符号翻译成叙事，让你多一个角度看见自己。";
+  const choiceAct = "不由这些线索决定的一幕：一段叙述只能写出你容易怎么反应，写不出你最后怎么选。真正改变后面的，往往是你在某个普通下午做的一个小决定：打一个电话、拒绝一次、搬一次家、把一件事做完。";
+  const closing = "这段故事不是预测。它只是把一些熟悉的细节写成叙述，让你多一个角度看见自己。";
   return {
     title: `《${trait.title}》`,
     prologue,
     acts,
     choiceAct,
     closing,
-    disclaimer: "文化叙事视角，不是预测，不构成医疗、投资、婚恋或职业建议。",
+    disclaimer: "虚构叙事视角，不是预测，不构成医疗、投资、婚恋或职业建议。",
     chartLine: `${bazi.dayMasterStem}日主 · ${dominant}气偏旺 · ${weakest}气偏弱 · ${bazi.monthJie || ""}`
   };
 }

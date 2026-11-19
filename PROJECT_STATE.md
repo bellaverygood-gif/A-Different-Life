@@ -1,0 +1,315 @@
+# 此生之外 · 项目状态交接
+
+最后更新：2026-11-19 15:55（Asia/Shanghai）
+用途：新对话先读本文件，避免重复猜测和幻觉。
+
+## 0. 最重要的事实
+
+- 品牌只能是「此生之外」。
+- 当前线上小程序不是最新版：线上 `2.0.18`，最新已上传 `2.0.31`，另有一个 `2.0.19` 正在审核（旧设计，无法撤回）。
+- 网页正式站：https://life.qiaoxiao.online/ ，已部署最新 Web 版本。
+- 网页现在没有登录功能，只显示官方小程序码；右上角按钮文案是「微信体验」。
+- 小程序自身使用 `wx.login` + 云函数 `login`；小程序不再有网页登录桥，也没有 6 位网页登录码。
+- 工作区有大量未提交改动；不要直接 reset。先看 `git status` 和 `git diff`。
+
+## 1. 环境 / 地址
+
+- 小程序 AppID：`wxb3f0ab648912633a`
+- 微信云开发环境：`cishengzhiwai-d5gf3fax9df941a21`
+- 小程序当前主包：约 1.1 MB；已接近但未超过 2 MB
+- 网页域名：`life.qiaoxiao.online`
+- 域名 DNS：腾讯云 DNSPod；`life` CNAME 到 `cishengzhiwai.pages.dev`
+- Cloudflare Pages 项目：`cishengzhiwai`
+- 生产页面：`https://life.qiaoxiao.online/`
+- 预览别名：`https://preview.cishengzhiwai.pages.dev/`
+- GitHub：`https://github.com/bellaverygood-gif/A-Different-Life`
+- 当前 Git HEAD（最近提交）：`49b4592 feat: scaffold WeChat QR auth bridge`
+- GitHub 推送需要新的 PAT；旧 PAT 已删除。
+
+## 2. 小程序当前状态
+
+### 已上传版本
+
+- 最新上传：`2.0.31`
+- 上传备注：`优化故事场景`
+- 线上版本：`2.0.18`（发布时间 2026-11-18 17:22:20）
+- 审核中：`2.0.19`（提交时间 2026-11-19 11:17:42，旧设计）
+- `2.0.19` 在微信后台没有撤回入口；它通过审核后可能先发布旧版。
+- 后续应提交并发布 `2.0.31`；`2.0.31` 是当前代码对应版本。
+
+### 小程序页面
+
+`miniprogram/app.json` 当前页面：
+
+```text
+pages/home/index
+pages/life/index
+pages/script/index
+pages/privacy/index
+pages/agreement/index
+```
+
+网页登录桥 `pages/auth/bridge` 已删除，不能再引用。
+
+### 小程序登录
+
+- `miniprogram/app.js` 的 `onLaunch` 调用 `ensureLogin()`。
+- `ensureLogin()` 执行：
+  ```text
+  wx.cloud.init
+  wx.login
+  wx.cloud.callFunction({ name: "login" })
+  ```
+- 云函数 `cloudfunctions/login` 返回 `openid`，不保存阅读内容。
+- 首页两个动作已加登录门槛：
+  - 「抽盲盒人生」
+  - 「看一个与你有关的故事」
+- 未登录时点击会调用 `ensureLogin(false)`，失败提示「请先完成微信登录」。
+- 小程序内没有网页登录码，不要恢复旧 `authStart/authStatus/authBind` 流程到 mini UI。
+
+### 当前小程序首页文案 / 结构
+
+- 顶部：圆形 logo + 「此生之外」，无椭圆外框；导航用 `wx.getMenuButtonBoundingClientRect()` 与右上角微信胶囊对齐。
+- 头部一体式文案（不是独立卡片 banner）：
+  ```text
+  旁观一段虚构人生
+  在别人的故事里，看见自己的回声。
+  ```
+- 第一张卡：
+  ```text
+  随机遇见一个人
+  读完一个虚构人物的几段生活。不评判任何人的选择。
+  [抽盲盒人生]
+  ```
+- 第二张卡：
+  ```text
+  写一段自己的故事
+  看一个与你有关的故事
+  从你熟悉的时间与地方出发，写一段只属于你的叙述。
+  也可以写下一个你偶尔会想起的选择，看看它改变了什么。不写也可以。
+  ```
+- 首页不再显示「18 段人生」和左上角小标签。
+- 主按钮满宽、居中、高约 88rpx。
+- 页脚固定在可视底部、品牌和链接居中：
+  ```text
+  此生之外
+  微信登录   用户协议   隐私说明
+  ```
+- 首页已经去掉剧本、出生日期、预测、命运、排盘等词；**内页仍有这些词，审查看内页时仍有风险**。
+
+### 小程序设计系统
+
+- 三色：
+  - 墨蓝 `#2a3a4f`
+  - 雾蓝 `#93acd8` / `#6f86b4`
+  - 米白 `#f7f4ed`
+- 四档字号：
+  - 主标题 `56rpx`
+  - 标题 `38rpx`
+  - 描述 `26rpx`
+  - 备注/tips `20rpx`
+- 当前主题主要在 `miniprogram/app.wxss` 末尾覆盖层；旧深色样式仍在前面。
+- logo：`miniprogram/assets/logo.png`，已裁成圆形显示，去掉方形白框。
+- 顶部导航：`miniprogram/components/nav-bar/*`。
+
+### 小程序内页状态
+
+- `pages/life/index`：抽人生 setup/result，寿命/死亡年龄数据保留（data 内 deathAge、sixDim「寿命」、时间轴「寿命：XX岁」均在）；小程序端按负面词正则过滤、不展示寿命；分享图保留生卒年。
+- `pages/script/index`：已改为「写一段自己的故事」，去掉「剧本」「预测」「命运预测」等词；表单「出生日期/出生时间/出生地」改为「日期/时间/地点」并加 tips「可以是你出生的」；结果页保留「命盘故事摘要（原命盘摘要）/四柱与五行/大运/流年/日主/真太阳时/三柱/时柱」展示。
+- `pages/privacy/index`：已补充 openid/微信登录说明，并同步去掉「剧本」「出生日期」「出生时间」「出生地」「生卒年」「六维」。
+- `pages/agreement/index`：已去掉剧本/命盘摘要/出生日期等词与部分 AI/网页登录描述。
+
+### 小程序本地数据
+
+- 阅读记录、情绪、剧本历史保存在本机微信缓存。
+- 剧本表单/结果也确实会本地保存；不要对外写「完全不存储」。
+- 当前安全表述是「不会上传到云端，不会用于其他用途」。
+
+## 3. 网页当前状态
+
+### 技术
+
+- 静态 HTML/CSS/JS，无框架。
+- 入口：`index.html`
+- 主要脚本：`js/app.js`
+- 路由：hash
+  ```text
+  #/home
+  #/blind
+  #/blind?life=<id>
+  #/script
+  #/privacy
+  #/agreement
+  ```
+- 关键 CSS 加载顺序：
+  ```text
+  css/site.css
+  css/paper.css
+  css/eciyuan.css
+  css/frost.css
+  ```
+- `frost.css` 最后加载，含最终视觉覆盖。
+- 当前静态资源版本：`?v=20261119e`。
+- 网页已移除 CloudBase SDK、JS 登录和 6 位码；`js/cloudbase.js` 已删除。
+- 网页登录弹层现在只是「微信扫码，打开小程序」，使用 `assets/mini-program-qr.jpg`。
+
+### 首页 UI
+
+- 顶部导航：logo + 此生之外 / 首页 / 抽一个人生 / 看故事 / 微信体验。
+- Hero：
+  ```text
+  从年少，读到后来。
+  抽一个人生，读完一个虚构人物的几段生活。不评判任何人的选择。
+  [抽盲盒人生] [看一段故事]
+  ```
+- 按钮桌面端：主 235px、次 213px，高 54px；移动端 178/162，高 46px。
+- 核心体验区「01 / 核心体验 两条路径，读完一段人生。」：
+  - 已去掉背景、边框、圆角、阴影，只是普通引导文案。
+  - 最大宽度 `1180px` 居中。
+- `.cin-about` / `.cin-features` / `.cin-people` / `.cin-foot-note` 均最大 1180px 居中；移动端左右 32px。
+- 人物卡：
+  - 不再统一跳 `#/blind`。
+  - 改为 `#/blind?life=<id>`。
+  - 路由已解析 `life` 参数并渲染对应人物结果页。
+  - 第一张韦秀兰示例 URL：`#/blind?life=wei-xiulan`。
+
+### 网页配色 / 字体
+
+- 已改为 logo 三色：
+  ```text
+  #2a3a4f / #93acd8 / #f7f4ed
+  ```
+- 网页字体层级没有像小程序那样严格收敛到 4 档；如果用户再次要求，需要单独审计。
+- logo 在网页导航中为圆形（`assets/logo.png`），favicon/apple-touch-icon 也使用该 png。
+
+## 4. 关键已知风险 / 未完成
+
+1. **审核版本错位**
+   - 线上是 2.0.18，审核中是 2.0.19 旧设计，最新是 2.0.31。
+   - 需要等 2.0.19 审核结果，再提交 2.0.31 发布。
+2. **小程序内页敏感词（已清洗，排盘按需保留）**
+   - `pages/script` 已改为「写一段自己的故事」，去掉剧本/预测/命运预测等词；表单「出生日期/出生时间/出生地」→「日期/时间/地点」+ tips「可以是你出生的」。
+   - 结果页按用户要求保留「命盘故事摘要（原命盘摘要）/四柱与五行/大运/流年/日主/真太阳时/三柱/时柱」展示。
+   - agreement/privacy/life 内页已同步清洗剧本/出生日期/命盘摘要/生卒年/六维等词。
+3. **Web/数据寿命数据（保留 + 免责声明）**
+   - `js/lives.js` 与 `miniprogram/data/lives.js` 保留 `deathAge`、sixDim「寿命」、时间轴「寿命：XX岁」以及 narrative 的死亡结局、`years` 生卒年。
+   - Web 端六维总览已加免责声明「人物生卒年、年龄与寿命均为虚构设定，不是真实统计，也不构成对现实寿命的预测。」
+   - 小程序端 `pages/life` 仍按负面词正则过滤、不展示寿命/死亡段落。
+4. **Cloudflare 部署认证**
+   - 之前 `wrangler` OAuth 已过期。
+   - 2026-11-19 通过临时 Cloudflare Pages API Token 部署，版本已上线；令牌不应写入聊天或仓库。
+   - 后续重新部署需要重新登录 Cloudflare 或新 token。
+5. **CloudBase 旧 Web 登录函数**
+   - `authStart`、`authStatus`、`authBind` 仍部署在 CloudBase，但网页已不再使用。
+   - 可在确认小程序 login 正常后清理，避免误用。
+6. **CloudBase CORS**
+   - 免费套餐无法把 `life.qiaoxiao.online` 加入 Web 安全来源；Web CloudBase 登录方案已放弃，不要重新走。
+7. **Cloudflare token**
+   - 临时 token 可能仍存在；新对话应优先在 Cloudflare 后台撤销旧 token，再重新创建。
+8. **微信审核 / 隐私指引**
+   - 小程序已使用 openid 登录；公众平台隐私保护指引需要与隐私页说明一致。
+   - 不要声称昵称/头像/手机号被获取。
+
+## 5. 部署 / 操作命令
+
+### 小程序上传
+
+```bash
+/Users/bellahuang/Applications/wechatwebdevtools.app/Contents/MacOS/cli \
+  upload \
+  --project /Users/bellahuang/Desktop/deepseek \
+  -v 2.0.32 \
+  -d "优化故事场景"
+```
+
+上传后需要在微信公众平台：
+- 设置体验版路径：`pages/home/index`
+- 需要发布时提交审核
+
+### 云函数部署
+
+`login` 云函数已部署。使用 CloudBase CLI / 微信开发者工具部署，环境：
+
+```text
+cishengzhiwai-d5gf3fax9df941a21
+```
+
+### 网页部署
+
+由于 Cloudflare OAuth 失效，命令必须带有效 token/account：
+
+```bash
+cd /tmp/cloudflare
+CLOUDFLARE_API_TOKEN=... \
+CLOUDFLARE_ACCOUNT_ID=f880ab46e4e7bb73c8afa99c928d54de \
+WRANGLER_LOG_PATH=/tmp/wrangler-log \
+./node_modules/.bin/wrangler pages deploy \
+  /Users/bellahuang/Desktop/deepseek/dist \
+  --project-name=cishengzhiwai \
+  --branch=main \
+  --commit-dirty=true
+```
+
+部署前重新构建 `dist`：
+
+```bash
+cd /Users/bellahuang/Desktop/deepseek
+rm -rf dist && mkdir -p dist
+cp index.html dist/
+cp -R css js assets dist/
+```
+
+## 6. 测试 / 验证
+
+- 网页：
+  ```bash
+  curl --resolve life.qiaoxiao.online:443:172.66.47.88 \
+    -sS https://life.qiaoxiao.online/
+  ```
+- 人物卡：打开 `https://life.qiaoxiao.online/#/blind?life=wei-xiulan`。
+- 小程序：
+  - 微信开发者工具自动化端口曾使用 9420/9421/9422。
+  - `miniprogram-automator` 在 `/tmp/mp-auto`。
+  - 截图输出在 `preview/`。
+
+## 7. 交互 / 产品约束
+
+- 不接支付、不做会员、不做云备份。
+- 不伪造登录、AI、云端存储能力。
+- 不出现旧品牌「平行人生」。
+- 不做算命、运势、吉凶、寿命、改命、固定年龄终点。
+- 首页不能出现剧本/出生日期/预测等词（当前已满足）。
+- 页脚必须保留免责声明（当前首页为「本产品提供虚构叙事与自我反思内容，不构成心理咨询、医疗、法律、投资或其他专业建议。」）。
+- 所有按钮必须圆角、无直角。
+- 导航/按钮不能遮挡内容；小程序顶部要避开微信胶囊。
+
+## 8. 关键文件
+
+```text
+index.html                          Web 入口 / 静态资源版本
+js/app.js                           Web 路由、首页、人物结果、分享卡
+js/lives.js                         18 个虚构人物数据（仍含寿命字段）
+css/frost.css                       最终 Web 视觉覆盖
+assets/logo.png                     logo（256，圆形显示）
+assets/mini-program-qr.jpg          Web 展示的官方小程序码
+miniprogram/app.js                  onLaunch + wx.login
+miniprogram/app.json                页面注册（无 auth bridge）
+miniprogram/app.wxss                最终三色/四字号覆盖
+miniprogram/components/nav-bar/*    动态胶囊对齐导航
+miniprogram/pages/home/*            首页
+miniprogram/pages/life/*            抽人生
+miniprogram/pages/script/*          故事/剧本内页（仍有敏感词）
+miniprogram/pages/privacy/*         隐私说明（含 openid）
+cloudfunctions/login/*              小程序 wx.login 云函数
+cloudfunctions/authStart|authStatus|authBind/*  旧 Web 登录，未使用
+PROJECT_STATE.md                    本交接文件
+```
+
+## 9. 新对话建议第一步
+
+1. 读本文件 + `git status` / `git diff`。
+2. 在微信后台确认 2.0.19 审核状态。
+3. 确认最新体验版是否 2.0.31。
+4. 如用户要求继续发布：提交 2.0.31（或递增版本）审核。
+5. 如用户要求审核清洗：优先处理 `pages/script` 内页文案和 `js/lives.js` 的寿命数据。
+6. 不要重新引入网页 6 位登录码或 CloudBase Web 登录。

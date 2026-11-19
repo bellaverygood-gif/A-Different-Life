@@ -1136,3 +1136,124 @@ body {
 .login-actions { display: flex; gap: 8px; margin-top: 8px; }
 .login-actions .btn { flex: 1; }
 .login-qr-placeholder strong { color: var(--frost-ink); font-family: var(--serif); font-size: 20px; font-weight: 400; }
+
+.login-code-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0 2px;
+}
+.login-code-box small { color: var(--frost-faint); font-size: 9px; letter-spacing: 1px; }
+.login-code-box strong { color: var(--frost-ink); font-family: var(--serif); font-size: 25px; font-weight: 400; letter-spacing: 6px; }
+
+.nav-logo {
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 9px;
+  background: #fff;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(56, 83, 66, 0.12);
+}
+
+/* logo-led three-color system */
+:root {
+  --frost-ink: #2a3a4f;
+  --frost-muted: #59687b;
+  --frost-faint: #7d8796;
+  --frost-green: #6f86b4;
+  --frost-rose: #6f86b4;
+  --frost-paper: #f7f4ed;
+  --frost-line: rgba(42, 58, 79, 0.15);
+  --frost-line-soft: rgba(42, 58, 79, 0.09);
+  --frost-deep: #2a3a4f;
+  --cin-paper: #f7f4ed;
+  --cin-ink: #2a3a4f;
+  --cin-muted: #59687b;
+  --cin-faint: #7d8796;
+  --cin-line: rgba(42, 58, 79, 0.15);
+  --cin-line-strong: rgba(42, 58, 79, 0.24);
+  --cin-gold: #6f86b4;
+  --cin-gold-light: #93acd8;
+}
+html, body { background: #f7f4ed !important; }
+body {
+  background:
+    radial-gradient(circle at 8% 6%, rgba(147, 172, 216, 0.62), transparent 36%),
+    radial-gradient(circle at 94% 14%, rgba(147, 172, 216, 0.36), transparent 38%),
+    linear-gradient(135deg, #fbf9f3 0%, #f4f1e9 54%, #f7f4ed 100%) !important;
+  color: #2a3a4f !important;
+}
+body::before {
+  background:
+    radial-gradient(circle at 22% 22%, rgba(147, 172, 216, 0.45), transparent 34%),
+    radial-gradient(circle at 78% 18%, rgba(147, 172, 216, 0.26), transparent 36%) !important;
+}
+.cin-hero { background: transparent !important; }
+.cin-hero::before, .cin-hero::after { background: rgba(147, 172, 216, 0.35) !important; }
+.cin-kicker, .cin-link { color: #6f86b4 !important; }
+.cin-btn-primary, .btn-primary {
+  border-color: #2a3a4f !important;
+  background: #2a3a4f !important;
+  color: #f7f4ed !important;
+  box-shadow: none !important;
+}
+.cin-btn-primary:hover, .btn-primary:hover,
+.cin-btn:hover { background: #2a3a4f !important; color: #f7f4ed !important; }
+.cin-about, .cin-features, .cin-people, .cin-hero-content {
+  border-color: rgba(147, 172, 216, 0.4) !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 24px 70px rgba(42, 58, 79, 0.1) !important;
+}
+.cin-about h2, .cin-feature h3, .cin-person h3, .cin-hero h1 { color: #2a3a4f !important; }
+.cin-about p, .cin-feature p, .cin-person p, .cin-hero-content > p { color: #59687b !important; }
+.nav-logo { border-radius: 50% !important; border: 0 !important; background: transparent !important; }
+
+/* desktop containment for the home content sections */
+.cin-about,
+.cin-features,
+.cin-people,
+.cin-foot-note {
+  width: min(1180px, calc(100% - 56px));
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+@media (max-width: 900px) {
+  .cin-about,
+  .cin-features,
+  .cin-people,
+  .cin-foot-note { width: calc(100% - 32px); }
+}
+
+/* hero CTA size, and force a fresh stylesheet after responsive fixes */
+.cin-cta { gap: 16px !important; margin-top: 32px !important; }
+.cin-btn {
+  min-width: 176px !important;
+  min-height: 54px !important;
+  padding: 0 30px !important;
+  font-size: 15px !important;
+}
+.cin-btn + .cin-btn { min-width: 160px !important; }
+@media (max-width: 900px) {
+  .cin-cta { gap: 10px !important; margin-top: 24px !important; }
+  .cin-btn { min-width: 134px !important; min-height: 46px !important; padding: 0 18px !important; font-size: 13px !important; }
+}
+
+/* guidance copy is plain text, not a card */
+.cin-about {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* increase CTA width by one third from the current size */
+.cin-btn { min-width: 235px !important; }
+.cin-btn + .cin-btn { min-width: 213px !important; }
+@media (max-width: 900px) {
+  .cin-btn { min-width: 178px !important; }
+  .cin-btn + .cin-btn { min-width: 162px !important; }
+}
