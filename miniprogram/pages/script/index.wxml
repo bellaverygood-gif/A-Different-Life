@@ -216,9 +216,8 @@
 
       <view class="script-actions">
         <view class="btn btn-ghost" bindtap="editAgain">重新输入</view>
-        <view class="btn btn-primary" bindtap="copyScript">复制这段故事</view>
+        <button class="btn btn-ghost" open-type="share">分享</button>
       </view>
-      <button class="btn btn-ghost script-share" open-type="share">分享</button>
 
       <view class="script-bottom">
         <text bindtap="goHome">回到首页</text>
