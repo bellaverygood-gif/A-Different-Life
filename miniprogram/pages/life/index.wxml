@@ -4,7 +4,6 @@
   <block wx:if="{{view === 'setup'}}">
     <view class="life-setup">
       <image class="life-cover" src="/assets/mode-blind.jpg" mode="aspectFill" />
-      <view class="life-setup-mark">◉</view>
       <view class="life-setup-title serif">
         <text>抽一个人生，</text>
         <text class="gold">从出生读到后来。</text>
@@ -12,7 +11,7 @@
       <text class="life-setup-copy">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生，恰好被你打开。</text>
 
       <view class="life-setup-action">
-        <view class="btn btn-primary" bindtap="drawLife">抽盲盒人生 <text>✦</text></view>
+        <view class="btn btn-primary" bindtap="drawLife">抽盲盒人生</view>
       </view>
 
       <view class="life-setup-notes">
