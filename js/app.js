@@ -216,7 +216,7 @@
       <div class="shell-wide">
         <section class="blind-setup">
           <div class="blind-mark">◉</div>
-          <span class="eyebrow">抽一个人生 · 18 段虚构人生</span>
+          <span class="eyebrow">抽一个人生 · ${LIVES.length} 段虚构人生</span>
           <h1 class="blind-title">抽一个人生，<span class="gold">从出生读到后来。</span></h1>
           <p class="blind-lede">不是预测，也不评判任何人的选择。只是一个陌生人的一段人生。</p>
           <div class="blind-actions">
