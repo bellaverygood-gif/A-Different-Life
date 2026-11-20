@@ -1,70 +1,63 @@
-# 此生之外 · 微信小程序 M1 + M2
+# 此生之外 · 微信小程序
 
-这是「此生之外」微信小程序原生版本。当前已完成 M1 盲盒，并进入 M2 剧本免费层。
+原生小程序，代码在 `miniprogram/`。当前代码对应 `2.0.32`（全站深色 + 50 段虚构人生），已提交审核；线上版本仍是 `2.0.18`。
 
 ## 打开方式
 
-1. 打开微信开发者工具，选择“导入项目”。
-2. 项目目录选择仓库根目录：`/Users/bellahuang/Desktop/deepseek`。
-3. 开发者工具读取根目录的 `project.config.json`，小程序代码在 `miniprogram/`。
-4. AppID：`wxb3f0ab648912633a`。
+1. 微信开发者工具 → 导入项目。
+2. 目录选择仓库根目录：`/Users/bellahuang/Desktop/deepseek`（读取根目录 `project.config.json`）。
+3. AppID：`wxb3f0ab648912633a`。
+4. 云开发环境：`cishengzhiwai-d5gf3fax9df941a21`。
 
-## 当前页面
+## 页面
 
-- `pages/home`：首页，盲盒人生 / 剧本人生两个入口。
-- `pages/life`：M1 盲盒阅读页，18 张虚构人物卡，六维总览 + 800 字正文 + 时间轴 + 情绪自评。
-- `pages/script`：M2 剧本人生，出生信息 → 四柱摘要 → 免费虚构叙事剧本；无 AI。
-- `pages/privacy`：本机数据与虚构内容说明。
+- `pages/home`：首页，两个入口（抽盲盒人生 / 看一个与你有关的故事）
+- `pages/life`：抽人生，虚构人物故事 + 六维 + 时间轴 + 情绪自评
+- `pages/script`：写一段自己的故事，表单 → 生成叙述文本
+- `pages/privacy`：隐私说明（含 openid、本机存储）
+- `pages/agreement`：用户协议
 
-旧的 `pages/login`、`pages/predict`、`pages/blind`、`pages/profile` 文件仍保留，但已不在 `app.json` 中，不作为当前入口。
+`pages/auth/bridge` 网页登录桥已删除，`app.json` 中不再注册。
 
-## 当前范围
+## 登录与数据
 
-- 不需要微信登录
-- 不需要云开发
-- 不调用后端或 AI
-- 18 张人物卡全部为虚构
-- 阅读记录与情绪自评只保存在本机
-- 最近阅读 20 条
-- 没有真实统计数据
-- 基础 Canvas 图卡已做：生成、预览、保存
-- 内容分级 L0/L1 已展示
-- 剧本人生免费层已开放
+- `app.js` 的 `onLaunch` 调用 `ensureLogin()`：`wx.cloud.init` → `wx.login` → 云函数 `login`。
+- 云函数 `login` 只返回 `openid`，不落库。
+- 首页「抽盲盒人生」「看一个与你有关的故事」有登录门槛，未登录时提示「请先完成微信登录」。
+- 阅读记录、情绪自评、故事历史保存在本机微信缓存：
 
-## 数据
+  ```text
+  parallel-life-m1          阅读记录 / 情绪
+  parallel-life-m1-daily    每日记录
+  parallel-life-script-m1   故事历史（最近 20 条，页面只展示 3 条）
+  ```
 
-- `data/lives.js`：18 张虚构人物卡
-- 字段：姓名、省份、生卒、性别、六维、时间轴、正文
-- 数据由 M0 内容整理生成，不是真实统计
+  这些 key 沿用了旧品牌前缀，属于内部标识、用户不可见；**不要随意改名**，改名会让用户本机历史丢失。
 
-## 本地存储
+- 不上传云端，不用于其他用途。
 
-- 盲盒 key：`parallel-life-m1`
-- 剧本 key：`parallel-life-script-m1`
-- 盲盒保存：最近阅读 20 条、上次读到谁、情绪自评
-- 剧本保存：出生日期、出生时间、出生地、性别、命盘摘要、免费剧本，最多 20 条
-- 剧本历史：最近生成列表，可点开重读
-- 不保存：昵称、微信身份、精确位置、相册
+## 视觉
 
-## 测试状态
+- 全站深色；三色：墨蓝 `#2a3a4f`、雾蓝 `#93acd8` / `#6f86b4`、米白 `#f7f4ed`。
+- 四档字号：`56 / 44 / 26 / 20rpx`（全局强制）。
+- 主题覆盖在 `app.wxss` 末尾；顶部导航 `components/nav-bar/*` 通过 `wx.getMenuButtonBoundingClientRect()` 对齐胶囊。
+- 主包约 1.2 MB（`2.0.32` 上传时 1,244,178 字节）。
 
-已做：
+## 上传
 
-- `node --check`：页面 JS 与数据文件通过
-- 18 条数据全部有六维、时间轴、正文
-- 页面 WXML 标签配平
-- 盲盒抽取、情绪自评、本地存储逻辑用 Node 模拟通过
+```bash
+/Users/bellahuang/Applications/wechatwebdevtools.app/Contents/MacOS/cli \
+  upload \
+  --project /Users/bellahuang/Desktop/deepseek \
+  -v 2.0.33 \
+  -d "版本备注"
+```
 
-未做：
+上传后到微信公众平台设置体验版路径 `pages/home/index`，再提交审核。审核说明草稿见 `PROJECT_STATE.md` 第 11 节。
 
-- 真机预览（开发者工具 preview 已通过）
-- 图卡样式打磨
-- 流年
-- 上传/发布
+## 已知约束
 
-## 下一步
-
-1. 微信开发者工具导入并编译
-2. 真机检查首页、盲盒阅读、长页面滚动、情绪自评
-3. 图卡样式打磨
-4. 补流年
+- 不做支付、会员、云备份。
+- 不伪造登录、AI、云端存储能力。
+- 内页保留「命盘故事摘要 / 四柱与五行 / 大运 / 流年 / 日主 / 真太阳时」等措辞（产品要求），首页不得出现「剧本 / 预测 / 出生日期」等词。
+- 小程序端按负面词过滤，不展示寿命 / 死亡段落。

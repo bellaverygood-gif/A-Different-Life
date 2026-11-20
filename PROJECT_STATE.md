@@ -1,18 +1,18 @@
 # 此生之外 · 项目状态交接
 
-最后更新：2026-11-20 11:07（Asia/Shanghai）
+最后更新：2026-11-20 12:50（Asia/Shanghai）
 用途：新对话先读本文件，避免重复猜测和幻觉。
 
 ## 0. 最重要的事实
 
 - 品牌只能是「此生之外」。
-- 小程序：线上 `2.0.18`；`2.0.19`（旧设计）审核中；`2.0.32`（全站深色）已于 2026-11-19 上传并提交审核，等待结果。`2.0.19` 若先通过，可能先发布旧版。
+- 小程序：线上 `2.0.18`；`2.0.19`（旧设计）审核中；`2.0.32`（全站深色）已于 2026-11-19 上传并提交审核。截至 2026-11-20 12:50 两个版本审核结果均未知（需到微信后台查）。`2.0.19` 若先通过，可能先发布旧版。
 - 数据：50 段虚构人生（原 18 + 新增 32），覆盖 22 个省份。
 - 视觉：小程序全站深色（首页 / 人生物 / 故事页），四档字号 56 / 44 / 26 / 20rpx。
 - 网页正式站：https://life.qiaoxiao.online/ ，已重新部署，线上为 50 段；UI 保持原浅蓝布局不变。
 - 网页没有登录功能，只显示官方小程序码；右上角按钮文案「微信体验」。
 - 小程序使用 `wx.login` + 云函数 `login`；没有网页登录桥，也没有 6 位网页登录码。
-- 工作区已干净；所有改动已提交并推 GitHub（`origin/main` = `6ef6358`）；remote 已带 token，`git push` 自动。
+- 工作区已干净；所有改动已提交并推 GitHub；remote 已带 token，`git push` 自动。最新提交见第 1 节。
 
 ## 1. 环境 / 地址
 
@@ -25,7 +25,7 @@
 - 生产页面：`https://life.qiaoxiao.online/`
 - 预览别名：`https://preview.cishengzhiwai.pages.dev/`
 - GitHub：`https://github.com/bellaverygood-gif/A-Different-Life`
-- 当前 Git HEAD：`2b9f3d3 chore(life): 去掉抽人生页的圆形标记和按钮星形图标`
+- 当前 Git HEAD：`HEAD_COMMIT_PLACEHOLDER`
 - GitHub 推送：remote 已带 token（classic），`git push` 自动；token 明文在本地 `.git/config`，可在 GitHub 撤销后重配。
 
 ## 2. 小程序当前状态
@@ -187,36 +187,39 @@ pages/agreement/index
 
 ## 4. 关键已知风险 / 未完成
 
-1. **审核版本错位（进行中）**
-   - 线上 `2.0.18`；`2.0.19`（旧设计）审核中；`2.0.32`（全站深色，2026-11-19 上传）已提交审核，等待结果。
-   - `2.0.19` 若先通过可能先发布旧版；需关注并尽快以 `2.0.32` 为准。
-2. **网页数据未更新（待部署）**
-   - 线上 `js/lives.js` 仍是 18 段；仓库已是 50 段。
-   - 线上「18 段虚构人生」还是硬编码（仓库已改动态 `LIVES.length`）。
-   - 需重新部署 Cloudflare Pages，见第 5 节命令。
-3. **旧登录代码待清理**
-   - `cloudfunctions/authStart|authStatus|authBind`（旧 Web 登录，未使用）
-   - `workers/auth`（旧二维码登录桥）
-   - `archive/legacy-miniprogram`、`archive/legacy-cloudfunctions`
-   - 确认小程序 `login` 正常后可删，减少混淆。
-4. **文档过期**
-   - `docs/2.0-remaining-tasks.md` 还是 M0/M1/M2 阶段计划，与当前实现不符，建议归档或重写。
-5. **敏感词 / 寿命数据（当前策略）**
+1. **审核版本错位（当前唯一硬卡点，只能人工处理）**
+   - 线上 `2.0.18`；`2.0.19`（旧设计）审核中；`2.0.32`（全站深色 + 50 段）已提交审核。
+   - `2.0.19` 没有撤回入口。若它先通过：**不要点发布**，等 `2.0.32`。
+   - 若已被自动发布成旧设计：立刻发布 `2.0.32` 覆盖，线上不能停在旧版。
+2. ~~网页数据未更新~~ **已于 2026-11-20 核实解决**
+   - 线上 `js/lives.js` 与仓库逐字节一致（50 个 id），`js/app.js` 一致，数量为动态 `LIVES.length`。
+   - `dist/` 与源文件一致，不需要重新部署。
+3. ~~旧登录代码待清理~~ **本地已清理（2026-11-20）**
+   - 已从仓库删除 `cloudfunctions/auth|authBind|authStart|authStatus`、`workers/auth`；全库无引用。
+   - **云端仍有残留**，不影响运行，但属于无主入口，建议清理：
+     - CloudBase 控制台删除 `authStart` / `authStatus` / `authBind` / `auth`（环境 `cishengzhiwai-d5gf3fax9df941a21`）。
+     - Cloudflare 删除 Worker `cishengzhiwai-auth`（含 KV `AUTH_KV`，id `4b7be48400954b4b94667f198fd22822`）。
+   - `archive/` 保留为历史归档，已加 `archive/README.md` 说明「不要部署、不要 import」。
+4. ~~文档过期~~ **已处理（2026-11-20）**
+   - `docs/2.0-remaining-tasks.md` 已移到 `docs/archive/`，并加 `docs/archive/README.md`。
+5. **敏感词 / 寿命数据（当前策略，勿擅改）**
    - 「写一段自己的故事」保留「命盘故事摘要/四柱与五行/大运/流年/日主/真太阳时/三柱/时柱」（按用户要求）。
    - 寿命/生卒年保留；网页六维总览有虚构免责声明；小程序按负面词过滤、不展示寿命/死亡段落。
    - 数据：50 段（原 18 + 新增 32）；32 段新人物都有 `sample` 金句，原 18 段只有第 1 条有（首页只用第 1 条）。
-6. **CloudBase 旧函数 / CORS**
-   - `authStart/authStatus/authBind` 仍部署在 CloudBase，网页已不用。
-   - 免费套餐无法把 `life.qiaoxiao.online` 加入 Web 安全来源；Web CloudBase 登录方案已放弃，不要重走。
+   - 小程序内其余「预测」字样均为「不是预测」这类否定句，审核上属免责表述，可保留。
+6. **CloudBase / CORS（历史结论）**
+   - 免费套餐无法把 `life.qiaoxiao.online` 加入 Web 安全来源；Web CloudBase 登录方案已放弃，**不要重走**。
 7. **Cloudflare token**
-   - 之前临时 token 可能仍有效；建议在 Cloudflare 后台撤销旧 token 再新建。
+   - 之前临时 token 可能仍有效；建议在 Cloudflare 后台撤销旧 token 再新建（需人工）。
+   - 网页部署命令见第 5 节，token 未持久化。
 8. **微信审核 / 隐私指引**
-   - 公众平台「用户隐私保护指引」需要与隐私页说明一致（openid、本地存储）。
-   - 不要声称获取昵称/头像/手机号。
-9. **其他小项**
+   - 公众平台「用户隐私保护指引」需与隐私页说明一致（openid、本地存储）；核对清单见第 11 节。
+   - 不要声称获取昵称/头像/手机号。云函数 `login` 只返回 openid，不落库。
+9. **其他小项（未排期）**
    - 图卡素材版权未确认（`docs/` 提到）。
    - 情绪自评埋点未做（「更沉重」比例监控）。
-   - 2.0 版审核说明未写。
+   - 2.0 版审核说明：草稿已写入第 11 节，复制到后台即可。
+   - 小程序本机缓存 key 仍是旧前缀 `parallel-life-m1` / `parallel-life-m1-daily` / `parallel-life-script-m1`（用户不可见）。**改名会导致用户本机历史丢失，暂不改**。
 
 ## 5. 部署 / 操作命令
 
@@ -296,20 +299,22 @@ cp -R css js assets dist/
 ```text
 index.html                          Web 入口 / 静态资源版本
 js/app.js                           Web 路由、首页、人物结果、分享卡
-js/lives.js                         18 个虚构人物数据（仍含寿命字段）
+js/lives.js                         50 个虚构人物数据（仍含寿命字段）
 css/frost.css                       最终 Web 视觉覆盖
 assets/logo.png                     logo（256，圆形显示）
 assets/mini-program-qr.jpg          Web 展示的官方小程序码
 miniprogram/app.js                  onLaunch + wx.login
 miniprogram/app.json                页面注册（无 auth bridge）
 miniprogram/app.wxss                最终三色/四字号覆盖
+miniprogram/data/lives.js           小程序 50 段人物数据（与 js/lives.js 同源）
 miniprogram/components/nav-bar/*    动态胶囊对齐导航
 miniprogram/pages/home/*            首页
 miniprogram/pages/life/*            抽人生
-miniprogram/pages/script/*          故事/剧本内页（仍有敏感词）
+miniprogram/pages/script/*          故事内页（保留命盘类措辞，见风险 5）
 miniprogram/pages/privacy/*         隐私说明（含 openid）
-cloudfunctions/login/*              小程序 wx.login 云函数
-cloudfunctions/authStart|authStatus|authBind/*  旧 Web 登录，未使用
+cloudfunctions/login/*              小程序 wx.login 云函数（唯一在用的云函数）
+archive/                            历史归档（已加 README，不要部署）
+docs/archive/                       过期计划文档（已加 README）
 PROJECT_STATE.md                    本交接文件
 ```
 
@@ -317,9 +322,9 @@ PROJECT_STATE.md                    本交接文件
 
 1. 读本文件 + `git status`（工作区应为 clean）。
 2. 在微信后台确认审核状态：`2.0.19`（旧设计）和 `2.0.32`（全站深色 + 50 段）。
-3. `2.0.32` 通过后发布，确认线上不再是 `2.0.18`。
-4. 网页已部署 50 段；如再改数据/UI，需重新构建 `dist` 并用 Cloudflare token 部署（见第 5 节）。
-5. B 类清理：旧登录云函数 `authStart/authStatus/authBind`、`workers/auth`、`archive/`。
+3. `2.0.32` 通过后发布；若 `2.0.19` 先通过，不要发布，等 `2.0.32`。
+4. 网页已部署 50 段且与仓库一致；如再改数据/UI，需重新构建 `dist` 并用 Cloudflare token 部署（见第 5 节）。
+5. 云端清理（可选，见风险 3）：CloudBase 旧云函数、Cloudflare Worker `cishengzhiwai-auth`。
 6. 不要重新引入网页 6 位登录码或 CloudBase Web 登录；不要用「平行人生」旧品牌。
 
 ## 10. 本次修改结论（2026-11-19 ~ 11-20 会话）
@@ -344,6 +349,57 @@ PROJECT_STATE.md                    本交接文件
 - 线上仍是 `2.0.18`；`2.0.19`（旧设计）也在审核队列，可能先发布旧版。
 
 ### 代码 / 仓库
-- Git：`origin/main` = `6ef6358`，工作区 clean；remote 已带 GitHub PAT（classic），`git push` 自动。
+- Git：工作区 clean，remote 已带 GitHub PAT（classic），`git push` 自动；最新提交见第 1 节。
+- 2026-11-20：删除旧登录代码（4 个云函数 + `workers/auth`），归档 `docs/2.0-remaining-tasks.md`，修正本文件过期的「网页待部署」风险。
 - 注意：GitHub token 明文在本地 `.git/config`，可在 GitHub 撤销后重配。
 - 网页部署需要 Cloudflare API Token（Cloudflare Pages:Edit），当前未持久化。
+
+## 11. 后台材料草稿 / 核对清单（2026-11-20 补充）
+
+### 11.1 小程序版本审核说明（`2.0.32`，可直接粘贴）
+
+```text
+【功能说明】
+本小程序是虚构人物故事阅读工具，全部人物、事件、金额均为虚构叙事。
+
+首页提供两个入口：
+1.「抽盲盒人生」：随机展示一段虚构人物的生活经历。
+2.「看一个与你有关的故事」：用户填写日期、时间、地点，在本机生成一段叙述文本。
+
+登录说明：仅通过 wx.login 获取 openid 识别用户身份，不获取昵称、头像、手机号。
+数据说明：阅读记录、情绪自评、生成的故事仅保存在用户本机微信缓存，不上传云端。
+内容声明：不提供算命、预测、运势、医疗、投资、法律等专业建议，页面均有免责说明。
+
+【测试路径】
+1. 打开小程序进入首页，点击「抽盲盒人生」，查看随机人物故事。
+2. 返回首页，点击「看一个与你有关的故事」，填写日期/时间/地点，查看生成结果。
+3. 底部「用户协议」「隐私说明」可正常打开。
+
+【补充】
+页面中出现的「不是预测」等表述为否定性免责说明，并非预测类服务。
+```
+
+### 11.2 「用户隐私保护指引」核对清单
+
+对照 `miniprogram/pages/privacy/index.wxml` 实际行为核对，需一致的项：
+
+| 项 | 应填写内容 |
+|---|---|
+| 收集的信息 | 微信 openid（登录识别）；本机缓存（阅读记录、情绪自评、故事历史） |
+| 使用目的 | 识别用户身份；在本机保存阅读记录与生成结果 |
+| 是否上传云端 | 否（openid 由云函数 `login` 返回，不落库） |
+| 是否用于其他用途 | 否 |
+| 不收集的信息 | 昵称、头像、手机号、地理位置、通讯录、相册 |
+| 第三方服务 | 微信云开发（CloudBase） |
+
+注意：**不要**在指引里勾选「获取昵称/头像/手机号」，与代码不符会触发隐私接口校验问题。
+
+### 11.3 云端残留清理命令（可选）
+
+```bash
+# Cloudflare：删除旧登录桥 Worker（含 KV 绑定）
+cd /tmp/cloudflare
+CLOUDFLARE_API_TOKEN=... ./node_modules/.bin/wrangler delete cishengzhiwai-auth
+```
+
+CloudBase 旧云函数（`authStart` / `authStatus` / `authBind` / `auth`）需在微信开发者工具「云开发 → 云函数」中右键删除，或控制台操作。
