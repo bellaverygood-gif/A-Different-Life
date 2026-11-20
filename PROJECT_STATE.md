@@ -25,7 +25,7 @@
 - 生产页面：`https://life.qiaoxiao.online/`
 - 预览别名：`https://preview.cishengzhiwai.pages.dev/`
 - GitHub：`https://github.com/bellaverygood-gif/A-Different-Life`
-- 当前 Git HEAD：`HEAD_COMMIT_PLACEHOLDER`
+- 当前 Git HEAD：以 `git log -1` 为准；本轮整理提交 `2503806`（清理旧登录代码 + 修正过期文档）
 - GitHub 推送：remote 已带 token（classic），`git push` 自动；token 明文在本地 `.git/config`，可在 GitHub 撤销后重配。
 
 ## 2. 小程序当前状态
